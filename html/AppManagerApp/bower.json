@@ -16,7 +16,7 @@
     "!html/**/*"
   ],
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "linkbot": "BaroboRobotics/linkbotjs#develop"
   }
 }

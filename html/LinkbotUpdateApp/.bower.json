@@ -11,19 +11,17 @@
     "**/*",
     "!html/**/*"
   ],
-  "dependencies": {
-    "bootstrap": "~3.1.1",
-    "bootbox": "~4.2.0"
-  },
   "devDependencies": {
+    "bootstrap": "~3.1.1",
+    "bootbox": "~4.2.0",
     "linkbot": "BaroboRobotics/linkbotjs#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/LinkbotUpdateApp",
-  "_release": "b56b5d6ac2",
+  "_release": "5f5288b95e",
   "_resolution": {
     "type": "branch",
     "branch": "f/for-server",
-    "commit": "b56b5d6ac261d9f9d227734b260af6d67809be07"
+    "commit": "5f5288b95e0266d8479712e2f410e69f03b92fdf"
   },
   "_source": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git",
   "_target": "f/for-server",

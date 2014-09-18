@@ -11,20 +11,19 @@
     "node_modules",
     "bower_components"
   ],
-  "dependencies": {
+  "devDependencies": {
     "bootstrap": "~3.1.1",
     "angular": "~1.2.16",
-    "linkbotjs": "BaroboRobotics/LinkbotJS#~0.1.0"
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/PoseTeachingApp",
-  "_release": "8dd135ce7a",
+  "_release": "ff6941a22c",
   "_resolution": {
     "type": "branch",
     "branch": "f/for-server",
-    "commit": "8dd135ce7a0ceaa307e61d3dee0f2e9f9e2014f5"
+    "commit": "ff6941a22c34c1f37a7254508f33570c7151a8ba"
   },
   "_source": "git@github.com:BaroboRobotics/PoseTeachingApp.git",
   "_target": "f/for-server",
-  "_originalSource": "git@github.com:BaroboRobotics/PoseTeachingApp.git",
-  "_direct": true
+  "_originalSource": "git@github.com:BaroboRobotics/PoseTeachingApp.git"
 }
