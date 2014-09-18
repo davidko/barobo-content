@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Linkbot Labs
+        </title>
+        <script src="js/vendor/jquery-1.10.2.min.js">
+        </script>
+        <script src="component/linkbotjs/dist/linkbot.js">
+        </script>
+        <script src="js/robot_ids.js">
+        </script>
+        <script src="js/vendor/bootstrap.min.js">
+        </script>
+        <script src="js/setup.js">
+        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="component/linkbotjs/dist/linkbot.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/setup.css">
+    </head>
+    <body data-version="0.0.2">
+        <nav class="app">
+            <a href="/AppManagerApp/html/index.html">
+                <img src="img/linkbot-labs-logo-200x29px.png">
+            </a>
+            <ol class="nav nav-stacked nav-pills">
+                <li>
+                    <a href="holt.html">
+                        <img src="img/holt_california.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="chap6.html">
+                        Chapter 6
+                    </a>
+                </li>
+                <hr class="hdr">
+                <li>
+                    <a href="setup.html">
+                        <div>
+                            6.1:
+                            <small>
+                                Cops vs. Robbers
+                            </small>
+                        </div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        Setup
+                    </a>
+                </li>
+                <hr class="ftr">
+                <li>
+                    <a href="lab_overview.html">
+                        <small class="text-muted">
+                            Overview
+                        </small>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        <section>
+            <dl>
+                <dt>
+                    The objective
+                </dt>
+                <dd>
+                    Solve a system of linear equations in two variables by graphing.
+                </dd>
+                <dt>
+                    Vocabulary
+                </dt>
+                <dd>
+                    <ul>
+                        <li>
+                            System of linear equations
+                        </li>
+                        <li>
+                            Solution of a system of linear equations
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <p>
+                To run this curriculum application, please setup the robots according to the following image.
+            </p>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="img/setup.png" class="fullContent">
+                    </div>
+                    <div class="col-md-6">
+                        <form class="form-horizontal">
+                            <div class="form-group blueRobot">
+                                <label class="control-label col-sm-5" for="blueRobot">
+                                    Blue robot id
+                                </label>
+                                <input class="col-sm-7 form-control" type="text" name="blueRobot" style="width:100px" disabled="1">
+                            </div>
+                            <div class="form-group redRobot">
+                                <label class="control-label col-sm-5" for="redRobot">
+                                    Red robot id
+                                </label>
+                                <input class="col-sm-7 form-control" type="text" name="redRobot" style="width:100px" disabled="1">
+                            </div>
+                            <div class="form-group">
+                                <button class="form-control btn btn-default" type="button" id="connectRobotsBtn" style="width:300px">
+                                    Connect Robots
+                                </button>
+                            </div>
+                            <div class="form-group connectStatus well-sm">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <a href="prediction.html" class="page-navigation pull-right btn btn-large btn-primary">
+                Next
+            </a>
+        </section>
+    </body>
+</html>

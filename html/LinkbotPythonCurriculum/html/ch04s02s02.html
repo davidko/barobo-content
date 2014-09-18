@@ -1,0 +1,166 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Your First Python Program</title><link rel="stylesheet" type="text/css" href="barobostyle.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="Programming the Barobo Linkbot with Python"><link rel="up" href="ch04s02.html" title="Introduction to Python for Computer Programming"><link rel="prev" href="ch04s02s01.html" title="Getting Started with PyScripter"><link rel="next" href="ch04s02s03.html" title="A slightly more complex example"><script src="js/vendor/linkbot.js"></script><script src="js/vendor/jquery-2.1.0.min.js"></script><script src="js/util.js"></script><script src="js/getURLParam.js"></script></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Your First Python Program</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s02s01.html">Prev</a>&nbsp;</td><th width="60%" align="center">Introduction to Python for Computer Programming</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s02s03.html">Next</a></td></tr></table><hr></div><div class="section" title="Your First Python Program"><div class="titlepage"><div><div><h3 class="title"><a name="d5e139"></a>Your First Python Program</h3></div></div></div> 
+      <p>
+        Once you have opened PyScripter, begin by creating a new program. You 
+        can do this by clicking on the "New File" icon in the toolbar on
+        the left hand side, or by clicking "File -&gt; New" in the menu.
+      </p><p>
+        Once you have opened a new file, try typing the following code
+        into the window. Make sure you type the code in exactly as shown,
+        including capitalization and punctuation.
+        </p><div class="example"><a name="hello.py"></a><p class="title"><b>Example&nbsp;4.1.&nbsp;A simple Python program</b></p><div class="example-contents">
+          <pre class="programlisting">
+<span style="color: red">&lt;xi:include&gt;&lt;/xi:include&gt;</span>
+          </pre>
+        </div></div><p><br class="example-break">
+        After you have typed it in, save it to a file called "hello.py". 
+        Python programs typically use the suffix ".py".
+      </p><p>
+        </p><div class="figure"><a name="fig_ninja_hello"></a><p class="title"><b>Figure&nbsp;4.2.&nbsp; A Ninja-IDE Window after executing hello.py. </b></p><div class="figure-contents">
+          
+          <div class="mediaobject"><img src="images/fig_ninja_hello.png" alt="A Ninja-IDE Window after executing hello.py."></div>
+        </div></div><p><br class="figure-break">
+        Once you have saved your new program to a file, click on the "Run File"
+        icon 
+        <span class="guiicon">
+          <span class="inlinemediaobject"><img src="images/ninja_runfile.png"></span>
+        </span>
+        on the toolbar an the left-hand
+        side to run your program. Ninja should pop up an output window pane
+        with the results of your program, which should appear as shown in Figure
+        <a class="xref" href="ch04s02s02.html#fig_ninja_hello" title="Figure&nbsp;4.2.&nbsp; A Ninja-IDE Window after executing hello.py.">Figure&nbsp;4.2, &#8220; A Ninja-IDE Window after executing hello.py. &#8221;</a>. As shown in the figure, the output of
+        this program is
+        <code class="computeroutput">Hello, world!</code>
+        Congratulations! You have just written and executed your first Python program!
+      </p> <p>
+        Now, lets talk about the program you just wrote. The file, "hello.py",
+        is called "Source Code". Source code for most major programming languages
+        is in a format called "plain text", which is the same format in ".txt"
+        files, which you may already be familiar with. This bare-bones format
+        cannot support any word-processor features which you may be used to, such as
+        different fonts, font sizes, embedded images, etc. 
+      </p> <p>
+        Python is capable of running program directly from source code using a 
+        process called "interpretation". Some other languages like C, C++, and
+        Java require the source code to be first "compiled" before it can be 
+        executed. The process of compilation is basically when another program,
+        called a "compiler", interprets human-readable source code into a
+        machine-native program (ones and zeros). 
+      </p> <p>
+        Python programs contain multiple lines of code. Typically, when a computer
+        executes code, it will start at the top of the file and execute statements,
+        line by line, going down the file. As we write more complex programs, there
+        are various ways for us to control how Python reads our program, but
+        for simple programs like our <code class="filename">hello.py</code>, we can imagine
+        Python starting at the top of our file and executing each line in order.
+        Thus, multiple print statements in our program will print multiple
+        lines of text onto our screen.
+      </p>
+      <div class="section" title="Dissecting Your First Python Program"><div class="titlepage"><div><div><h4 class="title"><a name="d5e163"></a>Dissecting Your First Python Program</h4></div></div></div> 
+        <p>
+          Lets take a closer look at your first Python program. The first line
+          looks like this:
+          </p><pre class="programlisting"> #!/usr/bin/env python </pre><p>
+          This line tells the computer that the program is a Python program.
+          You should remember to put this line at the top of all of your 
+          Python programs. This type of code which goes into all of your programs
+          is known as "Boilerplate" code. Many different languages have some sort
+          of boilerplate code; some more complex than others. The next two lines
+          look like this:
+          </p><pre class="programlisting">
+# File: hello.py
+# Prints the text "Hello, world!" onto the screen
+          </pre><p>
+          Note that both this code and the first line of code begin with the '#'
+          character. In programmer-speak, this character is usually referred to
+          as the "pound" character or a "hash" character. This character has
+          special meaning in Python. It tells the Python interpreter to ignore
+          anything else that comes after it in the line. This is known as a 
+          <span class="emphasis"><em> comment </em></span>. Comments are text that are meant tell
+          a human reader some information but are ignored by the computer.
+        </p> <p>
+          Finally, the last line of code in the program is
+          </p><pre class="programlisting">
+print('Hello, world!')
+          </pre><p>
+          This is where the real stuff happens: printing text onto the screen.
+          The word <code class="function">print</code> is a special command in python that is
+          used to print text onto the screen. It is known as a <span class="emphasis"><em>function</em></span>. Python
+          comes with hundreds of built-in functions you can use to do a variety
+          of stuff. The simplest functions are fairly straight-forward to use:
+          Type the name of the function, followed by an open-parentheses '(', 
+          followed by any arguments the function needs or expects separated by commas, followed by a close
+          paretheses ')'. In our case, the print function needs you to give it something
+          to print. In our example, we gave it the string 'Hello, world!' to print.
+          We will introduce more functions as you become familiar
+          with the language. 
+        </p>
+      </div>
+      <div class="section" title="Debugging Python Programs"><div class="titlepage"><div><div><h4 class="title"><a name="d5e173"></a>Debugging Python Programs</h4></div></div></div> 
+        <p>
+          Eventually, you will accidentally try to run Python programs
+          with typos in them. This is totally normal and completely unavoidable.
+          Unintentional errors in computer programs are called <span class="emphasis"><em>bugs
+          </em></span>. The process of finding and fixing bugs is called
+          <span class="emphasis"><em> debugging </em></span>.
+          Depending on where you make your typos, you may damage your Python
+          program enough such that Python can no longer properly run your program.
+          This type of error is called a <span class="emphasis"><em>Syntax Error</em></span>. Common syntax errors are
+          missing parentheses, missing quotation marks, and improperly indented
+          code. When Python encounters
+          a syntax error, it will give you an error message.
+        </p> <p>
+          Consider the following program:
+          </p><div class="example"><a name="hello_bad.py"></a><p class="title"><b>Example&nbsp;4.2.&nbsp;A Python program with a syntax error.</b></p><div class="example-contents">
+            
+            <pre class="programlisting">
+<span style="color: red">&lt;xi:include&gt;&lt;/xi:include&gt;</span>
+            </pre>
+          </div></div><p><br class="example-break">
+          When we try to run the program, we get the following output:
+          </p><pre class="screen">
+            <span style="color: red">&lt;xi:include&gt;&lt;/xi:include&gt;</span>
+          </pre><p>
+          Errors like this may seem daunting at first. Sometimes, the error 
+          messages can be cryptic. However, the first two lines indicate that
+          the error is possibly at line 7, and even points to a possible location
+          with a little tick mark. Can you spot the error there? Generally, syntax 
+          errors are on the reported line or sometimes a few lines before.
+        </p>
+      </div>
+      <div class="section" title="Summary"><div class="titlepage"><div><div><h4 class="title"><a name="d5e186"></a> Summary </h4></div></div></div> 
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Python programs typically end in ".py". </li><li class="listitem">Python comments begin with the character '#'. </li><li class="listitem">Use the <code class="function">print</code> function to print text onto the screen.</li><li class="listitem">When you encounter error messages, scan the lines reported in the error
+                    as well as the lines around the reported error.</li><li class="listitem">Use the <code class="function">print</code> function to print text onto the screen.</li></ul></div>
+      </div>
+      <div class="section" title="Terminology"><div class="titlepage"><div><div><h4 class="title"><a name="d5e196"></a> Terminology </h4></div></div></div> 
+        <p>
+          bug, debug, function, comment, source code, <code class="function">print</code>
+        </p>
+      </div>
+      <div class="section" title="Exercises"><div class="titlepage"><div><div><h4 class="title"><a name="d5e200"></a>Exercises</h4></div></div></div> 
+        <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+            What is wrong with the following code example?
+            <div class="example"><a name="hello_bad2.py"></a><p class="title"><b>Example&nbsp;4.3.&nbsp;A Python Program with a Bug</b></p><div class="example-contents">
+              <pre class="programlisting">
+#!/usr/bin/env python
+
+# File: hello_bad2.py
+# This program is supposed to print 'Hello, world!' onto the screen, but there
+# is a syntax error in it.
+
+print 'Hello, world!')
+              </pre>
+            </div></div><br class="example-break">
+          </li><li class="listitem">
+            <p>
+              See if you can write a program to display the following text which contains
+              multiple lines.
+              </p><pre class="screen">
+The quick brown fox
+jumped over the lazy dog.
+              </pre><p>
+            </p>
+          </li></ol></div>
+      </div>
+    </div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s02s01.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04s02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s02s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Getting Started with PyScripter&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp; A slightly more complex example </td></tr></table></div></body></html>

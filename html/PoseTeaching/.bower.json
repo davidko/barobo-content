@@ -1,0 +1,30 @@
+{
+  "name": "PoseTeaching",
+  "authors": [
+    "Bryan Richter <bryan@barobo.com>"
+  ],
+  "main": "index.html.hs",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "angular": "~1.2.16",
+    "linkbotjs": "BaroboRobotics/LinkbotJS#~0.1.0"
+  },
+  "homepage": "https://github.com/BaroboRobotics/PoseTeachingApp",
+  "_release": "8dd135ce7a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "f/for-server",
+    "commit": "8dd135ce7a0ceaa307e61d3dee0f2e9f9e2014f5"
+  },
+  "_source": "git@github.com:BaroboRobotics/PoseTeachingApp.git",
+  "_target": "f/for-server",
+  "_originalSource": "git@github.com:BaroboRobotics/PoseTeachingApp.git",
+  "_direct": true
+}

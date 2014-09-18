@@ -1,0 +1,30 @@
+{
+  "name": "AppManagerApp",
+  "homepage": "https://github.com/BaroboRobotics/AppManagerApp",
+  "authors": [
+    "Barobo, Inc."
+  ],
+  "main": "html/index.html",
+  "keywords": [
+    "barobo",
+    "linkbot"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/*",
+    "!html/**/*"
+  ],
+  "private": true,
+  "dependencies": {
+    "linkbot": "BaroboRobotics/linkbotjs#develop"
+  },
+  "_release": "dea22278f0",
+  "_resolution": {
+    "type": "branch",
+    "branch": "f/for-server",
+    "commit": "dea22278f08be6c6d9d03c932ae81f33bfe5feab"
+  },
+  "_source": "git@github.com:BaroboRobotics/AppManagerApp.git",
+  "_target": "f/for-server",
+  "_originalSource": "git@github.com:BaroboRobotics/AppManagerApp.git"
+}

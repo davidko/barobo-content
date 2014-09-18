@@ -1,0 +1,17 @@
+{
+  "name": "LinkbotPythonCurriculum",
+  "version": "0.0.0",
+  "authors": [
+    "Barobo Inc."
+  ],
+  "main": "html/index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/*",
+    "!html/**/*"
+  ],
+  "devDependencies": {
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
+  }
+}

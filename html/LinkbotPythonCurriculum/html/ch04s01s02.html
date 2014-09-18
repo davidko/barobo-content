@@ -1,0 +1,59 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title></title><link rel="stylesheet" type="text/css" href="barobostyle.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="Programming the Barobo Linkbot with Python"><link rel="up" href="ch04s01.html" title="Linkbot Driver's Ed"><link rel="prev" href="ch04s01s01.html" title=""><link rel="next" href="ch04s01s03.html" title="Explore"><script src="js/vendor/linkbot.js"></script><script src="js/vendor/jquery-2.1.0.min.js"></script><script src="js/util.js"></script><script src="js/getURLParam.js"></script></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center"></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s01s01.html">Prev</a>&nbsp;</td><th width="60%" align="center"> Linkbot Driver's Ed
+    </th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s01s03.html">Next</a></td></tr></table><hr></div><div class="section"><div class="titlepage"></div>
+      <p>
+        Now, try this:
+      </p><div class="ch4ex2">
+
+<div class="abridgedCode">
+<pre class="programlisting">
+robot.move(<span class="hl-number">0</span>, <span class="hl-number">0</span>, <span class="hl-number">-360</span>)
+</pre>
+</div>
+<div class="unabridgedCode" style="display: none;">
+  <pre class="programlisting">
+#!/usr/bin/env python
+# File: ch4ex2.py
+
+import barobo
+ctx = barobo.BaroboCtx()
+ctx.autoConnect()
+robot = ctx.getLinkbot('<span class="robotID">ABCD</span>')
+robot.setJointSpeeds(90, 90, 90)
+
+robot.move(0, 0, -360)
+  </pre>
+</div>
+
+<a class="expandProgram" href="#"><img src="images/eye.svg" width="20px">
+<span class="expandProgramText">Show Unabridged Program</span>
+</a><br>
+
+<button type="button" class="tryNow"> Try Now </button>
+
+<script src="js/ch4ex2.js">
+</script>
+</div><p> 
+      </p>
+      <p>
+        Notice that the <code class="function">move()</code> function has three arguments.
+        Each argument controls how many degrees to move a particular motor:
+        the first motor controls motor 1, the second controls motor 2, and
+        the third controls motor 3. Not all motors are available on all
+        models of Linkbot. If you have a Linkbot&#8209;I, only motors 1 and 3 are
+        available, so the second argument would be ignored. 
+      </p>
+      <p>
+        </p><div class="figure-float" style="float: right;"><div class="figure"><a name="fig_right_hand_rule"></a><p class="title"><b>Figure&nbsp;4.1.&nbsp; The right-hand rule. </b></p><div class="figure-contents">
+          
+          <div class="mediaobject" align="center"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="90"><tr><td align="center"><img src="images/right_hand_rule.svg" align="middle" width="90" alt="The right-hand rule."></td></tr></table></div>
+        </div></div><br class="figure-break"></div><p>
+        Also note that negative values make the robot's motor spin clockwise and
+        positive values make the motor spin counter-clockwise. The choice of 
+        negative values being clockwise and positive values being
+        counter-clockwise follows 
+        a concept known as the "right-hand rule" and is common in the fields of
+        math and engineering.
+      </p>
+    </div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s01s01.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04s01.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s01s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp; Explore </td></tr></table></div></body></html>

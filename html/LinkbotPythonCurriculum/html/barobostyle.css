@@ -1,0 +1,139 @@
+html {
+  background-color:#e8e8f8;
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+
+body {
+  background-color:#ffffff;
+  max-width:768px;
+  padding:20px;
+  border:groove;
+  border-width:2px;
+}
+/* 1308 = 768 max-width
+ *        + 2 * (2 border + 20 padding + 240 margin + 8 mystery?)
+ *
+ * I think the mystery is browser-supplied 8px body margin. */
+@media (max-width: 1308px) {
+  body {
+    margin-left:240px;
+    margin-right:8px;
+  }
+}
+@media (min-width: 1308px) {
+  body {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+div.book {
+  background-color:#ffffff;
+  padding:20px;
+}
+
+div.chapter{
+  background-color:#ffffff;
+  padding:20px;
+}
+
+div.section{
+  background-color:#ffffff;
+  padding:20px;
+}
+
+div.figure-float{
+  float:right;
+border:groove;
+border-color:#d0FFd0;
+border-width:3px;
+border-radius:6px;
+}
+
+.figure .title{
+  font-size:80%;
+}
+
+div.section:after{
+content:" ";
+clear:both;
+display:block;
+}
+
+div.example-contents {
+  background-color:#e0fefe;
+  max-width:800px;
+  box-shadow:10px 10px 5px #888888;
+  padding-left:5px;
+}
+
+div.reader-query {
+  background-color:#E6E68A;
+  max-width:800px;
+  box-shadow:5px 5px 5px #888888;
+  margin-left:20px;
+  margin-right:20px;
+  padding:5px;
+  border-radius: 6px;
+  border:solid;
+  border-width:1px;
+  border-color:#888;
+}
+
+div.code-snippet, pre.programlisting {
+  max-width:800px;
+  border-radius: 6px;
+  border:solid;
+  border-width:1px;
+  border-color:#888;
+  padding:5px;
+  padding-left:5px;
+  position: relative;
+  box-shadow:5px 5px 5px #888888;
+  background-color:#e0fefe;
+}
+
+pre.screen {
+	max-width:800px;
+	padding:5px;
+	padding-left:5px;
+        position: relative;
+	box-shadow:5px 5px 5px #888888;
+	background-color:#050505;
+  color:#AAA
+}
+
+a {
+  background: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.hider-tab {
+  border: inherit;
+  border-radius: inherit;
+  border-top: none;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  box-shadow: inherit;
+  position: absolute;
+  right: 20%;
+  bottom: -21px; /* -(height of image specified in html + border of parent) */
+  text-align: center;
+  background-color: inherit;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hider-tab img {
+    height: 20px;
+    width: 40px;
+}

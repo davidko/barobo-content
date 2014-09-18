@@ -1,0 +1,78 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Challenge</title><link rel="stylesheet" type="text/css" href="barobostyle.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="Programming the Barobo Linkbot with Python"><link rel="up" href="ch04s01.html" title="Linkbot Driver's Ed"><link rel="prev" href="ch04s01s03.html" title="Explore"><link rel="next" href="ch04s02.html" title="Introduction to Python for Computer Programming"><script src="js/vendor/linkbot.js"></script><script src="js/vendor/jquery-2.1.0.min.js"></script><script src="js/util.js"></script><script src="js/getURLParam.js"></script></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center"> Challenge </th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s01s03.html">Prev</a>&nbsp;</td><th width="60%" align="center"> Linkbot Driver's Ed
+    </th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr></div><div class="section" title="Challenge"><div class="titlepage"><div><div><h3 class="title"><a name="d5e125"></a> Challenge </h3></div></div></div> 
+      <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <p>
+            Can you drive the Linkbot straight forward?
+            </p><div class="ch4ex4">
+
+<div class="abridgedCode">
+<pre class="programlisting">
+robot.move(<input type="text" size="4" value="0" class="j1text">, 0, <input type="text" size="4" value="0" class="j3text">)
+</pre>
+</div>
+
+<div class="unabridgedCode" style="display:none;">
+<pre class="programlisting">
+#!/usr/bin/env python
+import barobo
+ctx = barobo.BaroboCtx()
+ctx.autoConnect()
+robot = ctx.getLinkbot('<span class="robotID">ABCD</span>')
+robot.setJointSpeeds(90, 90, 90)
+
+robot.move(<input type="text" size="4" value="0" class="j1text">, 0, <input type="text" size="4" value="0" class="j3text">)
+</pre>
+</div>
+
+<a class="expandProgram" href="#"><img src="images/eye.svg" width="20px">
+<span class="expandProgramText">Show Unabridged Program</span>
+</a><br>
+
+<button type="button" class="tryNow"> Try Now </button> <button type="button" class="stop"> Stop </button>
+<br>
+Challenge Completion: <img class="checkBox" src="images/box.svg" width="75px"> 
+<!-- ☐ ☑ ☒ -->
+
+<!-- Script data in ch4ex5.html -->
+<script src="js/ch4ex4.js"></script>
+</div><p> 
+          </p>
+        </li><li class="listitem">
+          <p>
+            How about turning in place to the left?
+            </p><div class="ch4ex5">
+
+<div class="abridgedCode">
+<pre class="programlisting">
+robot.move(<input type="text" size="4" value="0" class="j1text">, 0, <input type="text" size="4" value="0" class="j3text">)
+</pre>
+</div>
+
+<div class="unabridgedCode" style="display:none;">
+<pre class="programlisting">
+#!/usr/bin/env python
+import barobo
+ctx = barobo.BaroboCtx()
+ctx.autoConnect()
+robot = ctx.getLinkbot('<span class="robotID">ABCD</span>')
+robot.setJointSpeeds(90, 90, 90)
+
+robot.move(<input type="text" size="4" value="0" class="j1text">, 0, <input type="text" size="4" value="0" class="j3text">)
+</pre>
+</div>
+
+<a class="expandProgram" href="#"><img src="images/eye.svg" width="20px">
+<span class="expandProgramText">Show Unabridged Program</span>
+</a><br>
+
+<button type="button" class="tryNow"> Try Now </button> <button type="button" class="stop"> Stop </button>
+<br>
+Challenge Completion: <img class="checkBox" src="images/box.svg" width="75px"> 
+
+<script src="js/ch4ex5.js"></script>
+</div><p>
+          </p>
+        </li></ol></div>
+    </div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s01s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04s01.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top"> Explore &nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Introduction to Python for Computer Programming</td></tr></table></div></body></html>

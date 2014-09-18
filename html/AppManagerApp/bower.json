@@ -1,0 +1,22 @@
+{
+  "name": "AppManagerApp",
+  "version": "0.0.0",
+  "homepage": "https://github.com/BaroboRobotics/AppManagerApp",
+  "authors": [
+    "Barobo, Inc."
+  ],
+  "main": "html/index.html",
+  "keywords": [
+    "barobo",
+    "linkbot"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/*",
+    "!html/**/*"
+  ],
+  "private": true,
+  "dependencies": {
+    "linkbot": "BaroboRobotics/linkbotjs#develop"
+  }
+}

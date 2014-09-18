@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Linkbot Labs
+        </title>
+        <script src="js/vendor/jquery-1.10.2.min.js">
+        </script>
+        <script src="component/linkbotjs/dist/linkbot.js">
+        </script>
+        <script src="js/robot_ids.js">
+        </script>
+        <script src="js/vendor/bootstrap.min.js">
+        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="component/linkbotjs/dist/linkbot.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body data-version="0.0.2">
+        <nav class="app">
+            <a href="/AppManagerApp/html/index.html">
+                <img src="img/linkbot-labs-logo-200x29px.png">
+            </a>
+            <ol class="nav nav-stacked nav-pills">
+                <li>
+                    <a href="holt.html">
+                        <img src="img/holt_california.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="chap6.html">
+                        Chapter 6
+                    </a>
+                </li>
+                <hr class="hdr">
+                <li>
+                    <a href="setup.html">
+                        <div>
+                            6.1:
+                            <small>
+                                Cops vs. Robbers
+                            </small>
+                        </div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        Prediction
+                    </a>
+                </li>
+                <hr class="ftr">
+                <li>
+                    <a href="lab_overview.html">
+                        <small class="text-muted">
+                            Overview
+                        </small>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        <section>
+            <p>
+                Suppose the
+                <span style="color: blue">
+                    cop
+                </span>
+                Linkbot starts at position -2 and the
+                <span style="color: red">
+                    robber
+                </span>
+                Linkbot starts at position 4.
+            </p>
+            <p>
+                The cop Linkbot travels at two inches per second (2 in/s), and the robber Linkbot travels at half an inch per second (0.5 in/s).
+            </p>
+            <form action="charts.html">
+                <div class="form-group">
+                    <label for="guess">
+                        How long does it take the cop to catch the robber?
+                    </label>
+                    <input class="form-control" type="text" name="intersect" placeholder="time in seconds">
+                </div>
+                <input type="hidden" name="redRobot">
+                <input type="hidden" name="blueRobot">
+                <input class="page-navigation btn btn-primary pull-right" type="submit" value="Next">
+            </form>
+            <a href="setup.html" class="page-navigation btn btn-default">
+                Back
+            </a>
+        </section>
+    </body>
+</html>

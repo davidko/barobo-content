@@ -1,0 +1,31 @@
+{
+  "name": "CopsVsRobbers",
+  "authors": [
+    "Barobo, Inc."
+  ],
+  "description": "Cops vs Robbers math lesson app",
+  "main": "html/index.html",
+  "keywords": [
+    "linkbotlabs"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/*",
+    "!html/**/*"
+  ],
+  "devDependencies": {
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
+  },
+  "homepage": "https://github.com/Barobo/CopsVsRobbers",
+  "_release": "908198a5b7",
+  "_resolution": {
+    "type": "branch",
+    "branch": "f/for-server",
+    "commit": "908198a5b760f27af36d06cfbb7d0fd09d15b873"
+  },
+  "_source": "git@github.com:Barobo/CopsVsRobbers.git",
+  "_target": "f/for-server",
+  "_originalSource": "git@github.com:Barobo/CopsVsRobbers.git",
+  "_direct": true
+}

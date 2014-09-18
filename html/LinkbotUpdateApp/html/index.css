@@ -1,0 +1,59 @@
+.li-aside {
+  margin: 1em -1.5em;
+  list-style: none;
+  font-style: italic;
+}
+
+body > .container {
+  max-width: 50em;
+}
+
+.win-logo {
+  vertical-align: bottom;
+  max-height: 1.3em;
+}
+
+.win-logo.win-8 {
+  position: relative;
+  bottom: 1px;
+}
+
+.windows-instructions li {
+  margin: 0.4em 1em 0.4em 0em;
+  list-style: none;
+  display: inline-block;
+}
+
+.windows-instructions li:first-child {
+  margin-left: 7em;
+}
+
+.windows-instructions {
+  padding-left: 0em;
+}
+
+.popup-robo-image {
+  background: url("linkbot-front-view.png");
+  height: 15em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 10em;
+  font-family: Courier, monospace;
+  margin: 2em 0;
+}
+
+.popup-robo-id {
+  position: relative;
+  left: 51%;
+  top: 45%;
+  color: hsl(185, 5%, 90%);
+  font-size: 150%;
+}
+
+dl img {
+  width: 100%;
+}
+
+dd {
+  margin-bottom: 2em;
+}
