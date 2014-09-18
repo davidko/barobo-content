@@ -1,0 +1,19 @@
+{
+  "name": "PoseTeachingApp",
+  "version": "0.1.0",
+  "authors": [
+    "Bryan Richter <bryan@barobo.com>"
+  ],
+  "main": "index.html.hs",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "!html/**/*"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.1.1",
+    "angular": "~1.2.16",
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
+  }
+}

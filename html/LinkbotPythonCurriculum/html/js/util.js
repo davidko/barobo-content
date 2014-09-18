@@ -57,7 +57,7 @@ $( function() {
 
     // Add a LinkbotLabs icon on the left side that sticks no matter where you scroll
     var baseStyle = "width:auto;height:auto;position:fixed;left:20px;background-color:#fff;padding:5px;border:solid;border-width:1px;top:20px;";
-    $('body').append('<div id="navIcon" style="'+baseStyle+'top:20px;"> <a href="/AppManagerApp/html/index.html"><img src="images/linkbot-labs-ER-logo-200x46px.png"/></a> </div>');
+    $('body').append('<div id="navIcon" style="'+baseStyle+'top:20px;"> <a href="/index.html"><img src="images/linkbot-labs-ER-logo-200x46px.png"/></a> </div>');
 
     // Rename "Home" links to "ToC"
     $('a[href^="index.html"]').text("Table of Contents");

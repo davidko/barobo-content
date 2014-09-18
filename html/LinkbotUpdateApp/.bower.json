@@ -17,13 +17,13 @@
     "linkbot": "BaroboRobotics/linkbotjs#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/LinkbotUpdateApp",
-  "_release": "5f5288b95e",
+  "_release": "736a22f101",
   "_resolution": {
     "type": "branch",
-    "branch": "f/for-server",
-    "commit": "5f5288b95e0266d8479712e2f410e69f03b92fdf"
+    "branch": "develop",
+    "commit": "736a22f1016662476db64b1ddd58a8ba3646132a"
   },
   "_source": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git",
-  "_target": "f/for-server",
+  "_target": "develop",
   "_originalSource": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git"
 }

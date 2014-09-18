@@ -12,12 +12,12 @@
     "!html/**/*"
   ],
   "devDependencies": {
-    "AppManagerApp": "git@github.com:BaroboRobotics/AppManagerApp.git#f/for-server",
-    "CopsVsRobbers": "git@github.com:Barobo/CopsVsRobbers.git#f/for-server",
-    "factoring-challenge": "git@github.com:BaroboRobotics/FactoringChallenge.git#f/for-server",
-    "LinkbotPythonCurriculum": "git@github.com:BaroboRobotics/LinkbotPythonCurriculum.git#f/for-server",
-    "LinkbotUpdateApp": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git#f/for-server",
-    "Pianobot": "git@github.com:BaroboRobotics/Pianobot.git#f/for-server",
-    "PoseTeaching": "git@github.com:BaroboRobotics/PoseTeachingApp.git#f/for-server"
+    "CopsVsRobbers": "git@github.com:Barobo/CopsVsRobbers.git#develop",
+    "FactoringChallenge": "git@github.com:BaroboRobotics/FactoringChallenge.git#develop",
+    "LinkbotPythonCurriculum": "git@github.com:BaroboRobotics/LinkbotPythonCurriculum.git#develop",
+    "LinkbotUpdateApp": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git#develop",
+    "Pianobot": "git@github.com:BaroboRobotics/Pianobot.git#develop",
+    "PoseTeachingApp": "git@github.com:BaroboRobotics/PoseTeachingApp.git#develop",
+    "linkbotjs": "git@github.com:BaroboRobotics/linkbotjs.git#develop"
   }
 }
