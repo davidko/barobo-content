@@ -1,5 +1,5 @@
 {
-  "name": "factoring-challenge",
+  "name": "FactoringChallenge",
   "authors": [
     "Barobo, Inc."
   ],
@@ -16,11 +16,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/FactoringChallenge",
-  "_release": "6186b5f9d8",
+  "_release": "06df25fe99",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "6186b5f9d881cd734137537c09b692f6b2d19b7e"
+    "commit": "06df25fe99a3c57d0c6a683d016d9a1881203cf6"
   },
   "_source": "git@github.com:BaroboRobotics/FactoringChallenge.git",
   "_target": "develop",

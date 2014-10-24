@@ -12,6 +12,7 @@
     "!html/**/*"
   ],
   "devDependencies": {
-    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop",
+    "bootstrap": "3.1.1"
   }
 }
