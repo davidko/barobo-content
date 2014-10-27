@@ -151,21 +151,21 @@
         };
         return robo.register({
           button: {
-            0: {
+            1: {
               callback: function() {
                 return $scope.$apply(function() {
                   return addPose();
                 });
               }
             },
-            1: {
+            2: {
               callback: function() {
                 return $scope.$apply(function() {
                   return $scope.toggleRun();
                 });
               }
             },
-            2: {
+            0: {
               callback: function() {
                 return $scope.$apply(function() {
                   return deletePose();
