@@ -12,9 +12,12 @@
 	display: inline-block;
 	width: 200px;
 	height: 200px;
-	background-color: #abdadb;
+	background-color: #2b88aa;
 	color: black;
 	text-align: center;
 	padding-top: 85px;
 	font-size: 20px;
+}
+.blocklets>li>a:focus, .blocklets>li>a:hover {
+	background-color: #abdadb;
 }
