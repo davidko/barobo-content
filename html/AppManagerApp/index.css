@@ -7,3 +7,13 @@
   width: 300px;
   height: 300px;
 }
+
+.blocklets>li>a {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	background-color: #abdadb;
+	color: black;
+	text-align: center;
+	padding-top: 150px;
+}
