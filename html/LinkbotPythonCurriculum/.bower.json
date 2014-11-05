@@ -3,6 +3,7 @@
   "authors": [
     "Barobo Inc."
   ],
+  "directory": "html/components/",
   "main": "html/index.html",
   "license": "MIT",
   "private": true,
@@ -14,11 +15,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/LinkbotPythonCurriculum",
-  "_release": "a299b2aa32",
+  "_release": "2d9da0b3c9",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "a299b2aa325883e78b57e069d2904fd299532aad"
+    "commit": "2d9da0b3c965831f6c8616bfda5188b21ee00e71"
   },
   "_source": "git@github.com:BaroboRobotics/LinkbotPythonCurriculum.git",
   "_target": "develop",

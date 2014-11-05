@@ -9,6 +9,7 @@
   "keywords": [
     "linkbotlabs"
   ],
+  "directory":"html/component",
   "license": "MIT",
   "private": true,
   "ignore": [

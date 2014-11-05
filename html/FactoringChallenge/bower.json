@@ -7,6 +7,7 @@
   "main": [
     "html/challenge.html"
   ],
+  "directory":"html/component",
   "license": "-",
   "private": true,
   "ignore": [

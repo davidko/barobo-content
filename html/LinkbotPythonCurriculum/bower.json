@@ -4,6 +4,7 @@
   "authors": [
     "Barobo Inc."
   ],
+  "directory":"html/components/",
   "main": "html/index.html",
   "license": "MIT",
   "private": true,
@@ -12,7 +13,6 @@
     "!html/**/*"
   ],
   "devDependencies": {
-    "linkbotjs": "BaroboRobotics/LinkbotJS#develop",
-    "bootstrap": "3.1.1"
+    "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   }
 }
