@@ -20,6 +20,9 @@
 	font-weight: bold;
 	margin: 5px;
 }
+.blocklets>li>a:visited {
+	background-color: #ccc;
+}
 .blocklets>li>a:focus, .blocklets>li>a:hover {
 	background-color: #2b88aa;
 }
