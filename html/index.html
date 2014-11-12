@@ -16,59 +16,48 @@
   </a>
 </p>
 <div class="container">
- <div class="row well">
-    <h2><img src="AppManagerApp/images/python.png" /></h2>
-    <ul class="nav nav-pills blocklets">
-      <li><a href="http://my.barobo.com/download/quick_start">Getting Started</a></li>
-      <li><a href="/AppManagerApp/introductory_python/index.html">Introductory Python</a></li>
-      <li><a href="/PoseTeachingApp/html/index.html">Pose Coding</a></li>
-      <li><a href="/AppManagerApp/beginner_python/index.html">Beginner Python</a></li>
-    </ul>
+ <div class="row labs-slider">
+    <h2 id="python-slide">Python</h2>
+    <div class="labs-slider-wrapper">
+      <ul class="labs-slider-container">
+        <li><a href="http://my.barobo.com/download/quick_start" id="getting-started-icon">Getting Started</a></li>
+        <li><a href="/AppManagerApp/introductory_python/index.html" id="intro-python-icon">Intro Python</a></li>
+        <li><a href="/PoseTeachingApp/html/index.html" id="pose-coding-icon">Pose Coding</a></li>
+        <li><a href="/AppManagerApp/beginner_python/index.html" id="beginner-python-icon">Beginner Python</a></li>
+      </ul>
+    </div>
+    <a href="javascript:;" class="labs-arrow-left"><span class="labs-orange-left"></span></a>
+    <a href="javascript:;" class="labs-arrow-right"><span class="labs-orange-right"></span></a>
   </div>
-  <div class="row well">
-    <h2><img src="AppManagerApp/images/cstem.png" /></h2>
-    <ul class="nav nav-pills blocklets">
-      <li><a href="/AppManagerApp/assets/learnch.html">Ch Coding</a></li>
-      <li><a href="/AppManagerApp/assets/chlinkbot.html">Ch with Robots</a></li>
-      <li><a href="http://c-stem.ucdavis.edu/c-stem-day/overview/2014-c-stem-day/roboplay-challenge-competition/">RoboPlay</a></li>
-    </ul>
+  <div class="row labs-slider">
+    <h2 id="cstem-slide">C-STEM</h2>
+    <div class="labs-slider-wrapper">
+      <ul class="labs-slider-container">
+        <li><a href="/AppManagerApp/assets/learnch.html" id="ch-coding-icon">Ch Coding</a></li>
+        <li><a href="/AppManagerApp/assets/chlinkbot.html" id="ch-with-robots-icon">Ch with Robots</a></li>
+        <li><a href="http://c-stem.ucdavis.edu/c-stem-day/overview/2014-c-stem-day/roboplay-challenge-competition/" id="robo-play-icon">RoboPlay</a></li>
+      </ul>
+    </div>
+    <a href="javascript:;" class="labs-arrow-left"><span class="labs-blue-left"></span></a>
+    <a href="javascript:;" class="labs-arrow-right"><span class="labs-blue-right"></span></a>
   </div>
-  <div class="row well">
+  <div class="row labs-slider">
     <h2>Coming Soon!</h2>
-    <ul class="nav nav-pills blocklets">
-      <li><a href="/AppManagerApp/algebra.html">Algebra</a></li>
-      <!--
-      <li class="disabled"><a href="#">Raspberry Pi</a></li>
-      -->
-      <li><a href="http://my.barobo.com/">3D Printing</a></li>
-      <li><a href="http://my.barobo.com/download/linkbot_light_source_finder">Arduino</a></li>
-    </ul>
+    <div class="labs-slider-wrapper">
+      <ul class="labs-slider-container">
+        <li><a href="/AppManagerApp/algebra.html" id="algebra-icon">Algebra</a></li>
+        <!--
+        <li class="disabled"><a href="#">Raspberry Pi</a></li>
+        -->
+        <li><a href="http://my.barobo.com/" id="threed-printing-icon">3D Printing</a></li>
+        <li><a href="http://my.barobo.com/download/linkbot_light_source_finder" id="arduino-icon">Arduino</a></li>
+      </ul>
+    </div>
+    <a href="javascript:;" class="labs-arrow-left"><span class="labs-default-left"></span></a>
+    <a href="javascript:;" class="labs-arrow-right"><span class="labs-default-right"></span></a>
   </div>
-  <!--
-  <div class="row well app-list">
-    <a href="/AppManagerApp/python-beginner.html">
-      <img class="btn btn-default" src="/AppManagerApp/images/python-beginner.svg">
-    </a>
-    <a href="/LinkbotPythonCurriculum/html/index.html">
-      <img class="btn btn-default" src="/AppManagerApp/images/python-advanced.svg">
-    </a>
-  -->
-<!--
-          <a href="javascript/ch03.html">
-            <img class="btn btn-default" src="images/linkbot-drivers-ed-js.svg">
-          </a>
--->
-  <!--
-    <a href="/AppManagerApp/algebra.html">
-      <img class="btn btn-default" src="/AppManagerApp/images/algebra.svg">
-    </a>
-    <a href="/LinkbotUpdateApp/html/index.html">
-      <img class="btn btn-default" src="/AppManagerApp/images/linkbot-update.png">
-    </a>
-  </div>
-  -->
 </div>
-
+<script type="text/javascript" src="jquery/dist/jquery.min.js"></script>
 <script src="/linkbotjs/dist/linkbot.js"></script>
 <script>document.body.appendChild(Linkbots.managerElement());</script>
 <script>
@@ -80,6 +69,46 @@
   ga('create', 'UA-22263798-3', 'auto');
   ga('send', 'pageview');
 
+</script>
+<script>
+  $(function() {
+    $('.labs-slider-container').each(function() {
+      var _size = $(this).children().size();
+      var _width = _size * 175;
+      var _parentWidth = $(this).parent().width();
+      $(this).width(_width);
+
+      if (_width > _parentWidth) {
+        console.log("active the left and right keys");
+      }
+      $(this).parent().parent().find('.labs-arrow-left').click(function() {
+        var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
+        var _container = $(this).parent().find('.labs-slider-container');
+        var _p = _container.position();
+        if (_p.left < 0) {
+          var _new_p = _p.left + 175;
+          if (_new_p > 0) {
+            _new_p = 0;
+          }
+          _container.css({'left': _new_p});
+        }
+        
+      });
+      $(this).parent().parent().find('.labs-arrow-right').click(function() {
+        var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
+        var _container = $(this).parent().find('.labs-slider-container');
+        var _p = _container.position();
+        if ((_container.width() + _p.left) > _wrapperWidth) {
+          var _new_p = _p.left - 175;
+          if ((_wrapperWidth + _p.left) < 0) {
+            _new_p = _wrapperWidth * -1;
+          }
+          _container.css({'left': _new_p});
+        }
+      });
+    });
+
+  });
 </script>
 </body>
 </html>

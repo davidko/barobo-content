@@ -26,3 +26,158 @@
 .blocklets>li>a:focus, .blocklets>li>a:hover {
 	background-color: #2b88aa;
 }
+.labs-slider {
+	background: url('images/scroll-bg.png') repeat 0 0;
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	min-height: 20px;
+	padding: 19px 50px;
+	margin-bottom: 20px;
+	position: relative;
+}
+.labs-slider-wrapper {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+.labs-slider-container {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 880px;
+	transition: left .3s ease-in-out;
+	-webkit-transition: left .3s ease-in-out;
+	-moz-transition: left .3s ease-in-out;
+}
+
+.labs-slider-container>li {
+	display: inline-block;
+}
+
+#python-slide {
+	padding-left: 45px;
+	background: url('images/python-header.png') no-repeat left top;
+	height: 40px;
+}
+#cstem-slide {
+	padding-left: 45px;
+	background: url('images/cstem-header.png') no-repeat left 0px;
+	height: 50px;
+	vertical-align: text-bottom;
+	padding-top: 5px;
+}
+.labs-slider-container>li>a {
+	background-color: #cfcfcf;
+	width: 170px;
+	height: 275px;
+	
+	color: #000;
+	border: 1px solid #cfcfcf;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	display: block;
+	padding-top: 240px;
+	text-align: center;
+	font-weight: bold;
+}
+#getting-started-icon {
+	border: 1px solid #ea6300;
+	background: #ea6300 url('images/GettingStartedIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#intro-python-icon {
+	border: 1px solid #d54c10;
+	background: #d54c10 url('images/IntroPythonIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#pose-coding-icon {
+	border: 1px solid #c54021;
+	background: #c54021 url('images/PoseCodingIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#beginner-python-icon {
+	border: 1px solid #b62b00;
+	background: #b62b00 url('images/BeginnerPythonIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#ch-coding-icon {
+	border: 1px solid #44c8ee;
+	background: #44c8ee url('images/ChProgrammingIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#ch-with-robots-icon {
+	border: 1px solid #2da7ca;
+	background: #2da7ca url('images/ChWithRobotsIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#robo-play-icon {
+	border: 1px solid #1f7c97;
+	background: #1f7c97 url('images/RoboPlayIcon.png') no-repeat top left;
+	background-size: 170px 275px;
+	color: #fff;
+}
+#algebra-icon {
+	background: url('images/AlgebraIcon.png') no-repeat top left;
+	background-size: 170px 170px;
+	width: 170px;
+	height: 170px;
+	padding-top: 140px;
+}
+#threed-printing-icon {
+	background: url('images/3DPrintingComingSoonIcon.png') no-repeat top left;
+	background-size: 170px 170px;
+	width: 170px;
+	height: 170px;
+	padding-top: 140px;
+}
+#arduino-icon {
+	background: url('images/ArduinoIcon.png') no-repeat top left;
+	background-size: 170px 170px;
+	width: 170px;
+	height: 170px;
+	padding-top: 140px;
+}
+.labs-orange-right, .labs-orange-left, .labs-blue-right, .labs-blue-left, .labs-default-right, .labs-default-left {
+	width: 28px;
+	height: 86px;
+	display: inline-block;
+	z-index: 1;
+}
+.labs-orange-right {
+	background: url('images/python-right.png') no-repeat;
+}
+.labs-orange-left {
+	background: url('images/python-left.png') no-repeat;
+}
+.labs-blue-right {
+	background: url('images/cstem-right.png') no-repeat;
+}
+.labs-blue-left {
+	background: url('images/cstem-left.png') no-repeat;
+}
+.labs-default-right {
+	background: url('images/default-right.png') no-repeat;
+}
+.labs-default-left {
+	background: url('images/default-left.png') no-repeat;
+}
+.labs-arrow-left {
+	top: 50%;
+	left: 10px;
+	position: absolute;
+}
+.labs-arrow-right {
+	top: 50%;
+	right: 10px;
+	position: absolute;
+}

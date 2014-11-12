@@ -18,6 +18,7 @@
     "LinkbotUpdateApp": "git@github.com:BaroboRobotics/LinkbotUpdateApp.git#develop",
     "Pianobot": "git@github.com:BaroboRobotics/Pianobot.git#develop",
     "PoseTeachingApp": "git@github.com:BaroboRobotics/PoseTeachingApp.git#develop",
-    "linkbotjs": "git@github.com:BaroboRobotics/linkbotjs.git#develop"
+    "linkbotjs": "git@github.com:BaroboRobotics/linkbotjs.git#develop",
+    "jquery": "~2.1.1"
   }
 }
