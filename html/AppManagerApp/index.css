@@ -133,12 +133,20 @@
 	height: 170px;
 	padding-top: 140px;
 }
-#threed-printing-icon {
-	background: url('images/3DPrintingComingSoonIcon.png') no-repeat top left;
+#scratch-icon {
+	background: url('images/ScratchIcon.png') no-repeat top left;
 	background-size: 170px 170px;
 	width: 170px;
 	height: 170px;
 	padding-top: 140px;
+}
+#threed-printing-icon {
+	background: #cfcfcf url('images/3dPrintingIcon.png') no-repeat 0 -15px;
+	background-size: 170px 170px;
+	width: 170px;
+	height: 170px;
+	padding-top: 140px;
+	0 -15px
 }
 #arduino-icon {
 	background: url('images/ArduinoIcon.png') no-repeat top left;
