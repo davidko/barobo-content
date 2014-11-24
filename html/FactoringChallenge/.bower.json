@@ -17,11 +17,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/FactoringChallenge",
-  "_release": "29dbb0347a",
+  "_release": "c13680c320",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "29dbb0347a1bf44b24b221a6928d34de12f4ad4e"
+    "commit": "c13680c320203a77dd0c443890c3e9cffe659aa1"
   },
   "_source": "git@github.com:BaroboRobotics/FactoringChallenge.git",
   "_target": "develop",
