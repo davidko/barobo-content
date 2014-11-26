@@ -15,11 +15,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/LinkbotPythonCurriculum",
-  "_release": "e104e58461",
+  "_release": "cceb29b842",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "e104e58461149d44b33c42363d4e6871c03e4f07"
+    "commit": "cceb29b84223f9b165b48f4458b61fd7e0efeab5"
   },
   "_source": "git@github.com:BaroboRobotics/LinkbotPythonCurriculum.git",
   "_target": "develop",

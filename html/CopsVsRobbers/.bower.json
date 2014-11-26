@@ -19,11 +19,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/Barobo/CopsVsRobbers",
-  "_release": "674bd4aec6",
+  "_release": "2df98fba90",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "674bd4aec62df9dfac9bcda7518781a2e7765690"
+    "commit": "2df98fba9065973827f532b8b10887d64b180e88"
   },
   "_source": "git@github.com:Barobo/CopsVsRobbers.git",
   "_target": "develop",
