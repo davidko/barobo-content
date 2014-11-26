@@ -145,3 +145,6 @@ pre {
   background-color: transparent;
   border: none;
 }
+#navIcon {
+	display: none;
+}
