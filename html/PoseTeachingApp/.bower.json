@@ -16,11 +16,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/PoseTeachingApp",
-  "_release": "745defb4bd",
+  "_release": "8577e43bc7",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "745defb4bd0c9caa7c4174170533ecd7d8830c77"
+    "commit": "8577e43bc75085eb829aa5ccd151ae669f06c984"
   },
   "_source": "git@github.com:BaroboRobotics/PoseTeachingApp.git",
   "_target": "develop",
