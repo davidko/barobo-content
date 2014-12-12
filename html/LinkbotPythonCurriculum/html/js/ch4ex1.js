@@ -7,7 +7,8 @@ var bot = staticRobot(function () {$('.unknown-robot-id-comment', thisExercise).
 $('.robotID', thisExercise).text(bot._id);
 
 $('.tryNow', thisExercise).click( function(obj) {
-  bot.move(360, 0, 0);
+    bot.angularSpeed(90, 90, 90);
+    bot.move(360, 0, 0);
 });
 
 $('.expand-program', thisExercise).click(function (event) {
