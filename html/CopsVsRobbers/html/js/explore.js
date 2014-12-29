@@ -36,21 +36,23 @@ angular.module('explore', []).filter('plusMinus', function() {
   _results = [];
   for (_i = 0, _len = robots.length; _i < _len; _i++) {
     bot = robots[_i];
+    var btnA = bot.BUTTON_A;
+    var btnB = bot.BUTTON_B;
     _results.push(bot.register({
       button: {
-        0: {
+        btnA: {
           callback: buttonCallback
         },
-        1: {
+        btnB: {
           callback: buttonCallback
         }
       },
       wheel: {
-        1: {
+        0: {
           distance: 20,
           callback: wheelCallback
         },
-        3: {
+        2: {
           distance: 20,
           callback: wheelCallback
         }

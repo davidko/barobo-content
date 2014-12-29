@@ -41,13 +41,61 @@ $(function () {
                   // yay robots
                   o.badConnection = false;
                   redRobot = acq.robots[0];
-                  redRobot.register(callbacks);
+                  var btnA = redRobot.BUTTON_A;
+                  var btnB = redRobot.BUTTON_B;
+                  redRobot.register({
+                      button: {
+                          btnA: {
+                              callback: zeClicken,
+                              data: model
+                          },
+                          btnB: {
+                              callback: zeClicken,
+                              data: model
+                          }
+                      },
+                      wheel: {
+                          1: {
+                              distance: 20,
+                              callback: changeValue,
+                              data: model
+                          },
+                          3: {
+                              distance: 20,
+                              callback: changeValue,
+                              data: model
+                          }
+                      }
+                  });
                   redRobot.color(255,0,0);
                   o.redConnected = true;
                   o.rightDisabled = false;
                   o.redId = redRobot._id;
                   blueRobot = acq.robots[1];
-                  blueRobot.register(callbacks);
+                  blueRobot.register({
+                        button: {
+                            btnA: {
+                                callback: zeClicken,
+                                    data: model
+                            },
+                            btnB: {
+                                callback: zeClicken,
+                                    data: model
+                            }
+                        },
+                        wheel: {
+                            1: {
+                                distance: 20,
+                                    callback: changeValue,
+                                    data: model
+                            },
+                            3: {
+                                distance: 20,
+                                    callback: changeValue,
+                                    data: model
+                            }
+                        }
+                  });
                   blueRobot.color(0,0,255);
                   o.blueConnected = true;
                   o.leftDisabled = false;
@@ -64,10 +112,10 @@ $(function () {
                 o.topNumbers.update([newNumber]);
                 o.topNumber = newNumber;
                 resetGame(o, newNumber);
-            },
+            }
         },
 
-        model = Serenade({
+        model = new Serenade({
             topNumbers: new Serenade.Collection([]),
             topNumber: '',
             rightVal: null,
@@ -84,7 +132,7 @@ $(function () {
             redConnected: false,
             redId: "",
             blueId: "",
-            badConnection: false,
+            badConnection: false
         });
 
     function giveMeNumber (min, max) {
@@ -192,7 +240,7 @@ $(function () {
               model.rightVal++;
           }
         }
-    }
+    };
     var scrollDown = function (robID, o) {
         if (robID === o.blueId) {
             if (!model.leftDisabled) {
@@ -208,7 +256,7 @@ $(function () {
                 }
             }
         }
-    }
+    };
 
     var changeValue = function(robot, o, event) {
       if (event.difference > 0) {
@@ -217,7 +265,7 @@ $(function () {
       else {
         scrollDown(robot._id, o);
       }
-    }
+    };
 
     var callbacks = {
       button: {
