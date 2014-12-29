@@ -6,7 +6,7 @@ baroboBridge = (function(main) {
       methods = ['angularSpeed', 'availableFirmwareVersions', 'buttonChanged', 'buzzerFrequency',
         'connectRobot', 'disconnectRobot', 'enableButtonSignals', 'enableMotorSignals', 'enableAccelSignals', 'disableAccelSignals',
         'disableButtonSignals', 'disableMotorSignals', 'firmwareVersion', 'getMotorAngles', 'moveTo',
-        'scan', 'setMotorEventThreshold', 'stop', 'moveContinuous'];
+        'scan', 'stop', 'moveContinuous'];
       signals = ['accelChanged', 'motorChanged', 'buttonChanged'];
       obj = {
         mock: true
@@ -255,6 +255,9 @@ baroboBridge = (function(main) {
             LinkbotControls.knob.get('position-joint-1').setValue(pos[0]);
             LinkbotControls.knob.get('position-joint-2').setValue(pos[3]);
         }
+        var btnPower = _controlPanelRobot.linkbot.BUTTON_POWER;
+        var btnA = _controlPanelRobot.linkbot.BUTTON_A;
+        var btnB = _controlPanelRobot.linkbot.BUTTON_B;
         _controlPanelRobot.linkbot.register({
             accel: {
                 callback: controlAccelChanged
@@ -274,17 +277,17 @@ baroboBridge = (function(main) {
                 }
             },
             button: {
-                0: {
+                btnPower : {
                     callback: function(robot, data, event) {
                         console.log(event);
                     }
                 },
-                1: {
+                btnA: {
                     callback: function() {
                         console.log(event);
                     }
                 },
-                2: {
+                btnB: {
                     callback: function() {
                         console.log(event);
                     }
@@ -374,6 +377,9 @@ baroboBridge = (function(main) {
             if (!destination || destination === null) {
                 return true;
             }
+            if (destination == source) {
+                return true;
+            }
             var srcId = source.getAttribute('id').replace(/robomgr-id-/, '');
             var destId = destination.getAttribute('id').replace(/robomgr-id-/, '');
             var olElement = destination.parentElement;
@@ -411,6 +417,15 @@ baroboBridge = (function(main) {
         var spanBtn = manager.element.querySelector('span');
         var left = /robomgr-left/.test(spanBtn.className);
         if (!left) {
+            return;
+        }
+        _uiMenuSlide(e);
+    }
+
+    function _openMenuSlide(e) {
+        var spanBtn = manager.element.querySelector('span');
+        var left = /robomgr-left/.test(spanBtn.className);
+        if (left) {
             return;
         }
         _uiMenuSlide(e);
@@ -479,24 +494,36 @@ baroboBridge = (function(main) {
     }
 
     function _robotLi(doc, r) {
-        var li = doc.createElement('li');
-        var div = doc.createElement('div');
-        var rm = doc.createElement('span');
-        rm.setAttribute('class', "robomgr-remove-btn");
-        rm.innerText = 'trash';
-        var beep = doc.createElement('span');
+        var li, div, trash, beep, color, colorSpan, colorVal;
+        li = doc.createElement('li');
+        div = doc.createElement('div');
+        color = doc.createElement('input');
+        color.type = "color";
+        color.className = 'robomgr-color-btn';
+        colorSpan = doc.createElement('span');
+        colorSpan.className = 'robomgr-color-btn-title';
+        colorSpan.innerText = 'color';
+        trash = doc.createElement('span');
+        trash.setAttribute('class', "robomgr-remove-btn");
+        trash.innerText = 'trash';
+        beep = doc.createElement('span');
         beep.setAttribute('class', 'robomgr-beep-btn');
         beep.innerText = 'beep';
         li.setAttribute('draggable', 'true');
         li.setAttribute('class', "robomgr--" + r.status);
         li.setAttribute('id', 'robomgr-id-' + r.id);
-        if (r.linkbot) {
-            li.style.background = "#" + _colorToHex(r.linkbot.getColor());
+        if (r && r.linkbot) {
+            colorVal = "#" + _colorToHex(r.linkbot.getColor());
+            li.style.background = colorVal;
+            color.value = colorVal;
         } else {
+            color.value = '#606060';
             li.style.background = "#606060";
         }
+        li.appendChild(color);
+        li.appendChild(colorSpan);
         li.appendChild(beep);
-        li.appendChild(rm);
+        li.appendChild(trash);
         div.setAttribute('class', 'robomgr-slide-element robomgr-slide-element-left');
         var htmlVal = ['',
             '<span id="robot-id-' + r.id + '-name" class="robomgr-robot-name">Linkbot ' + r.id + '</span><br/>',
@@ -511,13 +538,21 @@ baroboBridge = (function(main) {
         div.addEventListener('click', function(e) {
             _uiSlideOut(e, r);
         }, true);
-        rm.addEventListener('click', function(e) {
+        trash.addEventListener('click', function(e) {
             _uiRemoveFn(e, r.id);
         });
         beep.addEventListener('click', function(e) {
             if (r.status !== 'failed' ) {
                 r.linkbot.buzzerFrequency(500);
                 setTimeout(function() { r.linkbot.buzzerFrequency(0); }, 250);
+            }
+        });
+        color.addEventListener('input', function (e) {
+            if (r && r.linkbot) {
+                var value = _hexToRgb(color.value);
+                r.linkbot.color(value.red, value.green, value.blue);
+            } else {
+                color.value = '#606060';
             }
         });
         return li;
@@ -925,6 +960,14 @@ baroboBridge = (function(main) {
     this.selectedControlPanelRobot = function() {
       return _controlPanelRobot;
     };
+
+    this.openMenu = function() {
+        _openMenuSlide();
+    };
+
+    this.closeMenu = function() {
+        _closeMenuSlide();
+    };
 }
 ;function Linkbot(_id) {
   // Private
@@ -934,6 +977,9 @@ baroboBridge = (function(main) {
   var buttonSlotCallback = null;
   var accelSlotCallback = null;
   var joinDirection = [0, 0, 0];
+  var BUTTON_POWER = 0;
+  var BUTTON_A = 1;
+  var BUTTON_B = 2;
 
   bot._id = _id;
   err = baroboBridge.connectRobot(_id);
@@ -941,17 +987,13 @@ baroboBridge = (function(main) {
     bot._id = null;
     return;
   }
-  for (var m = 1; m <= 3; m++) {
-    baroboBridge.setMotorEventThreshold(bot._id, m, 1e10);
-  }
   bot._wheelPositions = baroboBridge.getMotorAngles(bot._id);
   bot._firmwareVersion = baroboBridge.firmwareVersion(bot._id);
   if (!baroboBridge.mock) {
     var blessedFW = baroboBridge.availableFirmwareVersions();
     if (blessedFW.indexOf(bot._firmwareVersion) < 0) {
-      idAsURI = encodeURIComponent(bot._id);
       baroboBridge.stop(bot._id);
-      document.location = "../LinkbotUpdate/index.html?badRobot=" + idAsURI;
+      document.location = "http://zrg6.linkbotlabs.com/LinkbotUpdateApp/html/index.html?badRobot=" + encodeURIComponent(bot._id);
     }
   }
 
@@ -1125,10 +1167,9 @@ baroboBridge = (function(main) {
         registerObject = _ref[_wheelId];
         wheelId = parseInt(_wheelId);
         slot = wheelSlot(bot, wheelId, registerObject.callback, registerObject.data);
-        baroboBridge.setMotorEventThreshold(bot._id, wheelId, registerObject.distance);
         baroboBridge.motorChanged.connect(slot);
         wheelSlotCallback.push(slot);
-        _results.push(baroboBridge.enableMotorSignals(bot._id));
+        _results.push(baroboBridge.enableMotorSignals(bot._id, registerObject.distance, true));
       }
     }
     if (connections.accel && connections.accel !== null) {
@@ -1182,7 +1223,16 @@ baroboBridge = (function(main) {
       ledCallbacks = [];
     }
   };
+  /**
+   * Button Constants.
+   * Used when registering button callbacks.
+   */
+  this.BUTTON_POWER = BUTTON_POWER;
+  this.BUTTON_A = BUTTON_A;
+  this.BUTTON_B = BUTTON_B;
+
 }
+
 ;function Storage(config) {
   var settings = (config) ? config : {
     DBNAME: "robotsdb",
@@ -1927,6 +1977,12 @@ baroboBridge = (function(main) {
         if (element) {
             element.innerText = crumbs.join(" // ");
         }
+    };
+    exports.openSideMenu = function() {
+        manager.openMenu();
+    };
+    exports.closeSideMenu = function() {
+        manager.closeMenu();
     };
     exports.storage = storage;
 
