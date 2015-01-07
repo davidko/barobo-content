@@ -243,7 +243,6 @@ baroboBridge = (function(main) {
         document.getElementById('robomgr-tab-sensors-panel').className = 'robomgr-hide';
         document.getElementById('robomgr-tab-control').parentElement.className='robomgr-active';
         document.getElementById('robomgr-tab-sensors').parentElement.className='';
-        document.getElementById('linkbotjs-led-color').value = '#' + _colorToHex(r.linkbot.getColor());
         // TODO handle logic for robot control
         _controlPanelRobot = r;
         _controlPanelRobot.linkbot.angularSpeed(50, 0, 50);
@@ -407,10 +406,12 @@ baroboBridge = (function(main) {
         var idInput;
         e.preventDefault();
         idInput = manager.element.querySelector('input#robotInput');
-        manager.add(idInput.value);
-        idInput.value = "";
-        manager.connect();
-        manager.redraw();
+        if (idInput.value && idInput.value.length == 4) {
+            manager.add(idInput.value.toUpperCase());
+            idInput.value = "";
+            manager.connect();
+            manager.redraw();
+        }
     }
 
     function _closeMenuSlide(e) {
@@ -573,10 +574,9 @@ baroboBridge = (function(main) {
     }
 
     function _constructElement(doc) {
-        var addBtn, el, controlPanel, overlay, pulloutBtn, slideOverlay, btn;
+        var addBtn, el, controlPanel, overlay, pulloutBtn, btn;
         el = doc.createElement('div');
-        slideOverlay = doc.createElement('div');
-        slideOverlay.setAttribute('id', 'robomgr-slideout-overlay');
+
         overlay = doc.createElement('div');
         overlay.setAttribute('id', 'robomgr-overlay');
         overlay.setAttribute('class', 'robomgr-hide');
@@ -601,8 +601,6 @@ baroboBridge = (function(main) {
         pulloutBtn = el.querySelector('.robomgr-pullout');
         addBtn.addEventListener('click', _uiAdd);
         pulloutBtn.addEventListener('click', _uiMenuSlide);
-
-        slideOverlay.addEventListener('click', _closeMenuSlide);
 
         controlPanel = doc.createElement('div');
         controlPanel.setAttribute('class', 'robomgr-hide');
@@ -711,26 +709,15 @@ baroboBridge = (function(main) {
             '     <div style="width: 130px; margin-left: 420px; height: 100%;"><div id="accel-mag" style="height: 90%; margin: 0 auto;" class="linkbotjs-vslider" data-type="float" data-min="0" data-max="5"></div><p style="padding-top: 10px;">mag: <span id="accel-mag-value">0</span></p></div>',
             '   </div>',
             ' </div>',
-            ' <div class="robomgr-row" style="text-align: center;">LED Color',
-            '   <div class="robomgr-control-poster" style="padding: 10px 30px;">',
-            '     <input type="color" id="linkbotjs-led-color" />',
-            '   </div>',
-            ' </div>',
             '</div>'
         ].join('');
         controlPanel.innerHTML = controlPanelHtml;
         // Order matters.
-        el.appendChild(slideOverlay);
         el.appendChild(overlay);
         el.appendChild(controlPanel);
         overlay.addEventListener('click', hideControlPanel);
         controlPanel.addEventListener('click', function(e) {
             e.stopPropagation();
-        });
-        var ledColorElement = controlPanel.querySelector('#linkbotjs-led-color');
-        ledColorElement.addEventListener('input', function(e) {
-            var value = _hexToRgb(ledColorElement.value);
-            _controlPanelRobot.linkbot.color(value.red, value.green, value.blue);
         });
 
         var imgElements = controlPanel.getElementsByClassName('robomgr-control-img');
