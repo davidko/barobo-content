@@ -16,11 +16,11 @@
     "linkbotjs": "BaroboRobotics/LinkbotJS#develop"
   },
   "homepage": "https://github.com/BaroboRobotics/Pianobot",
-  "_release": "740172b5fb",
+  "_release": "31d44c5689",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "740172b5fb93083eb153c731d49526c44c4b6bbf"
+    "commit": "31d44c56890a8b1ba930fb856963e0d36d500b1e"
   },
   "_source": "git@github.com:BaroboRobotics/Pianobot.git",
   "_target": "develop",

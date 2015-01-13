@@ -24,7 +24,7 @@ The ID is printed on the Linkbot and is four characters long.
 <script>
 
 $(function () {
-
+    var stop = null;
 var setConnected = function (robot) {
   window.ch4_RobotID = robot._id;
   robot.angularSpeed(90);
@@ -40,23 +40,32 @@ var existingId = GetURLParameter("robotID");
 if (typeof existingId !== "undefined") {
   $('.ch4intro .linkbotId').val(existingId);
   RepopulateManager();
-  acq = Linkbots.acquire(1);
+  var acq = Linkbots.acquire(1);
   if (acq.robots.length == 1) {
     setConnected(acq.robots[0]);
   }
 }
-$('#setRobotID').click( function(obj) {
-  var linkbotId =  $('.ch4intro').find('.linkbotId').val(); 
-  var acq = Linkbots.acquire(1);
-  var bot;
-  if (acq.robots.length == 1) {
-    bot = acq.robots[0];
-  } else {
-    $('#connectStatus').text('Connection failed. Are there robots in the Robot Manager?').attr("style", "color:red;font-weight:bold");
-    return;
-  }
-  setConnected(bot);
-});
+
+    function stopTimer() {
+        clearInterval(stop);
+        stop = null;
+    }
+    
+    stop = setInterval(function() {
+        var acq, bot;
+        acq = Linkbots.acquire(1);
+        if (acq.robots.length == 1) {
+            bot = acq.robots[0];
+            setConnected(bot);
+            stopTimer();
+        } else {
+            $('#connectStatus').text('Connection failed. Are there robots in the Robot Manager?').attr("style", "color:red;font-weight:bold");
+            return;
+        }
+        
+        
+    }, 1000);
+
 });
 </script>
 
