@@ -55,7 +55,7 @@ var asyncBaroboBridge = (function(main) {
             'getLedColor', 'getVersions', 'resetEncoderRevs', 'setBuzzerFrequency', 'setJointSpeeds',
             'setJointStates', 'setLedColor', 'move', 'moveContinuous', 'moveTo', 'drive', 'driveTo',
             'motorPower', 'stop', 'enableButtonEvents', 'enableEncoderEvents', 'enableJointEvents',
-            'enableAccelerometerEvents'];
+            'enableAccelerometerEvents', 'firmwareUpdate'];
         signals = ['requestComplete', 'dongleEvent', 'buttonEvent', 'encoderEvent', 'jointEvent', 'accelerometerEvent'];
         obj = {
             mock: true
@@ -18473,6 +18473,8 @@ asyncBaroboBridge.dongleEvent.connect(
     function (error) {
         if (error.code == 0) {
             manager.trigger('dongle');
+        } else {
+            window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
         }
     }
 );
@@ -18542,6 +18544,10 @@ function colorToHex(color) {
     return red + green + blue;
 }
 
+module.exports.startFirmwareUpdate = function() {
+    asyncBaroboBridge.firmwareUpdate();
+};
+
 module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     var bot = this;
     var statuses = {0:"offline", 1:"ready", 2:"acquired"};
@@ -18578,6 +18584,8 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
             status = 1;
             bot.event.trigger('changed');
             asyncBaroboBridge.getVersions(id, addCallback(id, checkVersions));
+        } else {
+            window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
         }
     }));
     
@@ -18711,6 +18719,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         }
     };
     bot.moveJointContinuous = function(joint, direction) {
+        var token;
         if (joint >= 0 && joint <= 2) {
             if (direction > 0) {
                 joinDirection[joint] = 1;
@@ -18718,9 +18727,13 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 joinDirection[joint] = -1;
             } else {
                 joinDirection[joint] = 0;
+                // Special call for stopping so it relaxes the motor.
+                token = addCallback(id, genericCallback);
+                asyncBaroboBridge.stop(id, token, (1 << joint));
+                return true;
             }
             if (status != 0) {
-                var token = addCallback(id, genericCallback);
+                token = addCallback(id, genericCallback);
                 asyncBaroboBridge.moveContinuous(id, token, 7, joinDirection[0], joinDirection[1], joinDirection[2]);
             }
             return true;
@@ -18734,7 +18747,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                     callback(data);
                     
                 } else {
-                    callback({values:[], timestamp:-1});
+                    callback({values:[0, 0, 0], timestamp:-1});
                 }
             });
             asyncBaroboBridge.getJointAngles (id, token);
@@ -18771,6 +18784,8 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 if (0 == error.code) {
                     status = 1;
                     bot.event.trigger('changed');
+                } else {
+                    window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
                 }
             });
             asyncBaroboBridge.connectRobot(id, token);
@@ -18779,6 +18794,8 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 if (0 != error.code) {
                     status = 0;
                     bot.event.trigger('changed');
+                } else {
+                    window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
                 }
             });
             asyncBaroboBridge.getLedColor(id, token);
@@ -19227,6 +19244,8 @@ window.Linkbots = (function(){
     mod.startOpen = function(value) {
         startOpen = value;
     };
+    mod.managerEvents = manager.event;
+    mod.uiEvents = uimanager.uiEvents;
 
     if(window.attachEvent) {
         window.attachEvent('onload', function() {
@@ -19264,6 +19283,7 @@ window.Linkbots = (function(){
 var React = require('react');
 var manager = require('./manager.jsx');
 var eventlib = require('./event.jsx');
+var linkbotLib = require('./linkbot.jsx');
 
 var uiEvents = eventlib.Events.extend({});
 var rad2deg = 180/Math.PI;
@@ -19511,6 +19531,9 @@ var KnobControl = React.createClass({displayName: "KnobControl",
     },
     setValue: function(value, callChanged) {
         var degValue, val, _callChanged, dispDeg;
+        if (this.state.mouseDown) {
+            return; // Set Value does not function when the mouse is down.
+        }
         degValue = parseInt(value);
         if (isNaN(degValue)) {
             return;
@@ -19958,6 +19981,10 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
             uiEvents.trigger('show-menu');
         }
     },
+    handleFirmwareUpdate: function(e) {
+        e.preventDefault();
+        linkbotLib.startFirmwareUpdate();
+    },
     render: function() {
         return (
             React.createElement("div", {id: "ljs-left-menu-container", ref: "container"}, 
@@ -19966,7 +19993,10 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
                 ), 
                 React.createElement("div", {className: "ljs-content"}, 
                     React.createElement(AddRobotForm, null), 
-                    this.props.children
+                    this.props.children, 
+                    React.createElement("div", {className: "ljs-firmware-update"}, 
+                        React.createElement("button", {onClick: this.handleFirmwareUpdate, className: "ljs-btn"}, "Start Firmware Updater")
+                    )
                 )
             )
         );
@@ -20155,6 +20185,10 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
         });
     },
     knob1Changed: function(data) {
+        if (this.state.wheel1 === data.value) {
+            return;
+        }
+        var me = this;
         this.setState({
             linkbot:this.state.linkbot,
             title:this.state.title,
@@ -20167,10 +20201,15 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             y: this.state.y,
             z: this.state.z,
             mag: this.state.mag
+        }, function() {
+            me.state.linkbot.driveTo(data.value, 0, me.state.wheel2);
         });
-        this.state.linkbot.driveTo(data.value, 0, this.state.wheel2);
     },
     knob2Changed: function(data) {
+        if (this.state.wheel2 === data.value) {
+            return;
+        }
+        var me = this;
         this.setState({
             linkbot:this.state.linkbot,
             title:this.state.title,
@@ -20183,9 +20222,9 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             y: this.state.y,
             z: this.state.z,
             mag: this.state.mag
+        }, function() {
+            me.state.linkbot.driveTo(me.state.wheel1, 0, data.value);
         });
-        this.state.linkbot.driveTo(this.state.wheel1, 0, data.value);
-        
     },
     motor1Up: function() {
         this.state.linkbot.moveJointContinuous(0, 1);
@@ -20406,7 +20445,7 @@ module.exports.addUI = function() {
     React.render(React.createElement(TopNavigation, null), navMenuDiv);
 }
 
-},{"./event.jsx":148,"./manager.jsx":152,"react":147}],152:[function(require,module,exports){
+},{"./event.jsx":148,"./linkbot.jsx":149,"./manager.jsx":152,"react":147}],152:[function(require,module,exports){
 "use strict";
 
 var botlib = require('./linkbot.jsx');
@@ -20437,10 +20476,14 @@ module.exports.moveRobot = function(from, to) {
 };
 
 module.exports.addRobot = function(id) {
-    var robot = findRobot(id);
+    if (typeof id == 'undefined' || id == null || id.length < 3) {
+        return;
+    }
+    var identifier = id.toUpperCase();
+    var robot = findRobot(identifier);
     if (!robot) {
-        robots.push(new botlib.AsyncLinkbot(id));
-        storageLib.add(id, 0);
+        robots.push(new botlib.AsyncLinkbot(identifier));
+        storageLib.add(identifier, 0);
         events.trigger('changed', 1);
     }
 };
