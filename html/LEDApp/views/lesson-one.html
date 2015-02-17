@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 1</h1>
+        <h2>What is an LED and how it works. RGB and color.</h2>
+        <h3>Objective</h3>
+        <p>The letters LED stand for light emitting diode. The Linkbot has three, a red, a green and a blue.
+            You can use these to create a variety of colors with the Linkbot. In this section you will learn
+            to control the color the Linkbot displays. Use the skills you learned in art class to make colors
+            other than the three built into the Linkbot.</p>
+        <pre>
+import barobo
+import time
+dongle = barobo.Dongle()
+dongle.connect()
+robot = dongle.getLinkbot('R2D2')
+
+robot.setBuzzerFrequency(1046.5)
+time.sleep(1.5)
+robot.setBuzzerFrequency(0)
+time.sleep(3)
+robot.setLEDColor(255,0,0)
+        </pre>
+        <h3>Explore</h3>
+        <p>Change the color to green and then to blue by changing the position of the number 255.</p>
+        <img src="img/led-colors.png" alt="RGB illumination" />
+        <p>Create different shades of yellow, orange, and purple by making all three numbers values. 
+            Make all the numbers 255 to see what you get.  The maximum for each color is 255.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-two" class="btn btn-default pull-right">Next</a>
+            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+
+        </div>
+    </div>
+   
+</div>

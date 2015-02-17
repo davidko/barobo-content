@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 5</h1>
+        <h2>Getting the LED to change color based on an input, like pressing the "A" button.</h2>
+        <h3>Objective</h3>
+        <p>In this lesson you will learn how to make the "A" button an input device that will signal the Linkbot's LED to change color from red to green.</p>
+        <pre>
+import barobo
+import time
+import random
+dongle = barobo.Dongle()
+dongle.connect()
+robotID = input('Enter robot ID: ') #prompt to enter the Linkbot ID
+robot = dongle.getLinkbot(robotID) #assigns “robot” as Linkbot ID number entered.
+robot.setLEDColor(255,0,0)  #set the LED to red on “robot”.
+def callback(mask, buttons, data): # defines a function “callback”
+    if buttons & 0x02:
+        robot.setLEDColor(0,255,0)
+robot.enableButtonCallback(callback)
+        </pre>
+        <h3>Explore</h3>
+        <p>Make the Linkbot beep when the "A" button is depressed.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-four" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-six" class="btn btn-default pull-right">Next</a>
+            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+        </div>
+    </div>
+</div>

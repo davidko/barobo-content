@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 6</h1>
+        <h2>The Linkbot will measure your reaction time. The LED will change color from red to green and the "A" button is depressed as soon as possible.</h2>
+        <h3>Objective</h3>
+        <p>The Linkbot will measure your reaction time. The LED will change color from red to green and the "B" button is depressed as soon as possible. </p>
+        <pre>
+import time
+import barobo
+import random
+import sys
+dongle = barobo.Dongle()
+dongle.connect()
+robotID = input('Enter robot ID: ')
+robot = dongle.getLinkbot(robotID) #enter the linkbot ID
+time_start=0
+game_start=False
+def callback(mask, buttons, data):
+    if buttons & 0x02:
+        global game_start
+        global time_start
+        if game_start==False:
+            print("You pressed the button to soon")
+            sys.exit()
+        else:
+            print("your reaction time is :", time.time()-time_start)
+        global robot
+        robot.setBuzzerFrequency(0)
+        sys.exit()
+robot.enableButtonCallback(callback)
+input("Press enter to begin")
+robot.setLEDColor(255, 0, 0)
+time.sleep(random.random()*7+3)
+time_start=time.time()
+game_start=True
+robot.setBuzzerFrequency(440)
+robot.setLEDColor(0, 255, 0)
+while True:
+    time.sleep(1)
+        </pre>
+        <h3>Explore</h3>
+        <p>Change the program sleep times to confuse the user that has caught on to the timing of the program.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-five" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-seven" class="btn btn-default pull-right">Next</a>
+            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+        </div>
+    </div>
+</div>

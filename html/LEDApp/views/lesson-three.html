@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 3</h1>
+        <h2>Getting the LED to change color and blink a set number of times then change colors.</h2>
+        <h3>Objective</h3>
+        <p>In this lesson you will be learning how to control the color and the number of times the LED will
+            blink. This is simulates what a cross walk light might be like. Get the LED to be green for
+            3 seconds, and then blink red for three seconds.</p>
+        <pre>
+import barobo
+import time
+
+dongle = barobo.Dongle()
+dongle.connect()
+robot1 = dongle.getLinkbot('9418')  #set ID to a certain Linkbot
+
+robot1.setLEDColor(0,255,0) #sets color of LED to green
+time.sleep(3) #waits 3 seconds
+for i in range(1,6):  #runs the block that follows five times
+    robot1.setLEDColor(255,0,0) #sets color to red
+    time.sleep(.5) #waits half a second
+    robot1.setLEDColor(0,0,0) #turns off LED
+    time.sleep(.5)  #waits half a second
+robot1.setLEDColor(0,0,255)  #turns LED to blue
+        </pre>
+        <h3>Explore</h3>
+        <p>Get the LED to stay solid red for 3 seconds, then turn red and blink 10 times, then turn solid blue.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-two" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-four" class="btn btn-default pull-right">Next</a>
+            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+        </div>
+    </div>
+</div>

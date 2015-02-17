@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 2</h1>
+        <h2>Blinking the LED at different rates.</h2>
+        <h3>Objective</h3>
+        <p>In this section you will learn how to make the LED blink on and off. You have probably
+            noticed that we see blinking lights in several places. This section demonstrates the
+            computer code that causes the lights to blink.</p>
+        <pre>
+import barobo
+import time
+
+dongle = barobo.Dongle()
+dongle.connect()
+robot = dongle.getLinkbot('796r')
+
+for i in range (1,10):
+    robot.setLEDColor(255,0,0)
+    time.sleep(.25)
+    robot.setLEDColor(0,0,0)
+    time.sleep(.25)
+        </pre>
+        <h3>Explore</h3>
+        <p>Make the LED blink on and off at different rates.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-one" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-three" class="btn btn-default pull-right">Next</a>
+            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+        </div>
+    </div>
+</div>
