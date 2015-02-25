@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 7b - Linkbots alternate blinking.</h1>
+        <h2>Objective</h2>
+        <p>This example will blink the LED on the Linkbots alternately.</p>
+        <div hljs>
+#!/usr/bin/env python3
+
+# Filename: Lesson08b.py
+
+import linkbot
+import time
+robot1 = linkbot.Linkbot('HJBP')#ID for first Linkbot
+robot2 = linkbot.Linkbot('7ZZL')#ID for second Lnkbot
+for i in range (1,8): #does the following block 7 times
+    robot1.setLedColor(255,0,0)#changes LED on robot1 to red
+    robot2.setLedColor(0,0,0)#turns LED on robot2 to off
+    time.sleep(.5) #waits half a second
+    robot1.setLedColor(0,0,0) #turns LED on robot1 off
+    robot2.setLedColor(255,0,0)#turns LED on robot2 red
+    time.sleep(.5)# waits half a second
+robot1.setLedColor(0,0,255) #turns LED to blue
+robot2.setLedColor(0,0,255) #turns LED to blue
+        </div>
+        <h2>Explore</h2>
+        <p>Change the rate at which they alternate so they alternate twice as quickly, and the number
+            of times they alternate to 20. How fast can they blink before they appear to be on constantly?
+            How do we explain what is happening?</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-seven-a" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-seven-c" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+</div>

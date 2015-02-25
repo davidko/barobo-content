@@ -1,30 +1,41 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-        <h1>Lesson 5</h1>
-        <h2>Getting the LED to change color based on an input, like pressing the "A" button.</h2>
-        <h3>Objective</h3>
+        <h1>Lesson 5 - Getting the LED to change color based on an input, like pressing the "A" button.</h1>
+        <h2>Objective</h2>
         <p>In this lesson you will learn how to make the "A" button an input device that will signal the Linkbot's LED to change color from red to green.</p>
-        <pre>
-import barobo
-import time
-import random
-dongle = barobo.Dongle()
-dongle.connect()
-robotID = input('Enter robot ID: ') #prompt to enter the Linkbot ID
-robot = dongle.getLinkbot(robotID) #assigns “robot” as Linkbot ID number entered.
-robot.setLEDColor(255,0,0)  #set the LED to red on “robot”.
-def callback(mask, buttons, data): # defines a function “callback”
-    if buttons & 0x02:
-        robot.setLEDColor(0,255,0)
-robot.enableButtonCallback(callback)
-        </pre>
-        <h3>Explore</h3>
+        <div class="code-snippet">
+            <pre><code class="hljs python"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python3</span>
+
+<span class="hljs-comment"># Filename: Lesson05.py</span>
+
+<span class="hljs-keyword">import</span> linkbot
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">import</span> sys
+
+robot = linkbot.Linkbot('<span class="hljs-number" ng-bind="m.robotId"></span>')</div>
+robot.setLedColor(<span class="hljs-number">255</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)  <span class="hljs-comment">#set the LED to red on "robot".</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">callback</span><span class="hljs-params">(button, event, timestamp)</span>:</span> <span class="hljs-comment"># defines a function "callback"</span>
+    print(button, event)
+    <span class="hljs-keyword">if</span> button == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">global</span> robot
+        robot.setLedColor(<span ng-model="m.led1" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led2" contenteditable="true" class="hljs-number">255</span>,<span ng-model="m.led3" contenteditable="true" class="hljs-number">0</span>)
+
+robot.enableButtonEvents(callback) <span class="hljs-comment"># Register the callback function with the</span>
+                                   <span class="hljs-comment"># robot</span>
+<span class="hljs-keyword">while</span> <span class="hljs-keyword">True</span>:
+    time.sleep(<span class="hljs-number">1</span>)
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robotId == '' || m.running]" ng-click="run()">Run</button>
+        <h2>Explore</h2>
         <p>Make the Linkbot beep when the "A" button is depressed.</p>
         <hr />
         <div class="clearfix">
-            <a href="#/lesson-four" class="btn btn-default pull-left">Prev</a>
-            <a href="#/lesson-six" class="btn btn-default pull-right">Next</a>
-            <a href="#/" class="btn btn-default center-block">Table of Contents</a>
+            <a href="#/lesson-four" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-six" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
         </div>
     </div>
 </div>
