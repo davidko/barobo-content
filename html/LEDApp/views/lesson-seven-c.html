@@ -4,40 +4,46 @@
         <h2>Objective</h2>
         <p>One Linkbot blinks three times then pauses two seconds while staying on.
             A second Linkbot then blinks twice, pauses one second, and goes out again. Repeat process four times.</p>
-        <div hljs>
-#!/usr/bin/env python3
+        <div class="code-snippet">
+        <pre><code class="hljs python"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python3</span>
 
-# Filename: Lesson07c.py
+<span class="hljs-comment"># Filename: Lesson07c.py</span>
 
 import linkbot
-import time
+import <span class="hljs-keyword">time</span>
 
-robot1 = linkbot.Linkbot('HJBP')#ID for first Linkbot
-robot2 = linkbot.Linkbot('7ZZL')#ID for second Lnkbot
-for i in range (1,5): #does the following block 4 times
-    for k in range (1,4): #does the following block 3 times
-        robot1.setLedColor(255,0,0)#changes LED on robot1 to red
-        robot2.setLedColor(0,0,0)#turns LED on robot2 to off
-        time.sleep(.5) #waits half a second
-        robot1.setLedColor(0,0,0) #turns LED on robot1 off
-        robot2.setLedColor(0,0,0)#turns LED on robot2 off
-        time.sleep(.5)# waits half a second
-    robot1.setLedColor(255,0,0)
-    time.sleep(2)
-    for k in range (1,3):  #does the following block 2 times
-        robot2.setLedColor(255,0,0)#turns LED on robot2 to red
-        time.sleep(.5) #waits half a second
-        robot2.setLedColor(0,0,0)#turns LED on robot2 off
-        time.sleep(.5)# waits half a second
-    time.sleep(1)
-robot1.setLedColor(0,0,255) #returns LED to blue
-robot2.setLedColor(0,0,255) #returns LED to blue
+robot1 = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robotId1"></span>')<span class="hljs-comment">#ID for first Linkbot</span>
+robot2 = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robotId2"></span>')<span class="hljs-comment">#ID for second Lnkbot</span></div>
+<span class="hljs-keyword">for</span> i in range (<span class="hljs-number">1</span>,<span class="hljs-number">5</span>): <span class="hljs-comment">#does the following block 4 times</span>
+    <span class="hljs-keyword">for</span> k in range (<span class="hljs-number">1</span>,<span class="hljs-number">4</span>): <span class="hljs-comment">#does the following block 3 times</span>
+        robot1.setLedColor(<span ng-model="m.led1[0]" contenteditable="true" class="hljs-number">255</span>,<span ng-model="m.led1[1]" contenteditable="true" class="hljs-number">0</span>,<span  ng-model="m.led1[2]" contenteditable="true" class="hljs-number">0</span>)<span class="hljs-comment">#changes LED on robot1 to red</span>
+        robot2.setLedColor(<span ng-model="m.led2[0]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led2[1]" contenteditable="true" class="hljs-number">0</span>,<span  ng-model="m.led2[2]" contenteditable="true" class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot2 to off</span>
+        <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(.<span class="hljs-number">5</span>) <span class="hljs-comment">#waits half a second</span>
+        robot1.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-comment">#turns LED on robot1 off</span>
+        robot2.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot2 off</span>
+        <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(.<span class="hljs-number">5</span>)<span class="hljs-comment"># waits half a second</span>
+    robot1.setLedColor(<span ng-model="m.led3[0]" contenteditable="true" class="hljs-number">255</span>,<span ng-model="m.led3[1]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led3[2]" contenteditable="true" class="hljs-number">0</span>)
+    robot2.setLedColor(<span ng-model="m.led4[0]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led4[1]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led4[2]" contenteditable="true" class="hljs-number">0</span>)
+    <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">for</span> k in range (<span class="hljs-number">1</span>,<span class="hljs-number">3</span>):  <span class="hljs-comment">#does the following block 2 times</span>
+        robot1.setLedColor(<span ng-model="m.led5[0]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led5[1]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led5[2]" contenteditable="true" class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot1 off</span>
+        robot2.setLedColor(<span ng-model="m.led6[0]" contenteditable="true" class="hljs-number">255</span>,<span ng-model="m.led6[1]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led6[2]" contenteditable="true" class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot2 to red</span>
+        <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(.<span class="hljs-number">5</span>) <span class="hljs-comment">#waits half a second</span>
+        robot1.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot1 off</span>
+        robot2.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<span class="hljs-comment">#turns LED on robot2 off</span>
+        <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(.<span class="hljs-number">5</span>)<span class="hljs-comment"># waits half a second</span>
+    <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span class="hljs-number">1</span>)
+robot1.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>) <span class="hljs-comment">#returns LED to blue</span>
+robot2.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>) <span class="hljs-comment">#returns LED to blue</span>
+        </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
         </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robotId1 == '' || m.robotId2 == '' || m.running]" ng-click="run()">Run</button>
         <h2>Explore</h2>
         <p>Have the Linkbots switch roles.</p>
         <hr />
         <div class="clearfix">
-            <a href="#/lesson-seven-b" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-seven-b" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
         </div>
     </div>
 </div>

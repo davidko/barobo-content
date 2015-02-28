@@ -198,6 +198,8 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         sleep2: 0.5,
         sleep3: 0.5,
         sleep4: 0.5,
+        led1: [0, 255, 0],
+        cnt: 6,
         robotId: '',
         displayAllCode: false,
         robot: null,
@@ -211,9 +213,10 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         sleep2= parseFloat($scope.m.sleep2) * 1000;
         sleep3= parseFloat($scope.m.sleep3) * 1000;
         sleep4= parseFloat($scope.m.sleep4) * 1000;
+        var led1 = $scope.m.led1.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
         $scope.m.running = true;
-        $scope.m.robot.color(0, 255, 0);
-        counter = 6;
+        $scope.m.robot.color(led1[0], led1[1], led1[2]);
+        counter = Math.abs(parseInt($scope.m.cnt, 10)) % 20;
         $timeout(function() {
             runLoop(sleep2, sleep3, sleep4);
         }, sleep1);
@@ -554,7 +557,114 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
     }
 
 }]).controller('lessonSevenCController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-
+    var intervalRef = null;
+    var ctr1 = 0, ctr2 = 0, ctr3 = 0;
+    function stopAcquisition() {
+        $interval.cancel(intervalRef);
+        intervalRef = null;
+        $scope.m.running = false;
+    }
+    function getRobot() {
+        console.log('attempting robot acquisition');
+        if ($scope.m.robot1 === null) {
+            $scope.m.robot1 = robotFactory.getRobot1();
+            if ($scope.m.robot1 !== null) {
+                $scope.m.robotId1 = $scope.m.robot1.id;
+            }
+        }
+        if ($scope.m.robot1 === null) {
+            $scope.m.robot1 = robotFactory.getRobot2();
+            if ($scope.m.robot2 !== null) {
+                $scope.m.robotId2 = $scope.m.robot2.id;
+            }
+        }
+        if ($scope.m.robot1 !== null && $scope.m.robot2 !== null) {
+            stopAcquisition();
+        }
+    }
+    function runBlock1() {
+        ctr1--;
+        if (ctr3 > 1) {
+            ctr2 = 4;
+            ctr3 = 3;
+            runBlock2();
+        } else {
+            $scope.m.robot1.color(0, 0, 255);
+            $scope.m.robot2.color(0, 0, 255);
+        }
+    }
+    function runBlock3() {
+        var led5 = $scope.m.led5.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+        var led6 = $scope.m.led6.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+        $scope.m.robot1.color(led5[0], led5[1], led5[2]);
+        $scope.m.robot2.color(led6[0], led6[1], led6[2]);
+        $timeout(function() {
+            $scope.m.robot1.color(0, 0, 0);
+            $scope.m.robot2.color(0, 0, 0);
+            $timeout(function() {
+                ctr3--;
+                if (ctr3 > 1) {
+                    runBlock3();
+                } else {
+                    $timeout(runBlock1, 1000);
+                }
+            }, 500);
+        }, 500);
+    }
+    function runBlock2() {
+        var led1 = $scope.m.led1.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+        var led2 = $scope.m.led2.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+        $scope.m.robot1.color(led1[0], led1[1], led1[2]);
+        $scope.m.robot2.color(led2[0], led2[1], led2[2]);
+        $timeout(function() {
+            $scope.m.robot1.color(0, 0, 0);
+            $scope.m.robot2.color(0, 0, 0);
+            $timeout(function() {
+                ctr2--;
+                if (ctr2 > 1) {
+                    runBlock2();
+                } else {
+                    var led3 = $scope.m.led3.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+                    var led4 = $scope.m.led4.map(function(num) { return Math.abs(parseInt(num, 10)) % 256; });
+                    $scope.m.robot1.color(led3[0], led3[1], led3[2]);
+                    $scope.m.robot2.color(led4[0], led4[1], led4[2]);
+                    $timeout(runBlock3, 2000);
+                }
+            }, 500);
+        }, 500);
+        
+    }
+    $scope.m = {
+        robotId1: '',
+        robotId2: '',
+        led1: [255, 0, 0],
+        led2: [0, 0, 0],
+        led3: [255, 0, 0],
+        led4: [0, 0, 0],
+        led5: [0, 0, 0],
+        led6: [255, 0, 0],
+        displayAllCode: false,
+        robot1: null,
+        robot2: null,
+        running: false
+    };
+    $scope.toggle = function() {
+        $scope.m.displayAllCode = !$scope.m.displayAllCode;
+    };
+    $scope.stopAcquisition = function() {
+        stopAcquisition();
+    };
+    $scope.run = function() {
+        if ($scope.m.robot1 === null || $scope.m.robot2 === null) {
+            return;
+        }
+        $scope.m.running = true;
+        ctr1 = 5;
+        runBlock1();
+    };
+    if ($scope.m.robot1 === null || $scope.m.robot2 === null) {
+        intervalRef = $interval(getRobot, 1000);
+    }
 
 }]);
 
