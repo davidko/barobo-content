@@ -38,18 +38,8 @@ chapter2.config(['$routeProvider', function($routeProvider) {
  * Created by Adam on 2/14/2015.
  */
 chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
-    function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
-    }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        $scope.m.robot = robotFactory.getRobot1();
-        if ($scope.m.robot !== null) {
-            stopAcquisition();
-            $scope.m.robotId = $scope.m.robot.id;
-        }
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
     }
     $scope.m = {
         buzzerFrequency: 1046.5,
@@ -58,7 +48,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         led1: 255,
         led2: 0,
         led3: 0,
-        robotId: '',
         displayAllCode: false,
         robot: null,
         running: false
@@ -93,25 +82,13 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         console.log('Run Clicked');
     };
     $scope.stopAcquisition = function() {
-        stopAcquisition();
+        robotFactory.unregister();
     };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 1);
 }]).controller('lessonTwoController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
     var counter = 0;
-    function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
-    }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        $scope.m.robot = robotFactory.getRobot1();
-        if ($scope.m.robot !== null) {
-            stopAcquisition();
-            $scope.m.robotId = $scope.m.robot.id;
-        }
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
     }
     function runLoop(led1, led2, led3, sleep1, sleep2) {
         $scope.m.robot.color(led1, led2, led3);
@@ -133,7 +110,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         led1: 255,
         led2: 0,
         led3: 0,
-        robotId: '',
         displayAllCode: false,
         robot: null,
         running: false
@@ -156,25 +132,13 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         $scope.m.displayAllCode = !$scope.m.displayAllCode;
     };
     $scope.stopAcquisition = function() {
-        stopAcquisition();
+        robotFactory.unregister();
     };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 1);
 }]).controller('lessonThreeController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
     var counter = 0;
-    function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
-    }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        $scope.m.robot = robotFactory.getRobot1();
-        if ($scope.m.robot !== null) {
-            stopAcquisition();
-            $scope.m.robotId = $scope.m.robot.id;
-        }
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
     }
     function runLoop(sleep2, sleep3, sleep4) {
         $scope.m.robot.color(255, 0, 0);
@@ -200,7 +164,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         sleep4: 0.5,
         led1: [0, 255, 0],
         cnt: 6,
-        robotId: '',
         displayAllCode: false,
         robot: null,
         running: false
@@ -225,28 +188,15 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         $scope.m.displayAllCode = !$scope.m.displayAllCode;
     };
     $scope.stopAcquisition = function() {
-        stopAcquisition();
+        robotFactory.unregister();
     };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 1);
 }]).controller('lessonFourController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
-    function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
-    }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        $scope.m.robot = robotFactory.getRobot1();
-        if ($scope.m.robot !== null) {
-            stopAcquisition();
-            $scope.m.robotId = $scope.m.robot.id;
-        }
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
     }
     $scope.m = {
         mph: 30,
-        robotId: '',
         yellow_time: 0,
         displayAllCode: false,
         robot: null,
@@ -258,12 +208,7 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
     $scope.toggle = function() {
         $scope.m.displayAllCode = !$scope.m.displayAllCode;
     };
-    $scope.stopAcquisition = function() {
-        stopAcquisition();
-    };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    
     $scope.run = function() {
         if ($scope.m.robot === null) {
             return;
@@ -279,15 +224,20 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
             }, timer);
         }, 3000);
     };
+    $scope.stopAcquisition = function() {
+        robotFactory.unregister();
+    };
+    robotFactory.getRobots(setRobot, 1);
     $scope.mphChange();
 }]).controller('lessonFiveController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
+    }
     function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
         if ($scope.m.robot !== null) {
             $scope.m.robot.unregister();
         }
+        robotFactory.unregister();
         $scope.m.running = false;
     }
     function getRobot() {
@@ -302,7 +252,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         led1: 0,
         led2: 255,
         led3: 0,
-        robotId: '',
         displayAllCode: false,
         robot: null,
         running: false
@@ -330,29 +279,19 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         };
         $scope.m.robot.register(regObj);
     };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 1);
 }]).controller('lessonSixController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
+    function setRobot(robots) {
+        $scope.m.robot = robots[0];
+    }
     function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
         if ($scope.m.robot !== null) {
             $scope.m.robot.unregister();
         }
+        robotFactory.unregister();
         $scope.m.running = false;
     }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        $scope.m.robot = robotFactory.getRobot1();
-        if ($scope.m.robot !== null) {
-            stopAcquisition();
-            $scope.m.robotId = $scope.m.robot.id;
-        }
-    }
     $scope.m = {
-        robotId: '',
         displayAllCode: false,
         robot: null,
         running: false
@@ -386,15 +325,15 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         };
         $scope.m.robot.register(regObj);
     };
-    if ($scope.m.robot === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 1);
 }]).controller('lessonSevenAController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
+    function setRobot(robots) {
+        $scope.m.robot1 = robots[0];
+        $scope.m.robot2 = robots[1];
+    }
     var counter = 0;
     function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
+        robotFactory.unregister();
         $scope.m.running = false;
     }
     function getRobot() {
@@ -436,8 +375,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         }, 500);
     }
     $scope.m = {
-        robotId1: '',
-        robotId2: '',
         led1: [255, 0, 0],
         led2: [255, 0, 0],
         led3: [0, 0, 255],
@@ -466,34 +403,16 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         counter = Math.abs(parseInt($scope.m.count, 10)) % 26;
         runLoop(led1, led2, led3, led4);
     };
-    if ($scope.m.robot1 === null || $scope.m.robot2 === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 2);
 }]).controller('lessonSevenBController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
     var counter = 0;
-    function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
-        $scope.m.running = false;
+    function setRobot(robots) {
+        $scope.m.robot1 = robots[0];
+        $scope.m.robot2 = robots[1];
     }
-    function getRobot() {
-        console.log('attempting robot acquisition');
-        if ($scope.m.robot1 === null) {
-            $scope.m.robot1 = robotFactory.getRobot1();
-            if ($scope.m.robot1 !== null) {
-                $scope.m.robotId1 = $scope.m.robot1.id;
-            }
-        }
-        if ($scope.m.robot1 === null) {
-            $scope.m.robot1 = robotFactory.getRobot2();
-            if ($scope.m.robot2 !== null) {
-                $scope.m.robotId2 = $scope.m.robot2.id;
-            }
-        }
-        if ($scope.m.robot1 !== null && $scope.m.robot2 !== null) {
-            stopAcquisition();
-        }
+    function stopAcquisition() {
+        robotFactory.unregister();
+        $scope.m.running = false;
     }
     function runLoop(led1, led2, led3, led4, led5, led6, sleep1, sleep2) {
         $scope.m.robot1.color(led1[0], led1[1], led1[2]);
@@ -514,8 +433,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         }, sleep2);
     }
     $scope.m = {
-        robotId1: '',
-        robotId2: '',
         led1: [255, 0, 0],
         led2: [0, 0, 0],
         led3: [0, 0, 0],
@@ -552,16 +469,16 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         counter = Math.abs(parseInt($scope.m.count, 10)) % 36;
         runLoop(led1, led2, led3, led4, led5, led6, sleep1, sleep2);
     };
-    if ($scope.m.robot1 === null || $scope.m.robot2 === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 2);
 
 }]).controller('lessonSevenCController', ['$scope', '$timeout', '$interval', 'robotFactory', function($scope, $timeout, $interval, robotFactory) {
-    var intervalRef = null;
     var ctr1 = 0, ctr2 = 0, ctr3 = 0;
+    function setRobot(robots) {
+        $scope.m.robot1 = robots[0];
+        $scope.m.robot2 = robots[1];
+    }
     function stopAcquisition() {
-        $interval.cancel(intervalRef);
-        intervalRef = null;
+        robotFactory.unregister();
         $scope.m.running = false;
     }
     function getRobot() {
@@ -635,8 +552,6 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         
     }
     $scope.m = {
-        robotId1: '',
-        robotId2: '',
         led1: [255, 0, 0],
         led2: [0, 0, 0],
         led3: [255, 0, 0],
@@ -662,9 +577,7 @@ chapter2.controller('lessonOneController', ['$scope', '$timeout', '$interval', '
         ctr1 = 5;
         runBlock1();
     };
-    if ($scope.m.robot1 === null || $scope.m.robot2 === null) {
-        intervalRef = $interval(getRobot, 1000);
-    }
+    robotFactory.getRobots(setRobot, 2);
 
 }]);
 
@@ -714,10 +627,84 @@ chapter2.directive('contenteditable', ['$sce', function($sce) {
 /**
  * Created by Adam on 2/22/2015.
  */
-chapter2.factory('robotFactory', [function() {
+chapter2.factory('robotFactory', ['$interval', function($interval) {
     var robot1 = null;
     var robot2 = null;
+
+    // Internal variables.
+    var _intervalRef = null;
+    var _num = 0;
+    var _cb = function() {};
+    var _robots = [];
+
+    /* This function will fetch the robots once they are available. */
+    function fetchRobots() {
+        console.log('attempting robot acquisition');
+        var acquired = Linkbots.acquire(_num);
+        if (acquired.robots.length === _num) {
+            _cb(acquired.robots);
+            _robots = acquired.robots;
+            $interval.cancel(_intervalRef);
+            _intervalRef = null;
+            return;
+        } else if (acquired.robots.length > 0) {
+            for (var i = 0; i < acquired.robots.length; i++) {
+                Linkbots.relinquish(acquired.robots[i]);
+            }
+        }
+        if (_intervalRef === null) {
+            _intervalRef = $interval(fetchRobots, 1000);
+        }
+    }
+    
+    /* This function relinquishes the robots */
+    function relinquish(robots) {
+        if (robots.length > 0) {
+            for (var i = 0; i < robots.length; i++) {
+                Linkbots.relinquish(robots[i]);
+            }
+        }
+    }
+
+    /* If a change has occurred in the robot manager, reaquire the robots. */
+    Linkbots.managerEvents.on('changed', function() {
+        if (_robots.length > 0) {
+            relinquish(_robots);
+            _robots = [];
+        }
+        if (_num > 0) {
+            fetchRobots();
+        }
+    });
+    
+    /**
+     * Exported factory.
+     */
     var robotFactory = {};
+
+    robotFactory.getRobots = function(callback, number) {
+        _cb = callback;
+        _num = number;
+        if (_robots.length == _num) {
+            return _cb(_robots);
+        } else if (_robots.length > 0) {
+            relinquish(_robots);
+            _robots = [];
+            fetchRobots();
+        } else {
+            fetchRobots();
+        }
+    };
+
+    robotFactory.unregister = function() {
+        _cb = function() {};
+        _num = 0;
+        if (_intervalRef !== null) {
+            $interval.cancel(_intervalRef);
+            _intervalRef = null;
+        }
+    };
+    
     robotFactory.getRobot1 = function() {
         if (robot1 === null) {
             var acquired = Linkbots.acquire(1);

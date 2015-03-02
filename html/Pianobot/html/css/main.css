@@ -24,3 +24,34 @@ body {
 [contenteditable="true"] {
     text-decoration: underline;
 }
+.piano-key {
+    cursor: pointer;
+}
+
+.piano-key.white {
+    fill: white;
+    stroke: black;
+    transition: fill 0.15s;
+    transition-timing-function: ease;
+}
+
+.piano-key.black {
+    fill: black;
+    stroke: black;
+    transition: fill 0.15s;
+    transition-timing-function: ease;
+}
+
+.piano-key.playing {
+    fill: blue;
+}
+.piano {
+    -webkit-user-select: none;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    overflow: hidden;
+    min-width: 500px;
+}
+.piano-keys {
+    float: left;
+}

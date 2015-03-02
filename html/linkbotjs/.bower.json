@@ -31,11 +31,11 @@
     "jasmine-jquery": "~2.0.3",
     "jquery": "~2.1.1"
   },
-  "_release": "5df755122e",
+  "_release": "0eaf474008",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "5df755122e97edf34778caf4c5e78d8b91c170d5"
+    "commit": "0eaf474008c343503414df500756152f8ae0a6ad"
   },
   "_source": "git@github.com:BaroboRobotics/linkbotjs.git",
   "_target": "develop",

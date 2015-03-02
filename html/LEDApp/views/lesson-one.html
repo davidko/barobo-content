@@ -14,7 +14,7 @@
 import linkbot
 import <span class="hljs-keyword">time</span>
 
-robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robotId"></span>')</div>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
 robot.setBuzzerFrequency(<span class="hljs-number" ng-model="m.buzzerFrequency" contenteditable="true" ng-change="change(this)">1046.5</span>)
 <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span ng-model="m.sleep1" contenteditable="true" class="hljs-number">1.5</span>)
 robot.setBuzzerFrequency(<span class="hljs-number">0</span>)
@@ -23,7 +23,7 @@ robot.setLedColor(<span class="hljs-number" ng-model="m.led1" contenteditable="t
             </code></pre>
             <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
         </div>
-        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robotId == '' || m.running]" ng-click="run()">Run</button>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
         <h2>Explore</h2>
         <p>Change the color to green and then to blue by changing the position of the number 255.</p>
         <img src="img/led-colors.png" alt="RGB illumination" />

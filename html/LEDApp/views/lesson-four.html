@@ -18,7 +18,7 @@
 import linkbot
 import <span class="hljs-keyword">time</span>
 
-robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robotId"></span>')</div>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
 mph=float(input(<span class="hljs-string">"mph="</span>))
 <span class="hljs-keyword">print</span>(mph)
 yellow_time=(<span class="hljs-number">1.467</span>*mph/<span class="hljs-number">15.0</span>+<span class="hljs-number">1.5</span>)
@@ -40,7 +40,7 @@ robot.setLedColor(<span class="hljs-number">255</span>,<span class="hljs-number"
                     <input ng-change="mphChange()" type="number" id="mph" class="form-control" placeholder="MPH" ng-model="m.mph" />
                 </div>
             </div>
-            <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robotId == '' || m.running]" ng-click="run()">Run</button>
+            <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
         </form>
         <p style="margin-top: 10px;">
             Yellow Time = <span ng-bind="m.yellow_time"></span>
