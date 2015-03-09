@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 7</h1>
+        <h2>Objective</h2>
+        <p>Making the Linkbot run in a circle requires some calculation. The outside wheel and inside wheel will be
+            traveling different distances. This will require a different number of revolutions on each wheel. The
+            center of the turn will be the center of the Linkbot. The ratio of distance traveled can be calculated to
+            determine the relative speeds of the inside and outside wheels.
+        </p>
+
+        <div class="code-snippet">
+            <pre><code class="hljs coffeescript"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># File: ch3lesson7.py</span>
+
+<span class="hljs-reserved">import</span> linkbot
+
+<span class="hljs-comment"># Change the robot ID shown below to the ID of your Linkbot.</span>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
+radius=<span class="hljs-built_in">float</span> (input(<span class="hljs-string">'radius:'</span>)) <span class="hljs-comment">#float the input to avoid error</span>
+ratio=((radius+(<span class="hljs-number">3.6975</span>/<span class="hljs-number">2</span>))/(radius-(<span class="hljs-number">3.6975</span>/<span class="hljs-number">2</span>))) <span class="hljs-comment">#ratio of outside wheel to inside wheel</span>
+<span class="hljs-built_in">print</span>(ratio)
+<span class="hljs-comment">#degrees of outside wheel rotation</span>
+outside_degrees=-((((radius+(<span class="hljs-number">3.6975</span>)/<span class="hljs-number">2</span>)/<span class="hljs-number">1.69</span>))*<span class="hljs-number">360</span>) 
+<span class="hljs-comment">#degrees of inside wheel rotation</span>                
+inside_degrees=((((radius-(<span class="hljs-number">3.6975</span>)/<span class="hljs-number">2</span>)/<span class="hljs-number">1.69</span>))*<span class="hljs-number">360</span>)
+<span class="hljs-built_in">print</span>(outside_degrees)
+<span class="hljs-built_in">print</span>(inside_degrees)
+robot.setJointSpeeds(<span class="hljs-number">90</span>,<span class="hljs-number">0</span>,int(<span class="hljs-number">90</span>*ratio)) <span class="hljs-comment"># speed of wheels</span>
+<span class="hljs-comment"># runs wheels the number of degrees to complete a circle</span>
+robot.move(inside_degrees,<span class="hljs-number">0</span>,outside_degrees) 
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="radius">Miles Per Hour</label>
+                <div class="input-group">
+                    <div class="input-group-addon">Radius:</div>
+                    <input ng-change="radiusChange()" type="number" id="radius" class="form-control" placeholder="Radius" ng-model="m.radius" />
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        </form>
+        <p style="margin-top: 10px;">
+            Ratio = <span ng-bind="m.ratio"></span>
+        </p>
+        <p>
+            Outside Degrees = <span ng-bind="m.outsideDegrees"></span>
+        </p>
+        <p>
+            Inside Degrees = <span ng-bind="m.insideDegrees"></span>
+        </p>
+        <h2>Explore</h2>
+        <p>The correct measure for the radius of the wheel is critical for this program to work properly.
+            Carefully measure the wheels on your Linkbot and adjust the program as needed to accurately complete
+            a circle. Also measure the distance between the wheels and adjust the program accordingly.
+        </p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-six" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+        </div>
+    </div>
+
+</div>

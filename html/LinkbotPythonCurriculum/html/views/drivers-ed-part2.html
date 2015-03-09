@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Linkbot Driver's Ed: Part 2</h1>
+
+        <p>Now, try this.</p>
+
+        <div class="code-snippet">
+            <pre><code class="hljs coffeescript"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># File: ch3ex2.py</span>
+
+<span class="hljs-reserved">import</span> linkbot
+
+<span class="hljs-comment"># Change the robot ID shown below to the ID of your Linkbot.</span>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
+robot.setJointSpeeds(<span class="hljs-number">90</span>, <span class="hljs-number">90</span>, <span class="hljs-number">90</span>)
+robot.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-360</span>)
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        <p style="margin-top: 10px;">
+            Notice that the <code class="function">move()</code> function has three arguments. Each argument controls how many degrees to move a
+            particular motor: the first motor controls motor 1, the second controls motor 2, and the third controls
+            motor 3. Not all motors are available on all models of Linkbot. If you have a Linkbot-I, only motors 1
+            and 3 are available, so the second argument would be ignored.
+        </p>
+        <div class="clearfix">
+            <div class="thumbnail pull-right">
+                <div class="caption">
+                    Figure 3.1.  The right-hand rule.
+                </div>
+                <img src="img/right_hand_rule.svg" width="90" alt="The right hand rule" />
+            </div>
+            <p>
+                Also note that negative values make the robot's motor spin clockwise and positive values make the motor
+                spin counter-clockwise. The choice of negative values being clockwise and positive values being
+                counter-clockwise follows a concept known as the "right-hand rule" and is common in the fields of
+                math and engineering.
+            </p>
+        </div>
+        <hr />
+        <div class="clearfix">
+            <a href="#/drivers-ed-part1" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/drivers-ed-explore" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+
+</div>

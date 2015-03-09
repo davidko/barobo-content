@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 2</h1>
+        <h2>Objective</h2>
+        <p>We will focus on turning the Linkbot in this lesson. Get the Linkbot to turn to the left, pivoting on 
+            the right wheel. The motion of the Linkbot can be controlled running the motors a certain number of degrees.
+            Getting the Linkbot to accurately turn 90 degrees can be tricky.  You will notice the speed the motors run
+            is set at (90,0,90) this means the wheels will rotate at 90 degrees per second. Try to adjust the degrees
+            to get the Linkbot to make a perfect 90 degree turn.</p>
+
+        <div class="code-snippet">
+            <pre><code class="hljs coffeescript"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># File: ch3lesson2.py</span>
+
+<span class="hljs-reserved">import</span> linkbot
+
+<span class="hljs-comment"># Change the robot ID shown below to the ID of your Linkbot.</span>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
+robot.setJointSpeeds(<span ng-model="m.speed[0]" contenteditable="true" class="hljs-number">90</span>, <span ng-model="m.speed[1]" contenteditable="true" class="hljs-number">90</span>, <span ng-model="m.speed[2]" contenteditable="true" class="hljs-number">90</span>)
+robot.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-190</span>)
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        <h2>Explore</h2>
+        <p>Adjust the speed of the Linkbot to get the best 90 degree turn. Try the turns on different surfaces to see
+            how it reacts.  The maximum speed the motors will turn is 240 degrees per second.
+        </p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-one" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-three" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+
+</div>
