@@ -12,11 +12,11 @@
   "private": true,
   "devDependencies": {},
   "homepage": "https://github.com/BaroboRobotics/Pianobot",
-  "_release": "b499c4b3a7",
+  "_release": "17515edc9a",
   "_resolution": {
     "type": "branch",
     "branch": "develop",
-    "commit": "b499c4b3a71f991c70e7d8a5bd8bc2f45296d1c6"
+    "commit": "17515edc9a4766e5b2204aa760b4df2227099382"
   },
   "_source": "git@github.com:BaroboRobotics/Pianobot.git",
   "_target": "develop",
