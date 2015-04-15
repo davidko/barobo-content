@@ -57,8 +57,8 @@
         </div>
         <div class="row" id="add-pathway">
             <div class="col-md-12 col-lg-12 col-sm-12">
-                <button type="button" id="add-pathway-button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#addPathways">
-                    Add Learning Pathway
+                <button type="button" id="add-pathway-button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addPathways">
+                    + Add Learning Pathway
                 </button>
 
                 <!-- Add Pathway Dialog -->
@@ -153,6 +153,7 @@
               $('.labs-slider').addClass('hidden');
               for (var i = 0; i < pathways.length; i++) {
                   $('#' + pathways[i] + '-pathway').removeClass('hidden');
+                  $('#add-' + pathways[i] + '-checkbox').prop('checked', true);
               }
           }
           $('#save-pathway').click(function() {
