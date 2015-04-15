@@ -1,49 +1,6 @@
 /**
  * This class exists for testing outside of Barobo browser.
  */
-var baroboBridge = (function(main) {
-    "use strict";
-    
-    if (main.baroboBridge && main.baroboBridge !== null) {
-        return main.baroboBridge;
-    } else {
-        var _i, _j, _len, _len1, obj, signals, methods, k;
-        methods = ['angularSpeed', 'availableFirmwareVersions', 'buttonChanged', 'buzzerFrequency',
-            'connectRobot', 'disconnectRobot', 'enableButtonSignals', 'enableMotorSignals', 'enableAccelSignals', 'disableAccelSignals',
-            'disableButtonSignals', 'disableMotorSignals', 'firmwareVersion', 'getMotorAngles', 'moveTo', 'move',
-            'scan', 'stop', 'moveContinuous'];
-        signals = ['accelChanged', 'motorChanged', 'buttonChanged'];
-        obj = {
-            mock: true
-        };
-        var randomInt = function(min,max) {
-            return Math.floor(Math.random()*(max-min+1)+min);
-        };
-        var colorMap = {};
-        var emptyFunction = function() { };
-        for (_i = 0, _len = methods.length; _i < _len; _i++) {
-            k = methods[_i];
-            obj[k] = emptyFunction;
-        }
-        for (_j = 0, _len1 = signals.length; _j < _len1; _j++) {
-            k = signals[_j];
-            obj[k] = {
-                connect: emptyFunction,
-                disconnect: emptyFunction
-            };
-        }
-        obj.getLEDColor = function(id) {
-            if (!colorMap[id]) {
-                colorMap[id] = {red:randomInt(0,255), green:randomInt(0,255), blue:randomInt(0,255)};
-            }
-            return colorMap[id];
-        };
-        obj.setLEDColor = function(id, r, g, b) {
-            colorMap[id] = {red:r, green:g, blue:b};
-        };
-        return obj;
-    }
-})(this);
 var asyncBaroboBridge = (function(main) {
     "use strict";
     if (main.asyncBaroboBridge && main.asyncBaroboBridge !== null) {
@@ -136,6 +93,7 @@ process.browser = true;
 process.env = {};
 process.argv = [];
 process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
 
 function noop() {}
 
@@ -18448,6 +18406,7 @@ var callbacks = {};
 var buttonEventCallbacks = {};
 var encoderEventCallbacks = {};
 var accelerometerEventCallbacks = {};
+var jointEventCallbacks = {};
 
 function addCallback(id, func) {
     var token = requestId++;
@@ -18510,7 +18469,11 @@ asyncBaroboBridge.encoderEvent.connect(
 );
 asyncBaroboBridge.jointEvent.connect(
     function(id, jointNumber, eventType, timestamp) {
-        // TODO implement this.
+        var objs = jointEventCallbacks[id];
+        for (var i = 0; i < objs.length; i++) {
+            var obj = objs[i];
+            obj.callback(obj.robot, obj.data, {jointNumber: jointNumber, eventType: eventType, timestamp: timestamp});
+        }
     }
 );
 asyncBaroboBridge.accelerometerEvent.connect(
@@ -18556,6 +18519,10 @@ function rgbToHex(value) {
     return val;
 }
 
+function sign(value) {
+    return (value > 0) - (value < 0);
+}
+
 function colorToHex(color) {
     var red = rgbToHex(color.red);
     var green = rgbToHex(color.green);
@@ -18575,7 +18542,9 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     var wheelRadius = 1.75;
     var joinDirection = [0, 0, 0];
     var driveToValue = null;
+    var driveToPos = null;
     var driveToCalled = false;
+    var limiter = 50;
     
     bot.enums = enumConstants;
     bot.firmwareVerions = firmwareVersions;
@@ -18588,8 +18557,21 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         } else {
             if (driveToValue !== null) {
                 bot.driveTo(driveToValue[0], driveToValue[1], driveToValue[2]);
+                driveToValue = null;
             }
-            
+        }
+    }
+    function driveToLimitedCallback(error) {
+        driveToCalled = false;
+        if (error.code !== 0) {
+            // TODO add error handling code here.
+            window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
+        } else {
+            if (driveToValue !== null) {
+                var location = [driveToValue[0], driveToValue[1], driveToValue[2]];
+                driveToValue = null;
+                bot.driveToLimiter(location[0], location[1], location[2]);
+            }
         }
     }
     
@@ -18732,6 +18714,53 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         }
     };
 
+    bot.driveToLimiter = function(r1, r2, r3, p1, p2, p3) {
+        if (status != 0) {
+            if (typeof(p1) !== 'undefined' && typeof(p2) !== 'undefined' && typeof(p3) !== 'undefined') {
+                driveToPos = [p1, p2, p3];
+            }
+            if (driveToCalled) {
+                driveToValue = [r1, r2, r3];
+            } else {
+                driveToCalled = true;
+                var setvalue = false, location = [r1, r2, r3];
+
+                if (Math.abs(driveToPos[0] - r1) > limiter) {
+                    setvalue = true;
+                    if (driveToPos[0] < r1) {
+                        location[0] = driveToPos[0] + limiter;
+                    } else {
+                        location[0] = driveToPos[0] - limiter;
+                    }
+                }
+                if (Math.abs(driveToPos[1] - r2) > limiter) {
+                    setvalue = true;
+                    if (driveToPos[1] < r2) {
+                        location[1] = driveToPos[1] + limiter;
+                    } else {
+                        location[1] = driveToPos[1] - limiter;
+                    }
+                }
+                if (Math.abs(driveToPos[2] - r3) > limiter) {
+                    setvalue = true;
+                    if (driveToPos[2] < r3) {
+                        location[2] = driveToPos[2] + limiter;
+                    } else {
+                        location[2] = driveToPos[2] - limiter;
+                    }
+                }
+                var token = addCallback(id, driveToLimitedCallback);
+                asyncBaroboBridge.driveTo(id, token, 7, location[0], location[1], location[2]);
+                if (setvalue) {
+                    driveToValue = [r1, r2, r3];
+                    bot.wheelPositions(function(data) {
+                        driveToPos = data.values;
+                    });
+                }
+            }
+        }
+    };
+
     bot.moveForward = function() {
         joinDirection[0] = 1;
         joinDirection[2] = -1;
@@ -18797,6 +18826,19 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 }
             });
             asyncBaroboBridge.getJointAngles (id, token);
+        }
+    };
+
+    bot.getJointSpeeds = function(callback) {
+        if (status != 0) {
+            var token = addCallback(id, function(error, data) {
+                if (error.code == 0) {
+                    callback(data);
+                } else {
+                    window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
+                }
+            });
+            asyncBaroboBridge.getJointSpeeds(id, token);
         }
     };
 
@@ -18897,6 +18939,13 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 asyncBaroboBridge.enableEncoderEvents(id, token, granularity, true);
             }
         }
+        if (connections.hasOwnProperty('joint')) {
+            obj = connections.joint;
+            jointEventCallbacks.hasOwnProperty(id) || (jointEventCallbacks[id] = []);
+            jointEventCallbacks[id].push({robot:bot, callback:obj.callback, data:obj.data});
+            token = addCallback(id, genericCallback);
+            asyncBaroboBridge.enableJointEvents(id, token, true);
+        }
         if (connections.hasOwnProperty('accel')) {
             obj = connections.accel;
             accelerometerEventCallbacks.hasOwnProperty(id) || (accelerometerEventCallbacks[id] = []);
@@ -18919,6 +18968,10 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         if (accelerometerEventCallbacks.hasOwnProperty(id) && accelerometerEventCallbacks[id].length > 0) {
             token = addCallback(id, genericCallback);
             asyncBaroboBridge.enableAccelerometerEvents(id, token, false);
+        }
+        if (jointEventCallbacks.hasOwnProperty(id) && jointEventCallbacks[id].length > 0) {
+            token = addCallback(id, genericCallback);
+            asyncBaroboBridge.enableJointEvents(id, token, false);
         }
     };
     bot.event = eventlib.Events.extend({});
@@ -18977,6 +19030,32 @@ window.Linkbots = (function(){
     mod.addNavigationItems = function(navItemArray) {
         manager.addNavigationItems(navItemArray);
     };
+    mod.setPathways = function(pathways) {
+        var config = asyncBaroboBridge.configuration;
+        if (!config) {
+            config = {pathways:[]};
+        } else if (!config.hasOwnProperty('pathways')) {
+            config.pathways = [];
+        }
+        if (Array.isArray(pathways)) {
+            config.pathways = pathways;
+        } else {
+            config.pathways = [pathways];
+        }
+        asyncBaroboBridge.configuration = config;
+        if (JSON.stringify(asyncBaroboBridge.configuration) !== JSON.stringify(config)) {
+            throw {message:'Unable to write to the configuration file', error:1};
+        }
+    };
+    mod.getPathways = function() {
+        var config = asyncBaroboBridge.configuration;
+        if (!config) {
+            return [];
+        } else if (!config.hasOwnProperty('pathways')) {
+            return [];
+        }
+        return config.pathways;
+    };
     mod.managerEvents = manager.event;
     mod.uiEvents = uimanager.uiEvents;
 
@@ -19020,6 +19099,7 @@ var linkbotLib = require('./linkbot.jsx');
 
 var uiEvents = eventlib.Events.extend({});
 var rad2deg = 180/Math.PI;
+var positions = [0, 0, 0];
 
 function getPosition(element) {
     var xPosition = 0;
@@ -19876,15 +19956,22 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
                 0: {
                     distance: 1,
                     callback: function(robot, data, event) {
+                        positions[0] = event.position;
                         me.refs.knobJoint1.setValue(event.position, false);
                     }
                 },
                 2: {
                     distance: 1,
                     callback: function(robot, data, event) {
+                        positions[2] = event.position;
                         me.refs.knobJoint2.setValue(event.position, false);
                     }
                 }
+            },
+            joint: {
+              callback: function(jointNumber, eventType, timestamp) {
+                  // TODO implement this.
+              }
             },
             button: { }
         };
@@ -19903,8 +19990,9 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
                 window.console.log('B button pressed');
             }
         };
-        linkbot.angularSpeed(50, 0, 50);
-        
+
+        //linkbot.angularSpeed(50, 0, 50);
+
         this.setState({
             linkbot:linkbot,
             title:linkbot.id,
@@ -19924,6 +20012,7 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             me.refs.speedJoint2.setValue(50);
             linkbot.wheelPositions(function(data) {
                 var pos = data.values;
+                positions = pos;
                 me.setState({
                     linkbot:me.state.linkbot,
                     title:me.state.title,
@@ -19941,6 +20030,25 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
                     me.refs.knobJoint2.setValue(pos[2], false);
                 });
             });
+        });
+        linkbot.getJointSpeeds(function(data) {
+            var d1 = Math.round(data[0]);
+            var d2 = Math.round(data[2]);
+            me.setState({
+                linkbot:me.state.linkbot,
+                title:me.state.title,
+                m1Value: d1,
+                m2Value: d2,
+                wheel1: me.state.wheel1,
+                wheel2: me.state.wheel2,
+                freq: me.state.freq,
+                x: me.state.x,
+                y: me.state.y,
+                z: me.state.z,
+                mag: me.state.mag
+            });
+            me.refs.speedJoint1.setValue(d1);
+            me.refs.speedJoint2.setValue(d2);
         });
     },
     knob1Changed: function(data) {
@@ -19961,7 +20069,7 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             z: this.state.z,
             mag: this.state.mag
         }, function() {
-            me.state.linkbot.driveTo(data.value, 0, me.state.wheel2);
+            me.state.linkbot.driveToLimiter(data.value, 0, positions[2], positions[0], 0, positions[2]);
         });
     },
     knob2Changed: function(data) {
@@ -19982,7 +20090,7 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             z: this.state.z,
             mag: this.state.mag
         }, function() {
-            me.state.linkbot.driveTo(me.state.wheel1, 0, data.value);
+            me.state.linkbot.driveToLimiter(positions[0], 0, data.value, positions[0], 0, positions[2]);
         });
     },
     motor1Up: function() {
