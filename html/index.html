@@ -11,20 +11,16 @@
     </head>
 <body>
     <div class="container">
-        <div class="row labs-slider hidden" id="python-pathway">
-            <h2 id="python-slide">Python</h2>
+        <div class="row labs-slider hidden" id="gettingstarted-pathway">
+            <h2 id="gettingstarted-slide">LinkbotLabs</h2>
 
             <div class="labs-slider-wrapper">
                 <ul class="labs-slider-container">
                     <li><a href="AppManagerApp/getting_started2.html" id="getting-started-icon">Getting Started</a></li>
-                    <li><a href="AppManagerApp/introductory_python/index.html" id="intro-python-icon">Intro Python</a></li>
-                    <li><a href="PoseTeachingApp/html/index.html" id="pose-coding-icon">Pose Coding</a></li>
-                    <li><a href="AppManagerApp/beginner_python/index.html" id="beginner-python-icon">Beginner Python</a>
-                    </li>
                 </ul>
             </div>
-            <a href="javascript:;" class="labs-arrow-left"><span class="labs-orange-left"></span></a>
-            <a href="javascript:;" class="labs-arrow-right"><span class="labs-orange-right"></span></a>
+            <a href="javascript:;" class="labs-arrow-left"><span class="labs-green-left"></span></a>
+            <a href="javascript:;" class="labs-arrow-right"><span class="labs-green-right"></span></a>
         </div>
         <div class="row labs-slider hidden" id="cstem-pathway">
             <h2 id="cstem-slide">C-STEM... Preview!</h2>
@@ -37,6 +33,20 @@
             </div>
             <a href="javascript:;" class="labs-arrow-left"><span class="labs-blue-left"></span></a>
             <a href="javascript:;" class="labs-arrow-right"><span class="labs-blue-right"></span></a>
+        </div>
+        <div class="row labs-slider hidden" id="python-pathway">
+            <h2 id="python-slide">Python</h2>
+
+            <div class="labs-slider-wrapper">
+                <ul class="labs-slider-container">
+                    <li><a href="AppManagerApp/introductory_python/index.html" id="intro-python-icon">Intro Python</a></li>
+                    <li><a href="PoseTeachingApp/html/index.html" id="pose-coding-icon">Pose Coding</a></li>
+                    <li><a href="AppManagerApp/beginner_python/index.html" id="beginner-python-icon">Beginner Python</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="javascript:;" class="labs-arrow-left"><span class="labs-orange-left"></span></a>
+            <a href="javascript:;" class="labs-arrow-right"><span class="labs-orange-right"></span></a>
         </div>
         <div class="row labs-slider hidden" id="comingsoon-pathway">
             <h2>Coming Soon!</h2>
@@ -57,7 +67,7 @@
         </div>
         <div class="row" id="add-pathway">
             <div class="col-md-12 col-lg-12 col-sm-12">
-                <button type="button" id="add-pathway-button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#addPathways">
+                <button type="button" id="add-pathway-button" class="btn btn-lg pull-right" data-toggle="modal" data-target="#addPathways">
                     <span style="font-size: 22px; text-shadow: 2px 2px #222; font-weight: bold;">+ Learning Pathways</span>
                 </button>
 
@@ -70,6 +80,11 @@
                         </div>
                         <div class="modal-body">
                             <form onsubmit="return false;">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="add-gettingstarted-checkbox"> Getting Started
+                                    </label>
+                                </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" id="add-cstem-checkbox" /> C-STEM Pathway
@@ -166,6 +181,9 @@
               }
               if ($('#add-comingsoon-checkbox').is(':checked')) {
                   pathways.push('comingsoon');
+              }
+              if ($('#add-gettingstarted-checkbox').is(':checked')) {
+                  pathways.push('gettingstarted');
               }
               Linkbots.setPathways(pathways);
               showPathways();

@@ -85,8 +85,8 @@
 	font-weight: bold;
 }
 #getting-started-icon {
-	border: 1px solid #ea6300;
-	background: #ea6300 url('../images/GettingStartedIcon.png') no-repeat top left;
+	border: 1px solid #3e8f3e;
+	background: #5cb85c url('../images/GettingStartedIcon.png') no-repeat top left;
 	background-size: 170px 275px;
 	color: #fff;
 }
@@ -154,7 +154,7 @@
 	height: 170px;
 	padding-top: 140px;
 }
-.labs-orange-right, .labs-orange-left, .labs-blue-right, .labs-blue-left, .labs-default-right, .labs-default-left {
+.labs-orange-right, .labs-orange-left, .labs-blue-right, .labs-blue-left, .labs-default-right, .labs-default-left,  .labs-green-right, .labs-green-left {
 	width: 28px;
 	height: 86px;
 	display: inline-block;
@@ -165,6 +165,12 @@
 }
 .labs-orange-left {
 	background: url('../images/python-left.png') no-repeat;
+}
+.labs-green-right {
+	background: url('../images/gettingstarted-right.png') no-repeat;
+}
+.labs-green-left {
+	background: url('../images/gettingstarted-left.png') no-repeat;
 }
 .labs-blue-right {
 	background: url('../images/cstem-right.png') no-repeat;
@@ -189,5 +195,12 @@
 	position: absolute;
 }
 #add-pathway {
-	margin-bottom: 30px;
+	margin-top: 200px;
+	margin-bottom: 30px
+}
+
+#add-pathway-button {
+	background-color: #cfcfcf;
+	color: #f9f9f9;
+	border-color: #9f9f9f;
 }
