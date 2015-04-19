@@ -81,25 +81,22 @@
                         </div>
                         <div class="modal-body">
                             <form onsubmit="return false;">
+
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="add-gettingstarted-checkbox"> Getting Started
-                                    </label>
+                                    <input type="checkbox" id="add-gettingstarted-checkbox" />
+                                    <label style="margin-left: 10px;" for="add-gettingstarted-checkbox"> Getting Started</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="add-cstem-checkbox" /> C-STEM Pathway
-                                    </label>
+                                    <input type="checkbox" id="add-cstem-checkbox" />
+                                    <label style="margin-left: 10px;" for="add-cstem-checkbox"> C-STEM Pathway</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="add-python-checkbox" /> Python Pathway
-                                    </label>
+                                    <input type="checkbox" id="add-python-checkbox" />
+                                    <label style="margin-left: 10px;" for="add-python-checkbox"> Python Pathway</label>
                                 </div>
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="add-comingsoon-checkbox"> Coming Soon Pathway
-                                    </label>
+                                    <input type="checkbox" id="add-comingsoon-checkbox" />
+                                    <label style="margin-left: 10px;" for="add-comingsoon-checkbox"> Coming Soon Pathway</label>
                                 </div>
                             </form>
                         </div>
@@ -116,6 +113,7 @@
     <script type="text/javascript" src="jquery/dist/jquery.min.js"></script>
     <script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.min.js"></script>
     <script type="text/javascript" src="AppManagerApp/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-checkbox/bootstrap-checkbox.min.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -127,71 +125,72 @@
 
     </script>
     <script>
-      $(function() {
-        $('.labs-slider-container').each(function() {
-          var _size = $(this).children().size();
-          var _width = _size * 175;
-          var _parentWidth = $(this).parent().width();
-          $(this).width(_width);
+        $(function() {
+            $(':checkbox').checkboxpicker();
+            $('.labs-slider-container').each(function() {
+                var _size = $(this).children().size();
+                var _width = _size * 175;
+                var _parentWidth = $(this).parent().width();
+                $(this).width(_width);
 
-          $(this).parent().parent().find('.labs-arrow-left').click(function() {
-            var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
-            var _container = $(this).parent().find('.labs-slider-container');
-            var _p = _container.position();
-            if (_p.left < 0) {
-              var _new_p = _p.left + 175;
-              if (_new_p > 0) {
-                _new_p = 0;
-              }
-              _container.css({'left': _new_p});
-            }
+                $(this).parent().parent().find('.labs-arrow-left').click(function() {
+                    var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
+                    var _container = $(this).parent().find('.labs-slider-container');
+                    var _p = _container.position();
+                    if (_p.left < 0) {
+                        var _new_p = _p.left + 175;
+                        if (_new_p > 0) {
+                            _new_p = 0;
+                        }
+                        _container.css({'left': _new_p});
+                    }
 
-          });
-          $(this).parent().parent().find('.labs-arrow-right').click(function() {
-            var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
-            var _container = $(this).parent().find('.labs-slider-container');
-            var _p = _container.position();
-            if ((_container.width() + _p.left) > _wrapperWidth) {
-              var _new_p = _p.left - 175;
-              if ((_wrapperWidth + _p.left) < 0) {
-                _new_p = _wrapperWidth * -1;
-              }
-              _container.css({'left': _new_p});
-            }
-          });
+                });
+                $(this).parent().parent().find('.labs-arrow-right').click(function() {
+                    var _wrapperWidth = $(this).parent().find('.labs-slider-wrapper').width();
+                    var _container = $(this).parent().find('.labs-slider-container');
+                    var _p = _container.position();
+                    if ((_container.width() + _p.left) > _wrapperWidth) {
+                        var _new_p = _p.left - 175;
+                        if ((_wrapperWidth + _p.left) < 0) {
+                            _new_p = _wrapperWidth * -1;
+                        }
+                        _container.css({'left': _new_p});
+                    }
+                });
+            });
+
         });
 
-      });
-
-      $(document).ready(function () {
-          function showPathways() {
-              var pathways = Linkbots.getPathways();
-              $('.labs-slider').addClass('hidden');
-              for (var i = 0; i < pathways.length; i++) {
-                  $('#' + pathways[i] + '-pathway').removeClass('hidden');
-                  $('#add-' + pathways[i] + '-checkbox').prop('checked', true);
-              }
-          }
-          $('#save-pathway').click(function() {
-              var pathways = [];
-              if ($('#add-cstem-checkbox').is(':checked')) {
-                  pathways.push('cstem');
-              }
-              if ($('#add-python-checkbox').is(':checked')) {
-                  pathways.push('python');
-              }
-              if ($('#add-comingsoon-checkbox').is(':checked')) {
-                  pathways.push('comingsoon');
-              }
-              if ($('#add-gettingstarted-checkbox').is(':checked')) {
-                  pathways.push('gettingstarted');
-              }
-              Linkbots.setPathways(pathways);
-              showPathways();
-          });
-          Linkbots.startOpen(true);
-          showPathways();
-      });
+        $(document).ready(function () {
+            function showPathways() {
+                var pathways = Linkbots.getPathways();
+                $('.labs-slider').addClass('hidden');
+                for (var i = 0; i < pathways.length; i++) {
+                    $('#' + pathways[i] + '-pathway').removeClass('hidden');
+                    $('#add-' + pathways[i] + '-checkbox').prop('checked', true);
+                }
+            }
+            $('#save-pathway').click(function() {
+                var pathways = [];
+                if ($('#add-cstem-checkbox').is(':checked')) {
+                    pathways.push('cstem');
+                }
+                if ($('#add-python-checkbox').is(':checked')) {
+                    pathways.push('python');
+                }
+                if ($('#add-comingsoon-checkbox').is(':checked')) {
+                    pathways.push('comingsoon');
+                }
+                if ($('#add-gettingstarted-checkbox').is(':checked')) {
+                    pathways.push('gettingstarted');
+                }
+                Linkbots.setPathways(pathways);
+                showPathways();
+            });
+            Linkbots.startOpen(true);
+            showPathways();
+        });
     </script>
 </body>
 </html>
