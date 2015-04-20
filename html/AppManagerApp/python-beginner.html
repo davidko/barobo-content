@@ -24,6 +24,12 @@
 </div>
 
 <script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js"></script>
+<script>
+  if (!window.Linkbots) {
+    document.write('<link rel="stylesheet" href="/linkbotjs/dist/linkbot.css">');
+    document.write('<script src="/linkbotjs/dist/linkbot.min.js"><\/script>');
+  }
+</script>
 
 </body>
 </html>
