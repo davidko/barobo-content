@@ -8,29 +8,84 @@
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.css">
   <style type="text/css">
-    p {
-      margin: 10px 0 0 0;
+    .step {
+      padding-bottom: 20px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
     }
   </style>
 </head>
 <body style="position:absolute;top:0;left:30px;right:0;bottom:4px;">
 <div class="container">
-  <div class="row">
+  <div class="row step">
     <div class="col-md-12 col-lg-12 col-sm-12">
-      <p><strong>STEP 1:</strong> Plugin the Linkbot or Z-Link dongle.</p>
+      <h2>Step 1</h2>
+      <p>Plugin the Linkbot or Z-Link dongle.</p>
       <img src="images/getting-started/linkbot.png" alt="Linkbot" width="223" height="157" />
       <img src="images/getting-started/z-dongle.png" alt="Z-Dongle" width="171" height="123" />
-      <p><strong>STEP 2:</strong> Turn on the linkbot by pressing and holding the power button for 3 seconds.</p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h2>Step 2</h2>
+      <p>Turn on the linkbot by pressing and holding the power button for 3 seconds.</p>
       <img src="images/getting-started/hold-power-button.png" alt="Hold Power Button" width="222" height="182" />
-      <p><strong>STEP 3:</strong> Open the Robot Manager along the left edge of the screen.</p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h2>Step 3</h2>
+      <p>Open the Robot Manager along the left edge of the screen.</p>
       <img src="images/getting-started/robomgr-open.png" alt="Open Robot Manager" width="31" height="161" />
-      <p><strong>STEP 4:</strong> Enter the Linkbot ID into the Robot Manager and push "Add." This will add a Linkbot robot to the Robot Manager, shown below.</p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h2>Step 4</h2>
+      <p>Enter the Linkbot ID into the Robot Manager and push "Add." This will add a Linkbot robot to the Robot Manager, shown below.</p>
       <img src="images/getting-started/linkbot-tab.png" alt="Linkbot Robot" width="211" height="100" />
-      <p><strong>STEP 5:</strong> Open the Robot Control Panel by pressing the white expand arrow next to the Linkbot robot that was added.</p>
-      <img src="images/getting-started/control-panel.png" alt="Control Panel" width="434" height="320" />
-      <p><strong>STEP 6:</strong> If the control panel is too big or too small for your screen then you can zoom in or out using the buttons in the top right, as shown below.</p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h2>Step 5</h2>
+      <p>Open the Robot Control Panel by pressing the white expand arrow next to the Linkbot robot that was added.</p>
+      <img src="images/getting-started/control-panel.png" alt="Control Panel" width="624" height="528" style="margin-bottom: 10px;" />
+      <p>
+        From here you can read your Linkbot’s encoder data and drive its motors to specific positions (2), adjust its motor speeds (3),
+        move its motors individually (4), and, if you’re using a Linkbot-I, move its motors coordinately in a car-like fashion (5).
+        We’ll cover some of this in detail later.
+      </p>
+      <p>
+        Test out the motors by clicking on the arrow buttons (4 and 5). Try adjusting their speed while they’re moving (3).
+        To stop them, press the stop button at the bottom.
+      </p>
+      <p>
+        To the right of the motor control column are a buzzer control bar and an accelerometer data display. Try beeping
+        the buzzer at various frequencies. Shake your Linkbot and you should see the accelerometer sliders dance.
+      </p>
+      <p>
+        Notice that the robot control bar changes when its control panel is expanded: you can modify your Linkbot’s LED
+        color with the color button and remove it from your robot manager with the trash button.
+      </p>
+      <p>
+        Important: The robot control panel generates a lot of radio traffic, especially if the Linkbot is being
+        manipulated by hand. Linkbot users sharing the same room should minimize the amount of time they have their
+        control panels expanded, especially if they notice connectivity problems.
+      </p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h2>Step 6</h2>
+      <p>If the control panel is too big or too small for your screen then you can zoom in or out using the buttons in the top right, as shown below.</p>
       <img src="images/getting-started/zoom-buttons.png" alt="Zoom Buttons" width="114" height="62" />
-      <p><strong>STEP 7:</strong> To go back to the Main Page click the Linkbot Labs icon at the top left of the screen.  Later Gator!</p>
+    </div>
+  </div>
+  <div class="row step">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h3>Step 7</h3>
+      <p>To go back to the Main Page click the Linkbot Labs icon at the top left of the screen.  Later Gator!</p>
       <img src="images/getting-started/logo.png" alt="Logo" width="233" height="66" />
     </div>
   </div>
@@ -45,8 +100,8 @@
 </script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-22263798-3', 'auto');
