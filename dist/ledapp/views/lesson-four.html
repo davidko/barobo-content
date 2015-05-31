@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 4 - Getting the LED to change color based on a set amount of time, like a traffic light.</h1>
+        <h2>Objective</h2>
+        <p>In this lesson you will learn how a traffic signal micro processor is programmed.
+            You will control the amount of time the light stays yellow based on the posted speed
+            limit and the accepted speed limit, that is, the speed the traffic actually moves.
+            According to highway and safety engineers the safe stopping rate for an automobile is
+            15 feet/second. Adding reaction time of about 1.5 seconds to decide you are going to
+            stop, at 30 mph (44 feet/second) it would take 4 seconds to safely stop a car. A simplified
+            formula is stop_time=(1.467*MPH)/15+1.5. Design a traffic light that safely allows a car to
+            stop in a 30 MPH zone.</p>
+        <div class="code-snippet">
+            <pre><code class="hljs python"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python3</span>
+
+<span class="hljs-comment"># Filename: Lesson04.py</span>
+
+import linkbot
+import <span class="hljs-keyword">time</span>
+
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
+mph=float(input(<span class="hljs-string">"mph="</span>))
+<span class="hljs-keyword">print</span>(mph)
+yellow_time=(<span class="hljs-number">1.467</span>*mph/<span class="hljs-number">15.0</span>+<span class="hljs-number">1.5</span>)
+<span class="hljs-keyword">print</span>(yellow_time)
+<span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span class="hljs-number">3</span>)
+robot.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>)
+<span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span class="hljs-number">3</span>)
+robot.setLedColor(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>)
+<span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(yellow_time)
+robot.setLedColor(<span class="hljs-number">255</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="mph">Miles Per Hour</label>
+                <div class="input-group">
+                    <div class="input-group-addon">MPH:</div>
+                    <input ng-change="mphChange()" type="number" id="mph" class="form-control" placeholder="MPH" ng-model="m.mph" />
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        </form>
+        <p style="margin-top: 10px;">
+            Yellow Time = <span ng-bind="m.yellow_time"></span>
+        </p>
+        <h3>Explore</h3>
+        <p>Design a traffic signal that will safely allow a car to stop in a 50 MPH speed limit zone.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-three" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-five" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+</div>

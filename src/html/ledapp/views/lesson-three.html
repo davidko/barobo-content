@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 3 - Getting the LED to change color and blink a set number of times then change colors.</h1>
+        <h2>Objective</h2>
+        <p>In this lesson you will be learning how to control the color and the number of times the LED will
+            blink. This is simulates what a cross walk light might be like. Get the LED to be green for
+            3 seconds, and then blink red for three seconds.</p>
+        <div class="code-snippet">
+            <pre><code class="hljs python"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python3</span>
+
+<span class="hljs-comment"># Filename: Lesson03.py</span>
+
+import linkbot
+import <span class="hljs-keyword">time</span>
+
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')       <span class="hljs-comment">#set ID to a certain Linkbot</span></div>
+robot.setLedColor(<span ng-model="m.led1[0]" contenteditable="true" class="hljs-number">0</span>,<span ng-model="m.led2[1]" contenteditable="true" class="hljs-number">255</span>,<span ng-model="m.led1[2]" contenteditable="true" class="hljs-number">0</span>)      <span class="hljs-comment">#sets color of LED to green</span>
+<span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span ng-model="m.sleep1" contenteditable="true" class="hljs-number">3</span>)                   <span class="hljs-comment">#waits 3 seconds</span>
+<span class="hljs-keyword">for</span> i in range(<span class="hljs-number">1</span>,<span ng-model="m.ctr" contenteditable="true" class="hljs-number">6</span>):            <span class="hljs-comment">#runs the block that follows five times</span>
+    robot.setLedColor(<span class="hljs-number">255</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)  <span class="hljs-comment">#sets color to red</span>
+    <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span ng-model="m.sleep2" contenteditable="true" class="hljs-number">.5</span>)              <span class="hljs-comment">#waits half a second</span>
+    robot.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)    <span class="hljs-comment">#turns off LED</span>
+    <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span ng-model="m.sleep3" contenteditable="true" class="hljs-number">.5</span>)              <span class="hljs-comment">#waits half a second</span>
+    robot.setLedColor(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>)  <span class="hljs-comment">#turns LED to blue</span>
+    <span class="hljs-keyword">time</span>.<span class="hljs-keyword">sleep</span>(<span ng-model="m.sleep4" contenteditable="true" class="hljs-number">.5</span>)              <span class="hljs-comment">#waits half a second</span>
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        <h2>Explore</h2>
+        <p>Get the LED to stay solid red for 3 seconds, then turn red and blink 10 times, then turn solid blue.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-two" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-four" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+</div>

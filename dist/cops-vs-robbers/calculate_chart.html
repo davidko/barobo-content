@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Linkbot Labs
+        </title>
+        <script src="js/vendor/jquery-1.10.2.min.js">
+        </script>
+        <script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js">
+        </script>
+        <script src="js/robot_ids.js">
+        </script>
+        <script src="js/vendor/bootstrap.min.js">
+        </script>
+        <script src="js/vendor/jqmath-etc-0.4.0.min.js">
+        </script>
+        <script src="js/flot/jquery.flot.js">
+        </script>
+        <script src="js/calculate_chart.js">
+        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/jqmath-0.4.0.css">
+        <link rel="stylesheet" href="css/calculate_chart.css">
+    </head>
+    <body data-version="0.0.2">
+        <nav class="app">
+            <ol class="nav nav-stacked nav-pills">
+                <li>
+                    <a href="holt.html">
+                        <img src="img/holt_california.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="chap6.html">
+                        Chapter 6
+                    </a>
+                </li>
+                <hr class="hdr">
+                <li>
+                    <a href="setup.html">
+                        <div>
+                            6.1:
+                            <small>
+                                Cops vs. Robbers
+                            </small>
+                        </div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        Calculate
+                    </a>
+                </li>
+                <hr class="ftr">
+                <li>
+                    <a href="lab_overview.html">
+                        <small class="text-muted">
+                            Overview
+                        </small>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        <section>
+            <div class="infoHalf">
+                <div class="eqnTable">
+                    <table class="equations">
+                        <tr>
+                            <td>
+                                Robber:
+                            </td>
+                            <td>
+                                $y = 1/2x + 4$
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Cop:
+                            </td>
+                            <td>
+                                $y = 2x - 2$
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    The solution of the system of linear equations is the ordered pair $(4,6)$.
+                </div>
+            </div>
+            <div class="chartHalf">
+                This graph represents the system of equations.
+                <div class="calc-chart-container">
+                    <div id="calculation_chart">
+                    </div>
+                    <span id="xlabel">
+                        6
+                    </span>
+                    <span id="ylabel">
+                        4
+                    </span>
+                    <span id="intersect">
+                        (4,6)
+                    </span>
+                </div>
+            </div>
+            <a href="explore_directions.html" class="page-navigation pull-right btn btn-large btn-primary">
+                Next
+            </a>
+            <a href="calculate_setup.html" class="page-navigation btn btn-large btn-default">
+                Back
+            </a>
+        </section>
+        <script type="text/javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-22263798-3', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </body>
+</html>

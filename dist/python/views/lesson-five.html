@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 5</h1>
+        <h2>Objective</h2>
+        <p>Getting the Linkbot to make an about face and turn around 180 degrees is a useful maneuver. Make the
+            Linkbot to pivot 180 degrees in one place. Try the maneuver at different speeds to find the best values
+            to make the most accurate turn.
+        </p>
+
+        <div class="code-snippet">
+            <pre><code class="hljs coffeescript"><div ng-show="m.displayAllCode"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># File: ch3lesson5.py</span>
+
+<span class="hljs-reserved">import</span> linkbot
+
+<span class="hljs-comment"># Change the robot ID shown below to the ID of your Linkbot.</span>
+robot = linkbot.Linkbot('<span class="hljs-string" ng-bind="m.robot.id"></span>')</div>
+robot.setJointSpeeds(<span ng-model="m.speed[0]" contenteditable="true" class="hljs-number">90</span>, <span ng-model="m.speed[1]" contenteditable="true" class="hljs-number">0</span>, <span ng-model="m.speed[2]" contenteditable="true" class="hljs-number">90</span>)
+robot.move(<span ng-model="m.move[0]" contenteditable="true" class="hljs-number">190</span>, <span ng-model="m.move[1]" contenteditable="true"  class="hljs-number">0</span>, <span ng-model="m.move[2]" contenteditable="true" class="hljs-number">190</span>)
+            </code></pre>
+            <span ng-click="toggle()" class="code-snippet-tab glyphicon" ng-class="{'glyphicon-chevron-down': !m.displayAllCode, 'glyphicon-chevron-up': m.displayAllCode}"></span>
+        </div>
+        <button class="btn btn-primary" ng-class="{true: 'disabled'}[m.robot == null || m.running]" ng-click="run()">Run</button>
+        <h2>Explore</h2>
+        <p>Putting the moves together, have the Linkbot back up then turn around 180 degrees.
+        </p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-four" ng-click="stopAcquisition()" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-six" ng-click="stopAcquisition()" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+
+</div>

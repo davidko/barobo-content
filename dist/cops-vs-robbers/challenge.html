@@ -1,0 +1,311 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Linkbot Labs
+        </title>
+        <script src="js/vendor/jquery-1.10.2.min.js">
+        </script>
+        <script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js">
+        </script>
+        <script src="js/robot_ids.js">
+        </script>
+        <script src="js/vendor/bootstrap.min.js">
+        </script>
+        <script src="js/vendor/angular.min.js">
+        </script>
+        <script src="js/vendor/jqmath-etc-0.4.0.min.js">
+        </script>
+        <script src="js/flot/jquery.flot.js">
+        </script>
+        <script src="js/challenge.js">
+        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/explore.css">
+    </head>
+    <body data-version="0.0.2">
+        <nav class="app">
+            <ol class="nav nav-stacked nav-pills">
+                <li>
+                    <a href="holt.html">
+                        <img src="img/holt_california.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="chap6.html">
+                        Chapter 6
+                    </a>
+                </li>
+                <hr class="hdr">
+                <li>
+                    <a href="setup.html">
+                        <div>
+                            6.1:
+                            <small>
+                                Cops vs. Robbers
+                            </small>
+                        </div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        Challenge
+                    </a>
+                </li>
+                <hr class="ftr">
+                <li>
+                    <a href="lab_overview.html">
+                        <small class="text-muted">
+                            Overview
+                        </small>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        <section ng-app="challenge" ng-controller="Challenge">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#standardForm" data-toggle="tab">
+                        Standard Form Challenge
+                    </a>
+                </li>
+                <li>
+                    <a href="#slopeInterceptForm" data-toggle="tab">
+                        Slope Intercept Challenge
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="standardForm" class="tab-pane active" ng-controller="StandardEqns">
+                    <div class="container-fluid">
+                        <div>
+                            Is ({{solnX| number | plusMinus:true}}, {{solnY| number | plusMinus:true}}) a solution?
+                        </div>
+                        <div class="row">
+                            <div class="eqn-control col-xs-6" id="leftEqn">
+                                <div ng-hide="!mockRobot">
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="x1">
+                                    x + 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="y1">
+                                    y = 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="z1">
+                                </div>
+                                <div class="leftEqn">
+                                    <span ng-class="{activeControl: selected[0] == 0}">
+                                        {{x1| number | plusMinus:true}}x
+                                    </span>
+                                    <span ng-class="{activeControl: selected[0] == 1}">
+                                        {{y1| number | plusMinus}}y
+                                    </span>
+                                    = 
+                                    <span ng-class="{activeControl: selected[0] == 2}">
+                                        {{z1| number | plusMinus:true}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x1| number | plusMinus:true}}({{solnX| number | plusMinus:true}}) {{y1| number | plusMinus}}({{solnY| number | plusMinus:true}}) = {{z1| number | plusMinus:true}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x1 * solnX| number | plusMinus:true}} {{y1 * solnY| number | plusMinus}} = {{z1| number | plusMinus:true}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x1 * solnX + y1 * solnY| number | plusMinus:true}} = {{z1| number | plusMinus:true}}
+                                </div>
+                                <div class="eqnCheckboxYes" ng-show="x1 * solnX + y1 * solnY == z1">
+                                    <span class="eqnCheckbox">
+                                        ☑
+                                    </span>
+                                    Yes!
+                                </div>
+                                <div ng-hide="x1 * solnX + y1 * solnY == z1">
+                                    <span class="eqnCheckbox">
+                                        ☐
+                                    </span>
+                                    Not yet...
+                                </div>
+                            </div>
+                            <div class="eqn-control col-xs-6" id="rightEqn">
+                                <div ng-hide="!mockRobot">
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="x2">
+                                    x + 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="y2">
+                                    y = 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="z2">
+                                </div>
+                                <div class="rightEqn">
+                                    <span ng-class="{activeControl: selected[1] == 0}">
+                                        {{x2| number | plusMinus:true}}x
+                                    </span>
+                                    <span ng-class="{activeControl: selected[1] == 1}">
+                                        {{y2| number | plusMinus}}y
+                                    </span>
+                                    = 
+                                    <span ng-class="{activeControl: selected[1] == 2}">
+                                        {{z2| number | plusMinus:true}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x2| number | plusMinus:true}}({{solnX| number | plusMinus:true}}) {{y2| number | plusMinus}}({{solnY| number | plusMinus:true}}) = {{z2| number | plusMinus:true}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x2 * solnX| number | plusMinus:true}} {{y2 * solnY| number | plusMinus}} = {{z2| number | plusMinus:true}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{x2 * solnX + y2 * solnY| number | plusMinus:true}} = {{z2| number | plusMinus:true}}
+                                </div>
+                                <div class="eqnCheckboxYes" ng-show="x2 * solnX + y2 * solnY == z2">
+                                    <span class="eqnCheckbox">
+                                        ☑
+                                    </span>
+                                    Yes!
+                                </div>
+                                <div ng-hide="x2 * solnX + y2 * solnY == z2">
+                                    <span class="eqnCheckbox">
+                                        ☐
+                                    </span>
+                                    Not yet...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="chartDisplay" ng-controller="Graph">
+                        <div eqn-graph="" eqn-data="serieses" eqn-config="chartCfg">
+                        </div>
+                    </div>
+                </div>
+                <div id="slopeInterceptForm" class="tab-pane" ng-controller="InterceptEqns">
+                    <div>
+                        <div>
+                            Is ({{solnX| number | plusMinus:true}}, {{solnY| number | plusMinus:true}}) a solution?
+                        </div>
+                        <div class="row">
+                            <div class="eqn-control col-xs-6" id="leftEqn">
+                                <div ng-hide="!mockRobot">
+                                    y = 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="a1">
+                                    x + 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="b1">
+                                </div>
+                                <div class="leftEqn">
+                                    y = 
+                                    <span ng-class="{activeControl: selected[0] == 0}">
+                                        {{a1| number | plusMinus:true}}x
+                                    </span>
+                                    <span ng-class="{activeControl: selected[0] == 1}">
+                                        {{b1| number | plusMinus}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a1| number | plusMinus:true}}({{solnX| number | plusMinus:true}}) {{b1| number | plusMinus}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a1* solnX| number | plusMinus:true}} {{b1| number | plusMinus}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a1 * solnX + b1| number | plusMinus:true}}
+                                </div>
+                                <div class="eqnCheckboxYes" ng-show="solnY == a1 * solnX + b1">
+                                    <span class="eqnCheckbox">
+                                        ☑
+                                    </span>
+                                    Yes!
+                                </div>
+                                <div ng-hide="solnY == a1 * solnX + b1">
+                                    <span class="eqnCheckbox">
+                                        ☐
+                                    </span>
+                                    Not yet...
+                                </div>
+                            </div>
+                            <div class="eqn-control col-xs-6" id="rightEqn">
+                                <div ng-hide="!mockRobot">
+                                    y = 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="a2">
+                                    x + 
+                                    <input type="number" maxlength="3" size="3" max="99" min="-99" ng-model="b2">
+                                </div>
+                                <div class="rightEqn">
+                                    y = 
+                                    <span ng-class="{activeControl: selected[1] == 0}">
+                                        {{a2| number | plusMinus:true}}x
+                                    </span>
+                                    <span ng-class="{activeControl: selected[1] == 1}">
+                                        {{b2| number | plusMinus}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a2| number | plusMinus:true}}({{solnX| number | plusMinus:true}}) {{b2| number | plusMinus}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a2* solnX| number | plusMinus:true}} {{b2| number | plusMinus}}
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                    {{solnY| number | plusMinus:true}} = {{a2 * solnX + b2| number | plusMinus:true}}
+                                </div>
+                                <div class="eqnCheckboxYes" ng-show="solnY == a2 * solnX + b2">
+                                    <span class="eqnCheckbox">
+                                        ☑
+                                    </span>
+                                    Yes!
+                                </div>
+                                <div ng-hide="solnY == a2 * solnX + b2">
+                                    <span class="eqnCheckbox">
+                                        ☐
+                                    </span>
+                                    Not yet...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="chartDisplay" ng-controller="Graph">
+                        <div eqn-graph="" eqn-data="serieses" eqn-config="chartCfg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/index.html?finishedApp=holt" class="page-navigation next pull-right btn btn-large btn-primary">
+                Finish
+            </a>
+            <a href="explore.html" class="page-navigation btn btn-large btn-default">
+                Back
+            </a>
+        </section>
+        <script type="text/javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-22263798-3', 'auto');
+          ga('send', 'pageview');
+        </script>
+    </body>
+</html>

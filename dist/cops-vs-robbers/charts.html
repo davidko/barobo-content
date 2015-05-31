@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Linkbot Labs
+        </title>
+        <script src="js/vendor/jquery-1.10.2.min.js">
+        </script>
+        <script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js">
+        </script>
+        <script src="js/robot_ids.js">
+        </script>
+        <script src="js/vendor/bootstrap.min.js">
+        </script>
+        <script src="js/flot/jquery.flot.js">
+        </script>
+        <script src="js/vendor/bootbox.min.js">
+        </script>
+        <script src="js/copVsRobber.js">
+        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js">
+    </head>
+    <body data-version="0.0.2">
+        <nav class="app">
+            <ol class="nav nav-stacked nav-pills">
+                <li>
+                    <a href="holt.html">
+                        <img src="img/holt_california.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="chap6.html">
+                        Chapter 6
+                    </a>
+                </li>
+                <hr class="hdr">
+                <li>
+                    <a href="setup.html">
+                        <div>
+                            6.1:
+                            <small>
+                                Cops vs. Robbers
+                            </small>
+                        </div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        Prediction
+                    </a>
+                </li>
+                <hr class="ftr">
+                <li>
+                    <a href="lab_overview.html">
+                        <small class="text-muted">
+                            Overview
+                        </small>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        <section>
+            <div class="row chartRow">
+                <figure class="col-xs-3">
+                    <figcaption>
+                        Position
+                    </figcaption>
+                    <div id="pos" class="chart">
+                    </div>
+                </figure>
+                <figure class="col-xs-8 col-xs-offset-1">
+                    <figcaption>
+                        Position vs. Time
+                    </figcaption>
+                    <div id="xvst" class="chart">
+                    </div>
+                    <small class="xtitle">
+                        time (s)
+                    </small>
+                </figure>
+            </div>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="intersect">
+                        When does the cop catch the robber?
+                    </label>
+                    <input id="guess" type="text" name="intersect">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="button" id="demoBtn">
+                        Start
+                    </button>
+                    <button class="btn btn-danger" type="button" id="stopBtn">
+                        STOP!
+                    </button>
+                </div>
+                <div class="fwdBack">
+                    <a class="page-navigation btn btn-default" href="prediction.html">
+                        Back
+                    </a>
+                    <a href="calculate_setup.html" class="page-navigation pull-right btn btn-primary">
+                        Next
+                    </a>
+                </div>
+            </form>
+        </section>
+        <script type="text/javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-22263798-3', 'auto');
+          ga('send', 'pageview');
+        </script>
+
+    </body>
+</html>

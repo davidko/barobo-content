@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Offline LinkbotLabs</title>
+    <link rel="stylesheet" href="js/linkbotjs/linkbot.css">
+</head>
+<body style="height: 600px;">
+    <h1>Linkbot Labs is in offline mode.</h1>
+    <p>If your are seeing this page Linkbot Labs is in Offline Mode.</p>
+<script src="js/linkbotjs/linkbot.min.js"></script>
+<script type="application/javascript">
+    if (asyncBaroboBridge) {
+        var xmlhttp = new XMLHttpRequest();
+        var version = asyncBaroboBridge.apiVersion();
+        var version_string = version.major + '_' + version.minor + '_' + version.patch;
+        var url = "http://" + version_string + ".linkbotlabs.com/active.json";
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var response = JSON.parse(xmlhttp.responseText);
+                if (reponse.active) {
+                    window.location.assign("http://" + version_string + ".linkbotlabs.com/index.html");
+                }
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    } else {
+        alert('This is not designed to work outside of Linkbot Labs browser');
+    }
+</script>
+</body>
+</html>

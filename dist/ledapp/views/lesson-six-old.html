@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <h1>Lesson 6- The Linkbot will measure your reaction time. The LED will change color from red to green and the "A" button is depressed as soon as possible.</h1>
+        <h2>Objective</h2>
+        <p>The Linkbot will measure your reaction time. The LED will change color from red to green and the "B" button is depressed as soon as possible. </p>
+        <div hljs>
+#!/usr/bin/env python3
+
+# File: Lesson06.py
+
+import time
+import linkbot
+import random
+import sys
+
+robotID = input('Enter robot ID: ')
+robot = linkbot.Linkbot(robotID) #enter the linkbot ID
+time_start=0
+button_pressed=False
+game_start=False
+
+def callback(buttons, event, timestamp):
+    if (buttons & 0x02) and event:
+        global game_start
+        global time_start
+        global button_pressed
+        button_pressed=True
+        if game_start==False:
+            print("You pressed the button to soon")
+        else:
+            print("your  reaction time is :", time.time()-time_start)
+        global robot
+        robot.setBuzzerFrequency(0)
+
+robot.enableButtonEvents(callback)
+input("Press enter to begin")
+robot.setLedColor(255, 0, 0)
+time.sleep(random.random()*7+3)
+if button_pressed:
+    sys.exit()
+time_start=time.time()
+game_start=True
+robot.setBuzzerFrequency(440)
+robot.setLedColor(0, 255, 0)
+while True:
+    time.sleep(1)
+    if button_pressed:
+        sys.exit()
+        </div>
+        <h2>Explore</h2>
+        <p>Change the program sleep times to confuse the user that has caught on to the timing of the program.</p>
+        <hr />
+        <div class="clearfix">
+            <a href="#/lesson-five" class="btn btn-default pull-left">Prev</a>
+            <a href="#/lesson-seven" class="btn btn-default pull-right">Next</a>
+        </div>
+    </div>
+</div>

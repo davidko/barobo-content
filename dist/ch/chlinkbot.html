@@ -1,0 +1,249 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>Ch with Robots  :. Linkbot Labs</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="http://linkbotlabs.com/libraries/linkbotjs/linkbot.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-12">
+      <h1>Ch with Robots</h1>
+      <div style="margin-bottom: 10px;">
+        <div class="btn-group">
+          <button id="prev" class="btn btn-default">Previous</button>
+          <button id="minus" class="btn btn-default">-</button>
+          <button id="plus" class="btn btn-default">+</button>
+          <button id="next" class="btn btn-default">Next</button>
+        </div>
+        <span style="margin-left: 10px;">Page: <input type="number" id="page_num" pattern="\d*" step="1"></span> / <span id="page_count"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-12">
+      <canvas id="the-canvas" style="border:1px solid black"></canvas>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-12">
+      <div style="margin-bottom: 10px;">
+        <div class="btn-group">
+          <button id="prev2" class="btn btn-default">Previous</button>
+          <button id="minus2" class="btn btn-default">-</button>
+          <button id="plus2" class="btn btn-default">+</button>
+          <button id="next2" class="btn btn-default">Next</button>
+        </div>
+        <span style="margin-left: 10px;">Page: <input type="number" id="page_num2" pattern="\d*" step="1"></span> / <span id="page_count2"></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- for legacy browsers add compatibility.js -->
+<!--<script src="../compatibility.js"></script>-->
+
+<script src="../js/pdf.js"></script>
+
+<script id="script">
+
+  function getSearchParameters() {
+    var paramString = window.location.search.substr(1);
+    if (paramString !== null && paramString !== "") {
+      var params = {};
+      var paramArray = paramString.split('&');
+      for (var i = 0; i < paramArray.length; i++) {
+        var valueArray = paramArray[i].split("=");
+        params[valueArray[0]] = valueArray[1];
+      }
+      return params;
+    }
+    return {};
+  }
+  var parameters = getSearchParameters();
+  //
+  // If absolute URL from the remote server is provided, configure the CORS
+  // header on that server.
+  //
+  var url = 'chlinkbot.pdf';
+
+
+  //
+  // Disable workers to avoid yet another cross-origin issue (workers need
+  // the URL of the script to be loaded, and dynamically loading a cross-origin
+  // script does not work).
+  //
+  // PDFJS.disableWorker = true;
+
+  //
+  // In cases when the pdf.worker.js is located at the different folder than the
+  // pdf.js's one, or the pdf.js is executed via eval(), the workerSrc property
+  // shall be specified.
+  //
+  // PDFJS.workerSrc = '../../build/pdf.worker.js';
+
+  var pdfDoc = null,
+      pageNum = 1,
+      pageRendering = false,
+      pageNumPending = null,
+      scale = 1.2,
+      canvas = document.getElementById('the-canvas'),
+      ctx = canvas.getContext('2d');
+
+  /**
+   * Get page info from document, resize canvas accordingly, and render page.
+   * @param num Page number.
+   */
+  function renderPage(num) {
+    pageRendering = true;
+    // Using promise to fetch the page
+    pdfDoc.getPage(num).then(function(page) {
+      var viewport = page.getViewport(scale);
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      // Render PDF page into canvas context
+      var renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+      var renderTask = page.render(renderContext);
+
+      // Wait for rendering to finish
+      renderTask.promise.then(function () {
+        pageRendering = false;
+        if (pageNumPending !== null) {
+          // New page rendering is pending
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+      });
+    });
+
+    // Update page counters
+    document.getElementById('page_num').value = pageNum;
+    document.getElementById('page_num2').value = pageNum;
+  }
+
+  /**
+   * If another page rendering in progress, waits until the rendering is
+   * finised. Otherwise, executes rendering immediately.
+   */
+  function queueRenderPage(num) {
+    if (pageRendering) {
+      pageNumPending = num;
+    } else {
+      renderPage(num);
+    }
+  }
+
+  /**
+   * Displays previous page.
+   */
+  function onPrevPage() {
+    if (pageNum <= 1) {
+      return;
+    }
+    pageNum--;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('prev').addEventListener('click', onPrevPage);
+  document.getElementById('prev2').addEventListener('click', onPrevPage);
+
+  /**
+   * Displays next page.
+   */
+  function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) {
+      return;
+    }
+    pageNum++;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('next').addEventListener('click', onNextPage);
+  document.getElementById('next2').addEventListener('click', onNextPage);
+
+  function scaleUp() {
+    if (scale >= 2.5) {
+      return;
+    }
+    scale += .1;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('plus').addEventListener('click', scaleUp);
+  document.getElementById('plus2').addEventListener('click', scaleUp);
+  
+  function scaleDown() {
+    if (scale <= .5) {
+      return;
+    }
+    scale -= .1;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('minus').addEventListener('click', scaleDown);
+  document.getElementById('minus2').addEventListener('click', scaleDown);
+
+  function keyPressedPageNum(e) {
+    if (e.keyCode === 13) {
+      var element = e.target;
+      var value = parseInt(element.value);
+      if (value >= 1 && value <= pdfDoc.numPages) {
+        pageNum = value;
+        queueRenderPage(pageNum);
+      }
+    }
+  }
+  function changedPageNum(e) {
+    var element = e.target;
+    var value = parseInt(element.value);
+    if (value >= 1 && value <= pdfDoc.numPages) {
+      pageNum = value;
+      queueRenderPage(pageNum);
+    }
+  }
+  document.getElementById('page_num').addEventListener('keyup', keyPressedPageNum);
+  document.getElementById('page_num').addEventListener('change', changedPageNum);
+  document.getElementById('page_num2').addEventListener('keyup', keyPressedPageNum);
+  document.getElementById('page_num2').addEventListener('change', changedPageNum);
+  /**
+   * Asynchronously downloads PDF.
+   */
+  PDFJS.getDocument(url).then(function (pdfDoc_) {
+    pdfDoc = pdfDoc_;
+    document.getElementById('page_count').textContent = pdfDoc.numPages;
+    document.getElementById('page_count2').textContent = pdfDoc.numPages;
+    document.getElementById('page_num').max = pdfDoc.numPages;
+    document.getElementById('page_num').min = 1;
+    document.getElementById('page_num2').max = pdfDoc.numPages;
+    document.getElementById('page_num2').min = 1;
+    if (parameters['pagenum']) {
+      var value = parseInt(parameters['pagenum']);
+      if (value >= 1 && value <= pdfDoc.numPages) {
+        pageNum = value;
+      }
+    }
+    // Initial/first page rendering
+    renderPage(pageNum);
+  });
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-22263798-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script src="http://linkbotlabs.com/libraries/linkbotjs/linkbot.js"></script>
+
+</body>
+</html>
+
