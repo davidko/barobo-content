@@ -13,7 +13,7 @@
     if (asyncBaroboBridge) {
         var xmlhttp = new XMLHttpRequest();
         var version = asyncBaroboBridge.apiVersion();
-        var version_string = version.major + '_' + version.minor + '_' + version.patch;
+        var version_string = version.major + '-' + version.minor + '-' + version.patch;
         var url = "http://" + version_string + ".linkbotlabs.com/active.json";
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
