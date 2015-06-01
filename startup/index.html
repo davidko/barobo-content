@@ -10,6 +10,10 @@
     <p>If your are seeing this page Linkbot Labs is in Offline Mode.</p>
 <script src="js/linkbotjs/linkbot.min.js"></script>
 <script type="application/javascript">
+    if (Linkbots) {
+        Linkbots.startOpen(true);
+    }
+
     if (asyncBaroboBridge) {
         var xmlhttp = new XMLHttpRequest();
         var version = asyncBaroboBridge.apiVersion();
