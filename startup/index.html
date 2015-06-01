@@ -18,7 +18,7 @@
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                if (reponse.active === true) {
+                if (response.active === true) {
                     window.location.assign("http://" + version_string + ".linkbotlabs.com/index.html");
                 }
             }
