@@ -2,32 +2,49 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Offline LinkbotLabs</title>
+    <title>LinkbotLabs</title>
     <link rel="stylesheet" href="js/linkbotjs/linkbot.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body style="height: 600px;">
-    <h1>Linkbot Labs is in offline mode.</h1>
-    <p>If your are seeing this page Linkbot Labs is in Offline Mode.</p>
+    <img src="img/logo_sm.jpg" width="400" height="400" class="logo" />
+    <div id="spinner"></div>
+    <div id="offline">
+        <h2>You are currently in Offline Mode</h2>
+        <button onclick="redirect()">Reconnect</button>
+    </div>
+
 <script src="js/linkbotjs/linkbot.min.js"></script>
 <script type="application/javascript">
-    if (asyncBaroboBridge) {
-        var xmlhttp = new XMLHttpRequest();
-        var version = asyncBaroboBridge.apiVersion();
-        var version_string = version.major + '-' + version.minor + '-' + version.patch;
-        var url = "http://" + version_string + ".linkbotlabs.com/active.json";
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var response = JSON.parse(xmlhttp.responseText);
-                if (response.active === true) {
-                    window.location.assign("http://" + version_string + ".linkbotlabs.com/index.html");
-                }
+    function redirect() {
+        document.getElementById('offline').style.display = 'none';
+        document.getElementById('spinner').style.display = 'block';
+        if (asyncBaroboBridge) {
+            var xmlhttp = new XMLHttpRequest();
+            var version = {major: 0, minor: 0, patch: 0};
+            if (asyncBaroboBridge.apiVersion) {
+                version = asyncBaroboBridge.apiVersion();
             }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-    } else {
-        alert('This is not designed to work outside of Linkbot Labs browser');
+            var version_string = version.major + '-' + version.minor + '-' + version.patch;
+            var url = "http://" + version_string + ".linkbotlabs.com/active.json";
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    if (response.active === true) {
+                        window.location.assign("http://" + version_string + ".linkbotlabs.com/index.html");
+                    }
+                } else {
+                    document.getElementById('offline').style.display = 'block';
+                    document.getElementById('spinner').style.display = 'none';
+                }
+            };
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        } else {
+            alert('This is not designed to work outside of Linkbot Labs browser');
+        }
     }
+    redirect();
 </script>
 </body>
 </html>
