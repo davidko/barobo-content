@@ -7,7 +7,7 @@ var asyncBaroboBridge = (function(main) {
         return main.asyncBaroboBridge;
     } else {
         var _i, _j, _len, _len1, obj, signals, methods, k;
-        methods = ['availableFirmwareVersions', 'connectRobot', 'disconnectRobot',
+        methods = ['listFirmwareFiles', 'connectRobot', 'disconnectRobot',
             'getAccelerometer', 'getFormFactor', 'getJointAngles', 'getJointSpeeds', 'getJointStates',
             'getLedColor', 'getVersions', 'resetEncoderRevs', 'setBuzzerFrequency', 'setJointSpeeds',
             'setJointStates', 'setLedColor', 'move', 'moveContinuous', 'moveTo', 'drive', 'driveTo',
@@ -44,6 +44,9 @@ var asyncBaroboBridge = (function(main) {
                 JointState: {FAIL: 3, HOLD: 1, MOVING: 2, STOP: 0}
             };
         };
+        obj.listFirmwareFiles = function() {
+            return ["v4.4.6.eeprom", "v4.4.6.hex"];
+        };
         /*
         obj.getLEDColor = function(id) {
             if (!colorMap[id]) {
@@ -65,70 +68,37 @@ var asyncBaroboBridge = (function(main) {
 var process = module.exports = {};
 var queue = [];
 var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
 
 function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
     draining = true;
-
+    var currentQueue;
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        while (++queueIndex < len) {
-            currentQueue[queueIndex].run();
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
         }
-        queueIndex = -1;
         len = queue.length;
     }
-    currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
 }
-
 process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
+    queue.push(fun);
     if (!draining) {
         setTimeout(drainQueue, 0);
     }
 };
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
 process.argv = [];
 process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
 
 function noop() {}
 
@@ -18430,11 +18400,76 @@ module.exports.Events = events;
 },{}],149:[function(require,module,exports){
 "use strict";
 
+var Version = require('./version.jsx');
+
+// Split a filename into its stem and extension, if present. The extension's
+// dot is retained to distinguish no extension from an empty extension.
+// Examples:
+// 'a.b.c' -> { stem: 'a.b', extension: '.c' }
+// 'a.'    -> { stem: 'a',   extension: '.' }
+// 'a'     -> { stem: 'a',   extension: null }
+function splitFilename (a) {
+    var i = a.lastIndexOf('.');
+    return i > 0
+           ? { stem: a.slice(0, i), extension: a.slice(i) }
+           : { stem: a.slice(0),    extension: null };
+}
+
+// Generate a list of file stems which prefix both .hex and .eeprom files. For
+// example, ['a', 'b.hex', 'c.eeprom', 'd.hex', 'd.eeprom'] would yield ['d'],
+// because it is the only file stem which begins both the name of a .hex and a
+// .eeprom file.
+function firmwareFileStems (firmwareFiles) {
+    // First, take a roll call of all .eeprom and .hex files. Do so with a map
+    // of file stems to bitsets, where bit zero records the presence of a
+    // stem.hex file and bit one records the presence of a stem.eeprom file.
+    var fws = {};
+    firmwareFiles.map(splitFilename)
+                 .forEach(function (file) {
+        if (!file.stem in fws) {
+            fws[file.stem] = 0;
+        }
+        fws[file.stem] |= Number(file.extension === '.hex');
+        fws[file.stem] |= Number(file.extension === '.eeprom') << 1;
+    });
+
+    // Firmware which are valid are those which have both a .hex file and a
+    // .eeprom file.
+    var stems = [];
+    for (var stem in fws) {
+        if (fws.hasOwnProperty(stem)) {
+            // fws[stem] will be 1<<0 | 1<<1 == 3 if both a .hex and .eeprom
+            // were found.
+            if (fws[stem] == 3) {
+                stems.push(stem);
+            }
+        }
+    }
+
+    return stems;
+}
+
+// Array of Versions, each representing a complete pair of firmware files.
+function localVersionList () {
+    // Strings with a 'v' prefix lose their prefix. Strings without a 'v'
+    // prefix become null.
+    var dropV = function (s) { return /^v/.test(s) ? s.slice(1) : null; };
+    return firmwareFileStems(asyncBaroboBridge.listFirmwareFiles())
+        .map(dropV)
+        .map(Version.fromString)
+        .filter(Boolean);
+}
+
+module.exports.localVersionList = localVersionList;
+
+},{"./version.jsx":155}],150:[function(require,module,exports){
+"use strict";
+
 var eventlib = require('./event.jsx');
 var manager = require('./manager.jsx');
+var firmware = require('./firmware.jsx');
+var Version = require('./version.jsx');
 
-
-var firmwareVersions = asyncBaroboBridge.availableFirmwareVersions();
 var enumConstants = asyncBaroboBridge.enumerationConstants();
 var requestId = 0;
 var callbacks = {};
@@ -18442,6 +18477,11 @@ var buttonEventCallbacks = {};
 var encoderEventCallbacks = {};
 var accelerometerEventCallbacks = {};
 var jointEventCallbacks = {};
+
+
+// Find the latest version of the firmware among all the firmware files.
+var latestLocalFirmwareVersion = firmware.localVersionList()
+                                         .reduce(Version.max);
 
 function addCallback (func) {
     var token = requestId++;
@@ -18469,22 +18509,93 @@ asyncBaroboBridge.requestComplete.connect(
         }
     }
 );
+
+// Dongle events of the same value may occur consecutively (i.e., two
+// dongleDowns in a row), so track the state and only perform actions on state
+// changes.
+var dongleEventFilter = (function () {
+    var lastStatus = null;
+    return function (status) {
+        if (!lastStatus || lastStatus !== status) {
+            lastStatus = status;
+            manager.event.trigger(status);
+        }
+    };
+})();
+
+function showDongleUpdateButton (explanation) {
+    // TODO: display button to the user
+    window.console.log(explanation);
+}
+
+// This function might be better inside the AsyncLinkbot object? Unsure.
+function showRobotUpdateButton (explanation, bot) {
+    bot.status = "update";
+    bot.event.trigger('changed');
+    window.console.log(explanation);
+}
+
+// True if the error object e represents a particular error, given the error's
+// category and code in string form.
+function errorEq(e, category, code) {
+    return e.category === category
+        && e.code === enums.ErrorCategories[category][code];
+}
+
 asyncBaroboBridge.dongleEvent.connect(
     function (error, firmwareVersion) {
         if (error.code == 0) {
-            // TODO: Check firmwareVersion, trigger dongleUp if it matches. If
-            // the firmware should be updated, prompt the user.
-            window.console.log('Dongle firmware version ', firmwareVersion);
-            manager.event.trigger('dongleUp');
+            var version = Version.fromTriplet(firmwareVersion);
+            if (version.eq(latestLocalFirmwareVersion)) {
+                window.console.log('Dongle firmware version ', firmwareVersion);
+                dongleEventFilter('dongleUp');
+            }
+            else {
+                dongleEventFilter('dongleDown');
+                showDongleUpdateButton("The dongle's firmware must be updated.");
+            }
         } else {
-            // TODO: Prompt user to update firmware on certain errors. Note that
-            // we'll need to move the only-fire-dongleDown-once logic from manager.jsx
-            // to here.
-            manager.event.trigger('dongleDown');
-            window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
+            dongleEventFilter('dongleDown');
+            if (errorEq(error, 'baromesh', 'STRANGE_DONGLE')) {
+                showDongleUpdateButton("A dongle is plugged in, but we are unable "
+                    + "to communicate with it. "
+                    + "You may need to update its firmware.");
+            }
+            else if (errorEq(error, 'baromesh', 'INCOMPATIBLE_FIRMWARE')) {
+                showDongleUpdateButton("The dongle's firmware must be updated.");
+            }
+            else {
+                window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
+            }
         }
     }
 );
+
+asyncBaroboBridge.robotEvent.connect(
+    function(error, id, firmwareVersion) {
+        console.log('robot event triggered with ID: ' + id + ' and version: ', firmwareVersion);
+        var robot = manager.getRobot(id);
+        if (robot) {
+            if (error.code == 0) {
+                var version = Version.fromTriplet(firmwareVersion);
+                robot.version = version;
+                if (version.eq(latestLocalFirmwareVersion)) {
+                    robot.connect();
+                }
+                else {
+                    showRobotUpdateButton(id + "'s firmware must be updated.", robot);
+                }
+            }
+            else if (errorEq(error, 'baromesh', 'INCOMPATIBLE_FIRMWARE')) {
+                showRobotUpdateButton(id + "'s firmware must be updated.", robot);
+            }
+            else {
+                window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
+            }
+        }
+    }
+);
+
 asyncBaroboBridge.buttonEvent.connect(
     function(id, buttonNumber, eventType, timestamp) {
         // TODO implement this.
@@ -18578,16 +18689,17 @@ module.exports.startFirmwareUpdate = function() {
 
 module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     var bot = this;
-    var statuses = {0:"offline", 1:"ready", 2:"acquired"};
+    var statuses = {0:"offline", 1:"ready", 2:"acquired", 3:"update"};
     var status = 0;
     var id = _id;
     var wheelRadius = 1.75;
     var joinDirection = [0, 0, 0];
     var driveToValue = null;
     var driveToCalled = false;
+    var version = null;
     
     bot.enums = enumConstants;
-    bot.firmwareVerions = firmwareVersions;
+    bot.latestLocalFirmwareVersion = latestLocalFirmwareVersion;
 
     function driveToCallback(error) {
         driveToCalled = false;
@@ -18604,18 +18716,15 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     
     function checkVersions(error, data) {
         if (0 === error.code) {
-            var valid = false, i = 0, version = "0.0.0";
-            version = 'v' + data.major + '.' + data.minor + '.' + data.patch;
+            var version = Version.fromTriplet(data);
+            var robot = manager.getRobot(id);
+            robot.version = version;
             window.console.log('checking version: ' + version);
-            for (i = 0; i < firmwareVersions.length; i++) {
-                if (version === firmwareVersions[i]) {
-                    window.console.log('Using firmware version: ' + version + ' for bot: ' + id);
-                    valid = true;
-                    break;
-                }
+            if (version.eq(latestLocalFirmwareVersion)) {
+                window.console.log('Using firmware version: ' + version + ' for bot: ' + id);
             }
-            if (!valid && window.location.pathname != '/LinkbotUpdateApp/html/index.html') {
-                document.location = "http://zrg6.linkbotlabs.com/LinkbotUpdateApp/html/index.html?badRobot=" + encodeURIComponent(id);
+            else {
+                showRobotUpdateButton(id + "'s firmware must be updated.", robot);
             }
         } else {
             window.console.warn('error occurred checking firmware version [' + error.category + '] :: ' + error.message);
@@ -18634,6 +18743,12 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.__defineGetter__("status", function(){
         return statuses[status];
     });
+    bot.__defineSetter__("version", function(value) {
+        version = value;
+    });
+    bot.__defineGetter__("version", function() {
+        return version;
+    });
     bot.__defineSetter__("status", function(val) {
         if (val === "ready") {
             status = 1;
@@ -18641,6 +18756,8 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
             status = 0;
         } else if (val === "acquired") {
             status = 2;
+        } else if (val === "update") {
+            status = 3;
         }
         bot.event.trigger('changed');
     });
@@ -18672,7 +18789,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         
     };
     bot.color = function(r, g, b) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.setLedColor(id, token, r, g, b);
             bot.event.trigger('changed');
@@ -18685,28 +18802,28 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         if (s3 === null) {
             s3 = s1;
         }
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.setJointSpeeds(id, token, 7, s1, s2, s3);
         }
     };
 
     bot.move = function(r1, r2, r3) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.move(id, token, 7, r1, r2, r3);
         }
     };
 
     bot.moveTo = function(r1, r2, r3) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.moveTo(id, token, 7, r1, r2, r3);
         }
     };
 
     bot.moveToOneMotor = function(joint, position) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             var mask = 0;
             if (joint === 0) {
@@ -18721,14 +18838,14 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     };
 
     bot.drive = function(r1, r2, r3) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.drive(id, token, 7, r1, r2, r3);
         }
     };
 
     bot.driveTo = function(r1, r2, r3) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             if (driveToCalled) {
                 driveToValue = [r1, r2, r3];
             } else {
@@ -18742,7 +18859,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.moveForward = function() {
         joinDirection[0] = 1;
         joinDirection[2] = -1;
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.moveContinuous(id, token, 7, joinDirection[0], joinDirection[1], joinDirection[2]);
         }
@@ -18750,7 +18867,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.moveBackward = function() {
         joinDirection[0] = -1;
         joinDirection[2] = 1;
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.moveContinuous(id, token, 7, joinDirection[0], joinDirection[1], joinDirection[2]);
         }
@@ -18758,7 +18875,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.moveLeft = function() {
         joinDirection[0] = -1;
         joinDirection[2] = -1;
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.moveContinuous(id, token, 7, joinDirection[0], joinDirection[1], joinDirection[2]);
         }
@@ -18766,7 +18883,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.moveRight = function() {
         joinDirection[0] = 1;
         joinDirection[2] = 1;
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.moveContinuous(id, token, 7, joinDirection[0], joinDirection[1], joinDirection[2]);
         }
@@ -18785,7 +18902,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                 asyncBaroboBridge.stop(id, token, (1 << joint));
                 return true;
             }
-            if (status != 0) {
+            if (status != 0 && status != 3) {
                 token = addGenericCallback();
                 if (joint === 0) {
                     mask = 1;
@@ -18801,7 +18918,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
         return false;
     };
     bot.wheelPositions = function(callback) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addCallback(function(error, data) {
                 if (error.code == 0) {
                     callback(data);
@@ -18815,7 +18932,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     };
 
     bot.getJointSpeeds = function(callback) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addCallback(function(error, data) {
                 if (error.code == 0) {
                     callback(data);
@@ -18830,14 +18947,14 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.stop = function() {
         joinDirection[0] = 0;
         joinDirection[2] = 0;
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.stop(id, token);
         }
     };
 
     bot.buzzerFrequency = function(freq) {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             var token = addGenericCallback();
             asyncBaroboBridge.setBuzzerFrequency(id, token, freq);
         }
@@ -18861,7 +18978,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     };
 
     bot.getFormFactor = function(callback) {
-        if (status != 0 && callback) {
+        if (status != 0 && status != 3  && callback) {
             var token = addCallback(function(error, data) {
                 if (error.code == 0) {
                     callback(data);
@@ -18895,7 +19012,17 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
                                  ? "acquired" : "ready";
                     bot.event.trigger('changed');
                     asyncBaroboBridge.getVersions(id, addCallback(checkVersions));
-                } else {
+                }
+                else if (errorEq(error, 'rpc', 'DECODING_FAILURE')
+                         || errorEq(error, 'rpc', 'PROTOCOL_ERROR')
+                         || errorEq(error, 'rpc', 'INTERFACE_ERROR')) {
+                    showRobotUpdateButton("We are unable to communicate with " + id
+                        + ". It may need a firmware update.", bot);
+                }
+                else if (errorEq(error, 'rpc', 'VERSION_MISMATCH')) {
+                    showRobotUpdateButton(id + "'s firmware must be updated.", bot);
+                }
+                else {
                     window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
                 }
                 if (callback) {
@@ -18920,7 +19047,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     // This is a deprecated method.
     bot.register = function(connections) {
         var obj, token;
-        if (status == 0 || typeof(connections) == 'undefined') {
+        if (status == 0 || status == 3 || typeof(connections) == 'undefined') {
             return;
         }
         if (connections.hasOwnProperty('button')) {
@@ -19008,7 +19135,7 @@ module.exports.AsyncLinkbot = function AsyncLinkbot(_id) {
     bot.BUTTON_B = bot.enums.Button.B;
 };
 
-},{"./event.jsx":148,"./manager.jsx":152}],150:[function(require,module,exports){
+},{"./event.jsx":148,"./firmware.jsx":149,"./manager.jsx":153,"./version.jsx":155}],151:[function(require,module,exports){
 "use strict";
     
 var manager = require('./manager.jsx');
@@ -19113,7 +19240,7 @@ window.Linkbots = (function(){
     return mod;
 
 })();
-},{"./manager-ui.jsx":151,"./manager.jsx":152}],151:[function(require,module,exports){
+},{"./manager-ui.jsx":152,"./manager.jsx":153}],152:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -19705,9 +19832,15 @@ var RobotItem = React.createClass({displayName: "RobotItem",
         e.stopPropagation();
         if (me.props.linkbot.status == "offline") {
             uiEvents.trigger('show-full-spinner');
-            me.props.linkbot.connect(function(error) {
-               uiEvents.trigger('hide-full-spinner');
+            me.props.linkbot.connect(function (error) {
+                uiEvents.trigger('hide-full-spinner');
             });
+        } else if (me.props.linkbot.status == "update") {
+            uiEvents.trigger('show-full-spinner');
+            setTimeout(function() {
+                linkbotLib.startFirmwareUpdate();
+                uiEvents.trigger('hide-full-spinner');
+            }, 500);
         } else {
             me.props.linkbot.buzzerFrequency(500);
             setTimeout(function () {
@@ -19726,10 +19859,20 @@ var RobotItem = React.createClass({displayName: "RobotItem",
         };
         var buttonClass = "ljs-beep-btn";
         var buttonName = "beep";
+        var statusLbl = this.props.linkbot.status;
         if (this.props.linkbot.status === 'offline') {
             buttonClass = "ljs-connect-btn";
             buttonName = "connect";
+        } else if (this.props.linkbot.status === 'update') {
+            buttonClass = "ljs-update-btn";
+            buttonName = "update";
+            if (this.props.linkbot.version && this.props.linkbot.version != null) {
+                statusLbl = "offline [" + this.props.linkbot.version.toString() + "]";
+            } else {
+                statusLbl = "offline";
+            }
         }
+
 
         return (
             React.createElement("li", React.__spread({},  this.props, {style: style}), 
@@ -19740,7 +19883,7 @@ var RobotItem = React.createClass({displayName: "RobotItem",
                     React.createElement("span", {className: "ljs-robot-name"}, "Linkbot ", this.props.linkbot.id), 
                     React.createElement("span", {className: buttonClass, onClick: this.handleBeep}, buttonName), 
                     React.createElement("br", null), 
-                    React.createElement("span", null, this.props.linkbot.status)
+                    React.createElement("span", null, statusLbl)
                     
                 )
             )
@@ -20032,7 +20175,7 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
             this.state.linkbot.unregister(false);
         }
 
-        if (linkbot.status == "offline") {
+        if (linkbot.status == "offline" || linkbot.status == "update") {
             uiEvents.trigger('hide-control-panel');
             return;
         }
@@ -20723,11 +20866,12 @@ module.exports.addUI = function() {
     React.render(React.createElement(MainOverlay, null), mainOverlayDiv);
 };
 
-},{"./event.jsx":148,"./linkbot.jsx":149,"./manager.jsx":152,"react":147}],152:[function(require,module,exports){
+},{"./event.jsx":148,"./linkbot.jsx":150,"./manager.jsx":153,"react":147}],153:[function(require,module,exports){
 "use strict";
 
 var botlib = require('./linkbot.jsx');
 var eventlib = require('./event.jsx');
+var managerUi = require('./manager-ui.jsx');
 var storageLib = require('./storage.jsx');
 
 var robots = [];
@@ -20982,41 +21126,12 @@ setTimeout(function() {
 }, 1);
 
 
-// Dongle events of the same value may occur consecutively (i.e., two
-// dongleDowns in a row), so track the state and only perform actions on state
-// changes.
-
-var dongle = null;
-
 events.on('dongleUp', function() {
-    if (!dongle || dongle === 'down') {
-        dongle = 'up';
-        refresh();
-    }
+    refresh();
 });
 
 events.on('dongleDown', function() {
-    if (!dongle || dongle === 'up') {
-        dongle = 'down';
-        disconnectAll();
-    }
-});
-
-
-asyncBaroboBridge.robotEvent.connect(function(error, id, firmwareVersion) {
-    console.log('robot event triggered with ID: ' + id + ' and version: ', firmwareVersion);
-    var robot = findRobot(id);
-    if (robot) {
-        if (error.code == 0) {
-            // TODO: check firmwareVersion, call robot.connect() if it matches.
-            // If the firmware should be updated, prompt the user.
-            robot.connect();
-        }
-        else {
-            // TODO: prompt the user to update firmware, if error is RPC_VERSION_MISMATCH?
-            window.console.warn('error occurred [' + error.category + '] :: ' + error.message);
-        }
-    }
+    disconnectAll();
 });
 
 asyncBaroboBridge.connectionTerminated.connect(function(id, timestamp) {
@@ -21027,7 +21142,7 @@ asyncBaroboBridge.connectionTerminated.connect(function(id, timestamp) {
     }
 });
 
-},{"./event.jsx":148,"./linkbot.jsx":149,"./storage.jsx":153}],153:[function(require,module,exports){
+},{"./event.jsx":148,"./linkbot.jsx":150,"./manager-ui.jsx":152,"./storage.jsx":154}],154:[function(require,module,exports){
 var settings = {
     DBNAME: "robotsdb",
     DBVER: 1.0,
@@ -21202,4 +21317,81 @@ if (db !== null) {
         });
     };
 }
-},{}]},{},[148,149,150,151,152,153]);
+},{}],155:[function(require,module,exports){
+"use strict";
+
+// A Version object represents a version as an arbitrarily long sequence of
+// numbers. Versions can be constructed from strings, from the version objects
+// returned by asyncBaroboBridge, or directly from an array of numbers. Some
+// comparison functions are also provided.
+var Version = function (va) {
+    this.versionArray = va;
+};
+
+// Construct a Version object from an object returned by asyncBaroboBridge.
+// Return null if the argument does not conform to the major, minor, patch
+// form.
+//   Version.fromTriplet({major: 1, minor: 2, patch: 3})
+Version.fromTriplet = function (t) {
+    var va = [t.major, t.minor, t.patch];
+    return va.every(function (a) { return typeof a !== 'undefined'; })
+           ? new Version(va)
+           : null;
+};
+
+// Construct a Version object from a string containing a number or dotted
+// sequence of numbers. Return null if the string does not conform.
+//   Version.fromString('1.2.3')
+Version.fromString = function (s) {
+    function parseDecInt (a) {
+        return parseInt(a, 10);
+    }
+    var result = /^(\d+(?:\.\d+)*)$/.exec(s);
+    return result
+           ? new Version(result[1].split('.').map(parseDecInt))
+           : null;
+};
+
+// Return the represented version in dotted number string format.
+// new Version([1, 2, 3]).toString() == '1.2.3'
+Version.prototype.toString = function () {
+    return this.versionArray.map(function (a) {
+        // Force numbers to be integers with |0 so we don't end up with
+        // floating points in the version string. Perhaps paranoid?
+        return (a|0).toString();
+    }).reduce(function (p, v) {
+        return p + '.' + v;
+    });
+};
+
+// Compare two arrays of numbers lexicographically.
+function lexicographicCompare (a, b) {
+    for (var i = 0; i < Math.max(a.length, b.length); ++i) {
+        if (a[i] != b[i]) {
+            return typeof a[i] === 'undefined' || a[i] < b[i]
+                   ? -1 : 1;
+        }
+    }
+    return 0;
+}
+
+// Compare two version objects. Return less than zero if a is ordered before b,
+// greater than zero if b is ordered before a, and zero if the two versions
+// compare equal. If one version is a prefix of the other, the shorter of the
+// two versions is ordered before the longer. Suitable for use with
+// Array.sort().
+Version.cmp = function (a, b) {
+    return lexicographicCompare(a.versionArray, b.versionArray);
+};
+
+Version.max = function (a, b) {
+    return Version.cmp(a, b) > 0 ? a : b;
+};
+
+Version.prototype.eq = function (a) {
+    return Version.cmp(this, a) === 0;
+};
+
+module.exports = Version;
+
+},{}]},{},[148,149,150,151,152,153,154,155]);
