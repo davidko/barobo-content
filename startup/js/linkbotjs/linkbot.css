@@ -26,11 +26,11 @@ input[type=color] {
     z-index: 1000;
     background-color: transparent;
     width: 296px;
-    height: 100%;
     font-size: 14px;
     float: left;
-    position: fixed;
+    position: absolute;
     top: 75px;
+    bottom: 0;
     line-height: 1.42857143;
     left: -265px;
     -webkit-transition: left .5s ease;
@@ -49,22 +49,21 @@ input[type=color] {
 }
 #ljs-left-menu-container .ljs-content {
     background: #393939 url('img/robomgr-background.png') repeat-y right top;
-    height: 100%;
     width: 270px;
+    min-height: 100%;
 }
 /**
  * Left Menu Handle.
  */
 #ljs-left-menu-container .ljs-handle {
     float: right;
-    position: relative;
-    top: 30%;
-    right: 0;
     height: 161px;
     width: 31px;
     background-color: transparent;
     padding: 0;
-    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 270px;
 }
 
 #ljs-left-menu-container .ljs-handlebtn {
@@ -136,11 +135,9 @@ input[type=color] {
  */
 #ljs-left-menu-container ol {
     padding-left: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     margin-top: 0;
     width: 265px;
-    min-height: 230px;
-    height: 75%;
 }
 #ljs-left-menu-container ol li {
     position: relative;
@@ -369,7 +366,7 @@ span.ljs-margin-left {
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 #ljs-control-panel {
-    position: fixed;
+    position: absolute;
     top: 75px;
     left: 270px;
     width: 600px;
@@ -507,7 +504,7 @@ span.ljs-margin-left {
     background-color: #2d2c2c;
     color: #2da7ca;
     height: 75px;
-    z-index: 100;
+    z-index: 1001;
 }
 
 #ljs-top-navigation .ljs-top-nav-info {
@@ -567,11 +564,28 @@ span.ljs-margin-left {
 #ljs-top-navigation .ljs-top-nav-breadcrumbs {
     margin: 10px 0 0 0;
 }
-
-.ljs-firmware-update {
-    bottom: 100px;
-    position: absolute;
-    left: 45px;
+.ljs-dongle-firmware {
+    background-color: #f0ad4e;
+    border-radius: 15px;
+    border: 1px solid #eea236;
+    padding: 5px 10px;
+    margin: 0 5px 0 0;
+}
+.ljs-hidden {
+    display: none;
+}
+.ljs-dongle-firmware p {
+    margin: 0;
+    color: white;
+    line-height: 1.2em;
+}
+.ljs-dongle-firmware span.button {
+    float: right;
+    cursor: pointer;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: transparent url('img/update.png') no-repeat 0 0;
 }
 ul.ljs-top-nav-breadcrumbs {
     list-style: none;

@@ -18525,6 +18525,7 @@ var dongleEventFilter = (function () {
 
 function showDongleUpdateButton (explanation) {
     // TODO: display button to the user
+    manager.event.trigger("dongleUpdate", explanation);
     window.console.log(explanation);
 }
 
@@ -20014,6 +20015,10 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
             me.showMenu();
             manager.refresh();
         });
+        uiEvents.on('show-dongle-update', function(data) {
+            // Eventually we can use the data passed in to set the message.
+            me.refs.dongleUpdate.getDOMNode().className = 'ljs-dongle-firmware';
+        });
     },
     hideMenu: function() {
         this.refs.slideBtn.getDOMNode().className = 'ljs-handlebtn ljs-handlebtn-right';
@@ -20037,11 +20042,13 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
         }
     },
     handleFirmwareUpdate: function(e) {
+        var me = this;
         e.preventDefault();
         uiEvents.trigger('show-full-spinner');
         setTimeout(function() {
             linkbotLib.startFirmwareUpdate();
             uiEvents.trigger('hide-full-spinner');
+            me.refs.dongleUpdate.getDOMNode().className = 'ljs-dongle-firmware ljs-hidden';
         }, 500);
     },
     render: function() {
@@ -20053,8 +20060,9 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
                 React.createElement("div", {className: "ljs-content"}, 
                     React.createElement(AddRobotForm, null), 
                     this.props.children, 
-                    React.createElement("div", {className: "ljs-firmware-update"}, 
-                        React.createElement("button", {onClick: this.handleFirmwareUpdate, className: "ljs-btn"}, "Start Firmware Updater")
+                    React.createElement("div", {className: "ljs-dongle-firmware ljs-hidden", ref: "dongleUpdate"}, 
+                        React.createElement("span", {className: "button", onClick: this.handleFirmwareUpdate}), 
+                        React.createElement("p", null, "The dongle's firmware must be updated.")
                     )
                 )
             )
@@ -20795,6 +20803,17 @@ var HelpDialog = React.createClass({displayName: "HelpDialog",
             });
         });
     },
+    handleFirmware: function(e) {
+        e.stopPropagation();
+        this.setState({
+            show: false
+        });
+        uiEvents.trigger('show-full-spinner');
+        setTimeout(function() {
+            linkbotLib.startFirmwareUpdate();
+            uiEvents.trigger('hide-full-spinner');
+        }, 500);
+    },
     handleClick: function(e) {
         e.stopPropagation();
     },
@@ -20828,7 +20847,8 @@ var HelpDialog = React.createClass({displayName: "HelpDialog",
                                 React.createElement("ul", null, 
                                     React.createElement("li", null, React.createElement("a", {href: "http://wiki.linkbotlabs.com/wiki/Troubleshooting"}, "FAQ / Wiki")), 
                                     React.createElement("li", null, React.createElement("a", {href: "http://www.barobo.com/forums/forum/troubleshootinghelp/"}, "Help / Forums")), 
-                                    React.createElement("li", null, React.createElement("a", {href: "https://docs.google.com/forms/d/1rnqRu8XBHxDqLS257afRNH8nUycVUAbLaD7iOP4EyMg/viewform?usp=send_form"}, "Bug Report"))
+                                    React.createElement("li", null, React.createElement("a", {href: "https://docs.google.com/forms/d/1rnqRu8XBHxDqLS257afRNH8nUycVUAbLaD7iOP4EyMg/viewform?usp=send_form"}, "Bug Report")), 
+                                    React.createElement("li", null, React.createElement("a", {href: "javascript:;", onClick: this.handleFirmware}, "Start Firmware Updater"))
                                 )
                             ), 
                             React.createElement("div", {className: "ljs-modal-footer"}, 
@@ -21132,6 +21152,9 @@ events.on('dongleUp', function() {
 
 events.on('dongleDown', function() {
     disconnectAll();
+});
+events.on('dongleUpdate', function(data) {
+   managerUi.uiEvents.trigger('show-dongle-update', data);
 });
 
 asyncBaroboBridge.connectionTerminated.connect(function(id, timestamp) {
