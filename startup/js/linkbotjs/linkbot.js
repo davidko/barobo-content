@@ -18540,7 +18540,7 @@ function showRobotUpdateButton (explanation, bot) {
 // category and code in string form.
 function errorEq(e, category, code) {
     return e.category === category
-        && e.code === enums.ErrorCategories[category][code];
+        && e.code === enumConstants.ErrorCategories[category][code];
 }
 
 asyncBaroboBridge.dongleEvent.connect(
@@ -20003,6 +20003,10 @@ var Robots = React.createClass({displayName: "Robots",
 });
 
 var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu",
+    handleResize: function() {
+        this.refs.container.getDOMNode().style.height = '';
+        this.refs.container.getDOMNode().style.height = (document.body.scrollHeight - 75) + "px";
+    },
     componentWillMount: function() {
         var me = this;
         uiEvents.on('hide', function() {
@@ -20019,16 +20023,24 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
             // Eventually we can use the data passed in to set the message.
             me.refs.dongleUpdate.getDOMNode().className = 'ljs-dongle-firmware';
         });
+        window.addEventListener('resize', this.handleResize);
+    },
+    componentWillUnmount: function() {
+        window.removeEventListener('resize', this.handleResize);
     },
     hideMenu: function() {
         this.refs.slideBtn.getDOMNode().className = 'ljs-handlebtn ljs-handlebtn-right';
         this.refs.container.getDOMNode().className = '';
         document.body.style.marginLeft = '';
+        this.refs.container.getDOMNode().style.height = '';
+        this.refs.container.getDOMNode().style.height = (document.body.scrollHeight - 75) + "px";
     },
     showMenu: function() {
         this.refs.slideBtn.getDOMNode().className = 'ljs-handlebtn ljs-handlebtn-left';
         this.refs.container.getDOMNode().className = 'ljs-open';
         document.body.style.marginLeft = '300px';
+        this.refs.container.getDOMNode().style.height = '';
+        this.refs.container.getDOMNode().style.height = (document.body.scrollHeight - 75) + "px";
     },
     handleSlide: function(e) {
         e.preventDefault();
@@ -20052,18 +20064,19 @@ var RobotManagerSideMenu = React.createClass({displayName: "RobotManagerSideMenu
         }, 500);
     },
     render: function() {
+        var style = { height: (document.body.scrollHeight - 75) + "px"};
         return (
-            React.createElement("div", {id: "ljs-left-menu-container", ref: "container"}, 
+            React.createElement("div", {id: "ljs-left-menu-container", style: style, ref: "container"}, 
                 React.createElement("div", {className: "ljs-handle"}, 
                     React.createElement("span", {onClick: this.handleSlide, className: "ljs-handlebtn ljs-handlebtn-right", ref: "slideBtn"})
                 ), 
                 React.createElement("div", {className: "ljs-content"}, 
                     React.createElement(AddRobotForm, null), 
-                    this.props.children, 
                     React.createElement("div", {className: "ljs-dongle-firmware ljs-hidden", ref: "dongleUpdate"}, 
                         React.createElement("span", {className: "button", onClick: this.handleFirmwareUpdate}), 
                         React.createElement("p", null, "The dongle's firmware must be updated.")
-                    )
+                    ), 
+                    this.props.children
                 )
             )
         );
@@ -20190,6 +20203,13 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
 
         this.refs.overlay.getDOMNode().style.display = 'block';
         this.refs.controlPanel.getDOMNode().style.display = 'block';
+        if (window.innerHeight <= 675) {
+            this.refs.controlPanel.getDOMNode().style.top = document.body.scrollTop + "px";
+        } else if (document.body.scrollTop > 75) {
+            this.refs.controlPanel.getDOMNode().style.top = document.body.scrollTop + "px";
+        } else {
+            this.refs.controlPanel.getDOMNode().style.top = 75 + "px";
+        }
         direction = [0, 0, 0];
         linkbot.getFormFactor(function(data) {
             if (linkbot.enums.FormFactor.I == data) {
